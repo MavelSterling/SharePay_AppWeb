@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Container, Paper, Grid, Typography, TextField, Button, Link } from '@mui/material';
+import logo from '../assets/Logo.png'; // Ajusta la ruta según dónde hayas colocado el archivo
+
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -15,10 +17,10 @@ function Login() {
 
   return (
     <Container component="main" maxWidth="xs">
-        <Paper elevation={3} style={{ padding: '20px', marginTop: '20vh' }}>
+        <Paper elevation={3} style={{ padding: '30px', marginTop: '20vh', backgroundColor: 'transparent' }}>
             {/* Logo */}
             <Grid container justify="center" style={{ marginBottom: '20px' }}>
-                <img src="path_to_your_logo.svg" alt="App Logo" width={100} />
+            <img src={logo} alt="App Logo" width={100} style={{ display: 'block', margin: '0 auto' }} />
             </Grid>
 
             <Typography variant="h5" align="center">Iniciar sesión</Typography>
