@@ -8,16 +8,16 @@ function HomePage() {
 
             {/* Contenido centralizado */}
             <div style={{ textAlign: 'center', margin: '0 auto', maxWidth: '500px' }}>
-                <img src={logo} alt="SharePay Logo" width={300} style={{ marginBottom: '40px' }} />
+                <img src={logo} alt="SharePay Logo" width={300} className="rotating-logo" style={{ marginBottom: '40px' }} />
                 <h1>Bienvenidos a SharePay App</h1>
             </div>
 
             {/* Cabecera: Opciones */}
             <div style={{ position: 'absolute', top: '20px', right: '50px', display: 'flex', gap: '20px' }}>
-                <Link to="/login" style={{ textDecoration: 'none' }}>
+                <Link to="/login" style={{ textDecoration: 'none', color: '#003366' }}>  {/* Azul oscuro */}
                     Iniciar sesión
                 </Link>
-                <Link to="/register" style={{ textDecoration: 'none' }}>
+                <Link to="/register" style={{ textDecoration: 'none', color: '#003366' }}>  {/* Azul oscuro */}
                     Registrarse
                 </Link>
             </div>

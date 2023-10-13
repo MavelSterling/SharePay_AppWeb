@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes rotateLogo {
+  from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(180deg);
+  }
+}
+
+.rotating-logo {
+  animation: rotateLogo 10s linear infinite;
+  -webkit-animation: rotateLogo 10s linear infinite; /* Safari y Chrome */
+  -moz-animation: rotateLogo 10s linear infinite;    /* Firefox */
+  -o-animation: rotateLogo 10s linear infinite;      /* Opera */
+  transform-origin: center;
+  -webkit-transform-origin: center; /* Safari y Chrome */
+  -moz-transform-origin: center;    /* Firefox */
+  -o-transform-origin: center;      /* Opera */
+}
