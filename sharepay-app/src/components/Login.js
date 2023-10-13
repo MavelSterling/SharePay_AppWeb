@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Container, Paper, Grid, Typography, TextField, Button, Link } from '@mui/material';
-import logo from '../assets/Logo.png'; // Ajusta la ruta según dónde hayas colocado el archivo
+import logo from '../assets/Logo.png'; // Logo
 
 
 function Login() {
