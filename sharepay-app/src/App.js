@@ -4,11 +4,13 @@ import UserInformation from './components/dashboard/UserInformation';
 import Login from './components/Login';
 import Register from './components/Register';
 import HomePage from './components/HomePage';
+import NavBar from './components/Navbar';
 import './App.css';
 
 function App() {
   return (
     <Router>
+      <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
