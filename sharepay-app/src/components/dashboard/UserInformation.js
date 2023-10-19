@@ -53,7 +53,7 @@ function UserInformation() {
     };
 
     const handleDeactivateAccount = async () => {
-        // Suponiendo que tengas una endpoint que maneje la desactivación de cuentas:
+        // Con un endpoint que maneje la desactivación de cuentas:
         const userToken = localStorage.getItem("userToken");
         try {
             const response = await fetch('http://tu-dominio.com/api/deactivateAccount/', {
