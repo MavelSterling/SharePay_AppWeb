@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Container, Paper, Typography, TextField, Button, Grid } from '@mui/material';
-import logo from '../assets/Logo.png';  // Logo
-
+import logo from '../assets/Logo.png';
 
 function Register() {
     const [email, setEmail] = useState('');
@@ -9,10 +9,26 @@ function Register() {
     const [nickname, setNickname] = useState('');
     const [avatar, setAvatar] = useState(null);
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        // Aquí deberías manejar la lógica de registro con tu backend.
-        console.log('Intento de registro con:', email, fullName, nickname, avatar);
+
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('fullName', fullName);
+        formData.append('nickname', nickname);
+        if (avatar) {
+            formData.append('avatar', avatar);
+        }
+
+        try {
+            const response = await axios.post('http://tuBackendURL/api/register/', formData);
+            if (response.data) {
+                // Registro exitoso
+                console.log('Registro exitoso:', response.data);
+            }
+        } catch (error) {
+            console.error('Hubo un error al registrarse:', error);
+        }
     };
 
     const handleAvatarChange = (e) => {
@@ -23,11 +39,11 @@ function Register() {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <Paper elevation={3} style={{ padding: '20px', marginTop: '20vh' }}>
-            <Grid container alignItems="center" justifyContent="center" style={{ marginBottom: '20px' }}>
-             <img src={logo} alt="App Logo" width={100} style={{ display: 'block', margin: '0 auto' }} />
-            </Grid>
+        <Container component="main" maxWidth="xs" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', justifyContent: 'center' }}>
+            <Paper elevation={3} style={{ padding: '20px', backgroundColor: 'transparent' }}>
+                <Grid container alignItems="center" justifyContent="center" style={{ marginBottom: '20px' }}>
+                    <img src={logo} alt="App Logo" width={100} style={{ display: 'block', margin: '0 auto' }} />
+                </Grid>
 
                 <Typography variant="h5" align="center">Registrarse</Typography>
                 <form onSubmit={handleRegister}>
