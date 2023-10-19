@@ -2,8 +2,10 @@ import React from 'react';
 import logo from '../../assets/Logo.png';  // Logo
 import { Link } from 'react-router-dom';
 
+
 function Sidebar() {
     return (
+        <div className='sidebar'>
         <div style={{ backgroundColor: '#ADD8E6', width: '250px', minHeight: '100vh' }}>
             <div style={{ padding: '20px', textAlign: 'center' }}>
                 <img src={logo} alt="SharePay Logo" width={100} />
@@ -16,6 +18,8 @@ function Sidebar() {
                 <li><Link to="/contacts">Contactos</Link></li>
             </ul>
         </div>
+        </div>
+
     );
 }
 
