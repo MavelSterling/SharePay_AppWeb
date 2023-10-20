@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Paper, Grid, Typography, TextField, Button, Link, useTheme, useMediaQuery } from '@mui/material';
 import logo from '../assets/Logo.png';
+//import { useHistory } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  //const history = useHistory();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,9 +21,10 @@ function Login() {
 
       // Si la respuesta contiene un token, asume que la autenticación fue exitosa
       if (response.data && response.data.token) {
-        localStorage.setItem('userToken', response.data.token);  // Guarda el token en el localStorage
-
-        // Aquí puedes redirigir al usuario al dashboard o la página que desees
+        localStorage.setItem('userToken', response.data.token);
+        
+        // Redirige al usuario a la página de UserInformation
+       // history.push('/user-information');
       } else {
         alert('Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.');
       }
