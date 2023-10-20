@@ -7,6 +7,7 @@
   pointer-events: none;
 }
 
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -23,6 +24,7 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
 
 .App-link {
   color: #61dafb;
@@ -58,24 +60,43 @@
 }
 
 
-.navbar{
-  background-color: white;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid white;
+.navbar {
+  padding: 0.5rem 1rem;
 }
 
 .sidebar{
-  width: 14rem;
+  width: 18rem;
   height: calc(100vh - 52px);
-  border-right: 1px solid #c4ccde;
-   ul {
-    list-style: none;
-    padding: 1rem 2rem;
-    li {
-      margin-bottom: 1rem;
-      a {
-        text-decoration: none;
-      }
-    }
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 1rem 2rem;
+}
+
+.sidebar ul li {
+  margin-bottom: 1rem;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+}
+
+/* Media Queries para mejorar la responsividad */
+@media screen and (max-width: 768px) {
+  /* Reglas para dispositivos con ancho de pantalla menor a 768px (tablets y móviles) */
+  .App-header {
+    font-size: calc(8px + 1.5vmin);
+  }
+
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #c4ccde;
   }
 }
