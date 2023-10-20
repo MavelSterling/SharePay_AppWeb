@@ -33,7 +33,7 @@ function UserInformation() {
 
             const data = await response.json();
 
-            // Aquí puedes manejar la respuesta del servidor, por ejemplo:
+            // Aquí puedes manejar la respuesta del servidor
             if (response.ok) {
                 alert("Información actualizada correctamente");
             } else {
@@ -69,7 +69,7 @@ function UserInformation() {
 
             if (response.ok) {
                 alert("Cuenta desactivada correctamente");
-                // Aquí podrías redirigir al usuario a la página de inicio o hacer log out
+                // Aquí se puede redirigir al usuario a la página de inicio o hacer log out
             } else {
                 alert(data.error || "Ocurrió un error al intentar desactivar la cuenta");
             }
