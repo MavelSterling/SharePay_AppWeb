@@ -39,64 +39,69 @@ function Register() {
     };
 
     return (
-        <Container component="main" maxWidth="xs" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', justifyContent: 'center' }}>
-            <Paper elevation={3} style={{ padding: '20px', backgroundColor: 'transparent' }}>
-                <Grid container alignItems="center" justifyContent="center" style={{ marginBottom: '20px' }}>
-                    <img src={logo} alt="App Logo" width={100} style={{ display: 'block', margin: '0 auto' }} />
+        <Container component="main" maxWidth="md" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', justifyContent: 'center' }}>
+            <Paper elevation={3} style={{ padding: '20px' }}>
+                <Grid container spacing={3} direction="column" alignItems="center">
+                    <Grid item xs={12}>
+                        <img src={logo} alt="App Logo" width={100} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h5" align="center">Registrarse</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={6}>
+                        <form onSubmit={handleRegister}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Correo electrónico"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Nombre completo"
+                                value={fullName}
+                                onChange={(e) => setFullName(e.target.value)}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Apodo"
+                                value={nickname}
+                                onChange={(e) => setNickname(e.target.value)}
+                            />
+                            <input
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                id="avatar-upload"
+                                type="file"
+                                onChange={handleAvatarChange}
+                            />
+                            <label htmlFor="avatar-upload">
+                                <Button variant="outlined" color="primary" component="span" style={{ marginTop: '20px' }}>
+                                    Subir Avatar
+                                </Button>
+                            </label>
+                            <Button 
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                style={{ marginTop: '20px' }}
+                            >
+                                Registrarse
+                            </Button>
+                        </form>
+                    </Grid>
                 </Grid>
-
-                <Typography variant="h5" align="center">Registrarse</Typography>
-                <form onSubmit={handleRegister}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        label="Correo electrónico"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        label="Nombre completo"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        label="Apodo"
-                        value={nickname}
-                        onChange={(e) => setNickname(e.target.value)}
-                    />
-                    <input
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        id="avatar-upload"
-                        type="file"
-                        onChange={handleAvatarChange}
-                    />
-                    <label htmlFor="avatar-upload">
-                        <Button variant="outlined" color="primary" component="span" style={{ marginTop: '20px' }}>
-                            Subir Avatar
-                        </Button>
-                    </label>
-                    <Button 
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        style={{ marginTop: '20px' }}
-                    >
-                        Registrarse
-                    </Button>
-                </form>
             </Paper>
         </Container>
     );
