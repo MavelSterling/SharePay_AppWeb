@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
+import { Button, Grid, TextField } from '@mui/material';
+
 
 function UserInformation() {
     const [email, setEmail] = useState('');
@@ -80,51 +82,40 @@ function UserInformation() {
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
-            <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ flex: 1, padding: '20px' }}>
+                <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
 
-                <h2>Información del usuario</h2>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '800px' }}>
+                <Grid container spacing={3}>
                     {/* Columna izquierda */}
-                    <div>
-                        <div style={{ margin: '10px 0' }}>
-                            <label>
-                                Correo electrónico:
-                                <input 
-                                    type="email" 
-                                    value={email} 
-                                    onChange={(e) => setEmail(e.target.value)} 
-                                    style={{ width: '100%', padding: '5px', marginTop: '5px' }}
-                                />
-                            </label>
-                        </div>
-                        <div style={{ margin: '10px 0' }}>
-                            <label>
-                                Nombre completo:
-                                <input 
-                                    type="text" 
-                                    value={fullName} 
-                                    onChange={(e) => setFullName(e.target.value)} 
-                                    style={{ width: '100%', padding: '5px', marginTop: '5px' }}
-                                />
-                            </label>
-                        </div>
-                        <div style={{ margin: '10px 0' }}>
-                            <label>
-                                Apodo:
-                                <input 
-                                    type="text" 
-                                    value={nickname} 
-                                    onChange={(e) => setNickname(e.target.value)} 
-                                    style={{ width: '100%', padding: '5px', marginTop: '5px' }}
-                                />
-                            </label>
-                        </div>
-                    </div>
+                    <Grid item xs={12} md={6}>
+                        <TextField 
+                            fullWidth
+                            label="Correo electrónico"
+                            type="email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                        />
+                        <TextField 
+                            fullWidth
+                            label="Nombre completo"
+                            type="text" 
+                            value={fullName} 
+                            onChange={(e) => setFullName(e.target.value)} 
+                            style={{ marginTop: '10px' }}
+                        />
+                        <TextField 
+                            fullWidth
+                            label="Apodo"
+                            type="text" 
+                            value={nickname} 
+                            onChange={(e) => setNickname(e.target.value)} 
+                            style={{ marginTop: '10px' }}
+                        />
+                    </Grid>
 
                     {/* Columna derecha */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '200px' }}>
-                        <div style={{ width: '150px', height: '150px', border: '1px solid black', marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Grid item xs={12} md={6} container direction="column" alignItems="center" justifyContent="flex-start">
+                        <div style={{ width: '150px', height: '150px', border: '1px solid black', marginBottom: '10px' }}>
                             {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : "No image uploaded"}
                         </div>
                         <input
@@ -135,18 +126,22 @@ function UserInformation() {
                             onChange={handleAvatarChange}
                         />
                         <label htmlFor="avatar-upload">
-                            <button style={{ cursor: 'pointer' }}>
-                                Subir Avatar</button>
+                            <Button variant="contained" color="primary" component="span">
+                                Subir Avatar
+                            </Button>
                         </label>
-                    </div>
-                </div>
+                    </Grid>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '800px', marginTop: '20px' }}>
-                    <button type="submit" onClick={handleUpdate}>Actualizar información</button>
-                    <button onClick={handleDeactivateAccount}>
-                        Desactivar cuenta
-                    </button>
-                </div>
+                    {/* Botones */}
+                    <Grid item xs={12} container justifyContent="space-between">
+                        <Button variant="contained" color="primary" onClick={handleUpdate}>
+                            Actualizar información
+                        </Button>
+                        <Button variant="contained" color="secondary" onClick={handleDeactivateAccount}>
+                            Desactivar cuenta
+                        </Button>
+                    </Grid>
+                </Grid>
             </div>
         </div>
     );
