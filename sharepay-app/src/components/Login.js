@@ -22,7 +22,6 @@ function Login() {
         localStorage.setItem('userToken', response.data.token);  // Guarda el token en el localStorage
 
         // Aquí puedes redirigir al usuario al dashboard o la página que desees
-        // Por ejemplo usando: history.push('/dashboard');
       } else {
         alert('Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.');
       }
