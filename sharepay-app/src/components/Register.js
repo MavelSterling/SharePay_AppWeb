@@ -28,7 +28,7 @@ function Register() {
                 CorreoElectronico: formData.get("email"),
                 NombreCompleto: formData.get("email"),
                 Apodo: formData.get("email"),
-                FotoOAvatar: "https://static.vecteezy.com/system/resources/previews/019/896/012/original/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png",
+                //FotoOAvatar: "https://static.vecteezy.com/system/resources/previews/019/896/012/original/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png",
                 Estado: "activo"
             })
             if (response.data) {
@@ -117,3 +117,6 @@ function Register() {
 }
 
 export default Register;
+
+// para ver usuarios
+// http://127.0.0.1:8000/BackendApp/api/v1/Usuarios/
