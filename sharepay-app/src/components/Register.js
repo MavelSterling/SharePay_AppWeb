@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Paper, Typography, TextField, Button, Grid } from '@mui/material';
 import logo from '../assets/Logo.png';
+import { useNavigate } from 'react-router-dom';
+
 
 function Register() {
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [nickname, setNickname] = useState('');
     const [avatar, setAvatar] = useState(null);
+
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -25,6 +29,8 @@ function Register() {
             if (response.data) {
                 // Registro exitoso
                 console.log('Registro exitoso:', response.data);
+                navigate("/user-information");  // <-- Esta línea para redirigir al usuario.
+
             }
         } catch (error) {
             console.error('Hubo un error al registrarse:', error);
