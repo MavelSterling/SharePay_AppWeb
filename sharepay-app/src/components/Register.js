@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { Container, Paper, Typography, TextField, Button, Grid } from '@mui/material';
 import logo from '../assets/Logo.png';
-import { createUser, getUsers } from '../api/service'
+//import { createUser, getUsers } from '../api/service'
+import { createUser } from '../api/service'
+
 
 function Register() {
     const [email, setEmail] = useState('');
