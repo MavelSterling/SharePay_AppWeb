@@ -100,3 +100,30 @@
     border-bottom: 1px solid #c4ccde;
   }
 }
+
+/* Estilo para el NavBar */
+.navbar {
+  position: relative;  /* Se necesita un posicionamiento relativo para que el botón pueda posicionarse de forma absoluta dentro de él */
+  height: 5px;  /* Altura del NavBar */
+  background-color: #e7e7e9;  /* Color de fondo del NavBar */
+  padding: 20px;  /* Espaciado interno del NavBar */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16);  /* Sombra sutil en el NavBar */
+  z-index: 1000; /*  Asegura que la barra esté siempre en la parte superior*/
+
+}
+
+.logoutButton {
+  position: absolute;  /* Posicionamiento absoluto para que pueda moverse libremente dentro del NavBar */
+  top: 10px;  /* Posición desde el borde superior */
+  right: 10px;  /* Posición desde el borde derecho */
+  background-color: #8eb9e6;  /* Color de fondo azul para el botón */
+  color: white;  /* Color de texto blanco para el botón */
+  border: none;  /* Eliminar el borde del botón */
+  padding: 5px 15px;  /* Espaciado interno para el botón */
+  cursor: pointer;  /* Cambiar el cursor al pasar por encima del botón */
+  border-radius: 5px;  /* Bordes redondeados para el botón */
+}
+
+.logoutButton:hover {
+  background-color: #0056b3;  /* Cambiar el color de fondo a un azul más oscuro al pasar por encima del botón */
+}

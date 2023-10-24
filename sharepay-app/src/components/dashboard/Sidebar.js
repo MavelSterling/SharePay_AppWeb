@@ -12,10 +12,10 @@ function Sidebar() {
                 <h2>SharePay App</h2>
             </div>
             <ul>
-                <li><Link to="/user-information">Información del usuario</Link></li>
-                <li><Link to="/events">Eventos</Link></li>
-                <li><Link to="/payments">Pagos</Link></li>
-                <li><Link to="/contacts">Contactos</Link></li>
+                <li><Link to="/dashboard/user-information">Información del usuario</Link></li>
+                <li><Link to="/dashboard/events">Eventos</Link></li>
+                <li><Link to="/dashboard/payments">Pagos</Link></li>
+                <li><Link to="/dashboard/contacts">Contactos</Link></li>
             </ul>
         </div>
         </div>
