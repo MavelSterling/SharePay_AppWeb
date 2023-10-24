@@ -97,15 +97,15 @@
     width: 100%;
     height: auto;
     border-right: none;
-    border-bottom: 1px solid #c4ccde;
+    border-bottom: 1px solid #ADD8E6;
   }
 }
 
 /* Estilo para el NavBar */
 .navbar {
   position: relative;  /* Se necesita un posicionamiento relativo para que el botón pueda posicionarse de forma absoluta dentro de él */
-  height: 5px;  /* Altura del NavBar */
-  background-color: #e7e7e9;  /* Color de fondo del NavBar */
+  height: 2.5px;  /* Altura del NavBar */
+  background-color: #ADD8E6;  /* Color de fondo del NavBar */
   padding: 20px;  /* Espaciado interno del NavBar */
   box-shadow: 0 3px 6px rgba(0,0,0,0.16);  /* Sombra sutil en el NavBar */
   z-index: 1000; /*  Asegura que la barra esté siempre en la parte superior*/
@@ -117,7 +117,7 @@
   top: 10px;  /* Posición desde el borde superior */
   right: 10px;  /* Posición desde el borde derecho */
   background-color: #8eb9e6;  /* Color de fondo azul para el botón */
-  color: white;  /* Color de texto blanco para el botón */
+  color: #ADD8E6;  /* Color de texto blanco para el botón */
   border: none;  /* Eliminar el borde del botón */
   padding: 5px 15px;  /* Espaciado interno para el botón */
   cursor: pointer;  /* Cambiar el cursor al pasar por encima del botón */
@@ -126,4 +126,35 @@
 
 .logoutButton:hover {
   background-color: #0056b3;  /* Cambiar el color de fondo a un azul más oscuro al pasar por encima del botón */
+}
+
+.sidebar-container {
+  display: flex;
+  min-height: 100vh;
+  align-items: flex-start;
+}
+
+.toggle-btn {
+  background-color: #ADD8E6;  /* Color de fondo blanco para el botón*/
+  border: none;  /* Sin borde*/
+  font-size: 24px;  /* Tamaño de fuente*/
+  cursor: pointer;  /* Cursor en forma de mano al pasar sobre el botón*/
+  z-index: 1000;  /* Asegurarse de que aparezca en la parte superior*/
+  position: relative;  /* Posicionamiento relativo para ajustarlo si es necesario*/
+}
+
+
+
+.sidebar {
+  transition: width 0.5s ease-in-out;
+  min-height: 100vh;
+}
+
+.sidebar.open {
+  width: 250px;
+}
+
+.sidebar.closed {
+  width: 0;
+  overflow: hidden;
 }

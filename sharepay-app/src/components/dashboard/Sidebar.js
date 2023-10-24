@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from '../../assets/Logo.png';  // Logo
+import React, { useState } from 'react';
+import logo from '../../assets/Logo.png';
 import { Link } from 'react-router-dom';
-
+import { FaBars } from 'react-icons/fa';
 
 function Sidebar() {
-    return (
-        <div className='sidebar'>
-        <div style={{ backgroundColor: '#ADD8E6', width: '250px', minHeight: '100vh' }}>
-            <div style={{ padding: '20px', textAlign: 'center' }}>
-                <img src={logo} alt="SharePay Logo" width={100} />
-                <h2>SharePay App</h2>
-            </div>
-            <ul>
-                <li><Link to="/dashboard/user-information">Información del usuario</Link></li>
-                <li><Link to="/dashboard/events">Eventos</Link></li>
-                <li><Link to="/dashboard/payments">Pagos</Link></li>
-                <li><Link to="/dashboard/contacts">Contactos</Link></li>
-            </ul>
-        </div>
-        </div>
+    const [isOpen, setIsOpen] = useState(true);
 
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <div className="sidebar-container">
+            <button className="toggle-btn" onClick={toggleSidebar}>
+            <FaBars size={22} color="#000" />
+            </button>
+            <div className={`sidebar ${isOpen ? 'open' : 'closed'}`} style={{ backgroundColor: '#ADD8E6' }}>
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                    <img src={logo} alt="SharePay Logo" width={100} />
+                    <h2>SharePay App</h2>
+                </div>
+                <ul>
+                    <li><Link to="/dashboard/user-information">Información del usuario</Link></li>
+                    <li><Link to="/dashboard/events">Eventos</Link></li>
+                    <li><Link to="/dashboard/payments">Pagos</Link></li>
+                    <li><Link to="/dashboard/contacts">Contactos</Link></li>
+                </ul>
+            </div>
+        </div>
     );
 }
 
