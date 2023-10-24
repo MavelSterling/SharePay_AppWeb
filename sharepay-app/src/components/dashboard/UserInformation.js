@@ -7,6 +7,7 @@ function UserInformation() {
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [nickname, setNickname] = useState('');
+    const [password, setPassword] = useState('');
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
 
@@ -18,6 +19,8 @@ function UserInformation() {
         formData.append('email', email);
         formData.append('full_name', fullName);
         formData.append('nickname', nickname);
+        formData.append('password', password);
+
         if (avatar) {
             formData.append('avatar', avatar);
         }
@@ -83,7 +86,7 @@ function UserInformation() {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div style={{ flex: 1, padding: '20px' }}>
-                <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
+            <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
 
                 <Grid container spacing={3}>
                     {/* Columna izquierda */}
@@ -109,6 +112,14 @@ function UserInformation() {
                             type="text" 
                             value={nickname} 
                             onChange={(e) => setNickname(e.target.value)} 
+                            style={{ marginTop: '10px' }}
+                        />
+                        <TextField 
+                            fullWidth
+                            label="Contraseña"
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
                             style={{ marginTop: '10px' }}
                         />
                     </Grid>
