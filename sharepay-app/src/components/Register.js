@@ -26,8 +26,8 @@ function Register() {
         try {
             const response = await createUser({
                 CorreoElectronico: formData.get("email"),
-                NombreCompleto: formData.get("email"),
-                Apodo: formData.get("email"),
+                NombreCompleto: formData.get("fullName"),
+                Apodo: formData.get("nickname"),
                 //FotoOAvatar: "https://static.vecteezy.com/system/resources/previews/019/896/012/original/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png",
                 Estado: "activo"
             })
