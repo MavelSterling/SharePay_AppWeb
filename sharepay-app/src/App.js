@@ -7,6 +7,7 @@ import Register from './components/Register';
 import HomePage from './components/HomePage';
 import NavBar from './components/Navbar';
 import './App.css';
+import Contacts from './components/dashboard/contacts';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/user-information" element={<UserInformation />} />
+        <Route path="/contacts" element={<Contacts />} />
+
       </Routes>
     </Router>
   );
