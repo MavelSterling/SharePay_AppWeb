@@ -1,15 +1,19 @@
 import React from 'react';
 import '../App.css';
-
+import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 
 const NavBar = () => {
+    const navigate = useNavigate();  // Usa el hook useNavigate
 
     const handleLogout = () => {
-        // Aquí puedes agregar la lógica para cerrar sesión, como:
+        // Aquí se puede agregar la lógica para cerrar sesión, como:
         // - Llamar a una API para cerrar sesión
         // - Limpiar tokens o información de usuario del localStorage o context
-        // - Redirigir al usuario a la página de inicio o de inicio de sesión
+
         console.log('Usuario ha cerrado sesión');
+
+        // Redirige al usuario a la página de inicio
+        navigate('/');
     }
 
     return (
