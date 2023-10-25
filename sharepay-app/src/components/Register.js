@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { Container, Paper, Typography, TextField, Button, Grid } from '@mui/material';
 import logo from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
+//import { createUser, getUsers } from '../api/service'
+import { createUser } from '../api/service'
 
 
 function Register() {
@@ -24,8 +26,16 @@ function Register() {
             formData.append('avatar', avatar);
         }
 
+        console.log(formData.get("email"))
+        
         try {
-            const response = await axios.post('http://tuBackendURL/api/register/', formData);
+            const response = await createUser({
+                CorreoElectronico: formData.get("email"),
+                NombreCompleto: formData.get("fullName"),
+                Apodo: formData.get("nickname"),
+                //FotoOAvatar: "https://static.vecteezy.com/system/resources/previews/019/896/012/original/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png",
+                Estado: "activo"
+            })
             if (response.data) {
                 // Registro exitoso
                 console.log('Registro exitoso:', response.data);
@@ -96,7 +106,7 @@ function Register() {
                                     Subir Avatar
                                 </Button>
                             </label>
-                            <Button 
+                            <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
@@ -114,3 +124,6 @@ function Register() {
 }
 
 export default Register;
+
+// para ver usuarios
+// http://127.0.0.1:8000/BackendApp/api/v1/Usuarios/
