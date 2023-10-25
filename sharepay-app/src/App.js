@@ -8,7 +8,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import HomePage from './components/HomePage';
 import './App.css';
-import Contacts from './components/dashboard/Contacts';
+import Contacts from './components/dashboard/contacts';
 import DashboardWrapper from './components/DashboardWrapper';
 
 function App() {
