@@ -39,7 +39,7 @@ function Register() {
             if (response.data) {
                 // Registro exitoso
                 console.log('Registro exitoso:', response.data);
-                navigate("/user-information");  // <-- Esta línea para redirigir al usuario.
+                navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
 
             }
         } catch (error) {
