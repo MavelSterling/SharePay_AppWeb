@@ -25,7 +25,7 @@ function Login() {
         console.log("usuario encontrado ",foundUser.CorreoElectronico)
       }
       else{
-        console.log("no encotnré el usuario :c")
+        console.log("Usuario no encontrado.")
       };
   
       const passwordResponse = await getSpecificPassword({ 
@@ -33,22 +33,24 @@ function Login() {
         Password: password
       });
 
-      const foundPassword = passwordResponse.data.find(user => user.Password === password);
-      if(foundPassword){
-        console.log('fecha de creaion de usuario',foundPassword.Creado_en)
-      }
-      else{
-        console.log("no encotnré la contraseña :c")
-      };
-  
+      
       if (foundUser) {
         // Verifica la contraseña
+        const foundPassword = passwordResponse.data.find(user => user.Password === password);
+        if(foundPassword){
+          console.log('fecha de creaion de usuario',foundPassword.Creado_en)
+        }
+        else{
+          console.log("Contraseña incorrecta.")
+        };
+        
         if (foundPassword) {
           console.log('Login exitoso:', userResponse.data.CorreoElectronico);
           localStorage.setItem('userToken', userResponse.data.token);
+          localStorage.setItem('CorreoElectronicoActivo', userResponse.data.CorreoElectronico);
           navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
         } else {
-          console.log('Contraseña incorrecta. Por favor, inténtalo de nuevo.');
+          console.log('Por favor, inténtalo de nuevo.');
         }
       } else {
         console.log('Usuario no encontrado. Por favor, verifica tus credenciales.');

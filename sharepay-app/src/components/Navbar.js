@@ -8,8 +8,10 @@ const NavBar = () => {
     const handleLogout = () => {
         // Aquí se puede agregar la lógica para cerrar sesión, como:
         // - Llamar a una API para cerrar sesión
-        // - Limpiar tokens o información de usuario del localStorage o context
 
+        // - Limpiar tokens o información de usuario del localStorage o context
+        localStorage.removeItem('CorreoElectronicoActivo');
+        
         console.log('Usuario ha cerrado sesión');
 
         // Redirige al usuario a la página de inicio

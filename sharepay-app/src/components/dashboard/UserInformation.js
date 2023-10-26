@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
+import { getSpecificPassword, getSpecificUser } from '../../api/service';
 
 
 function UserInformation() {
@@ -13,7 +14,7 @@ function UserInformation() {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const userToken = localStorage.getItem("userToken");
+        //const userToken = localStorage.getItem("userToken");
 
         const formData = new FormData();
         formData.append('email', email);
@@ -25,20 +26,32 @@ function UserInformation() {
             formData.append('avatar', avatar);
         }
 
-        try {
-            const response = await fetch('http://tu-dominio.com/api/updateUserInfo/', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Token ${userToken}`
-                },
-                body: formData
-            });
+        //de los archivos locales, recupera el dato correoElectronicoActivo para buscar la informacion correspondiente
+        const correoElectronicoActivo = localStorage.getItem('CorreoElectronicoActivo');
+        console.log(correoElectronicoActivo)
 
-            const data = await response.json();
+        try {
+            const responseUsuario = await getSpecificUser({
+                //buscamos en el Json de usuarios, el que coincide con correoElectronicoActivo
+                CorreoElectronico: correoElectronicoActivo
+            })
+
+            const responsePassword = await getSpecificPassword({
+                //buscamos en el Json de Passwords, el que coincide con la contraseña
+                Password: correoElectronicoActivo
+            })
+
+            const data = await responseUsuario.json();
+            const dataPassword = await responsePassword.json();
 
             // Aquí puedes manejar la respuesta del servidor
-            if (response.ok) {
-                alert("Información actualizada correctamente");
+            if (responseUsuario.ok) {
+                console.log("Información actualizada correctamente");
+                // Actualiza el estado con los nuevos datos
+                setEmail(data.CorreoElectronico);
+                setFullName(data.NombreCompleto);
+                setNickname(data.Apodo);
+                setPassword(dataPassword.Password);
             } else {
                 alert(data.error || "Ocurrió un error al actualizar la información");
             }
@@ -61,16 +74,16 @@ function UserInformation() {
         // Con un endpoint que maneje la desactivación de cuentas:
         const userToken = localStorage.getItem("userToken");
         try {
-            const response = await fetch('http://tu-dominio.com/api/deactivateAccount/', {
+            const responseUsuario = await fetch('http://tu-dominio.com/api/deactivateAccount/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${userToken}`
                 }
             });
 
-            const data = await response.json();
+            const data = await responseUsuario.json();
 
-            if (response.ok) {
+            if (responseUsuario.ok) {
                 alert("Cuenta desactivada correctamente");
                 // Aquí se puede redirigir al usuario a la página de inicio o hacer log out
             } else {
