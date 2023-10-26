@@ -6,8 +6,11 @@ const api = axios.create({
 
 export const getUsers = () => api.get('/Usuarios/');
 
-export const getSpecificUser = (email) => api.get(`/Usuarios/?CorreoElectronico=${email}`);
-export const getSpecificPassword = (email) => api.get(`/Passwords/?Passwords=${email}`);
+//export const getSpecificUser = (email) => api.get(`/Usuarios/?CorreoElectronico=${email}`);
+export const getSpecificUser = (email) => api.get(`/Usuarios/?UserID__CorreoElectronico=${email}`);
+//export const getSpecificPassword = (email) => api.get(`/Passwords/?Passwords=${email}`);
+export const getSpecificPassword = (password) => api.get(`/Passwords/?UserID__Password=${password}`);
+
 
 export const createUser = (data) => api.post('/Usuarios/', data)
 export const createPassword = (data) => api.post('/Passwords/', data) 

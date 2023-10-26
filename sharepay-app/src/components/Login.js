@@ -13,33 +13,45 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-        formData.append('CorreoElectronico', CorreoElectronico);
-        formData.append('password', password);
-    
+  
     try {
       // Realiza la solicitud POST al endpoint de autenticación de Django
-      const response = await getSpecificUser({
+      const userResponse = await getSpecificUser({
         email: CorreoElectronico
       });
 
-      const Passwordresponse = await getSpecificPassword({ 
-        email: CorreoElectronico
+      const foundUser = userResponse.data.find(user => user.CorreoElectronico === CorreoElectronico);
+      if(foundUser){
+        console.log("usuario encontrado ",foundUser.CorreoElectronico)
+      }
+      else{
+        console.log("no encotnré el usuario :c")
+      };
+  
+      const passwordResponse = await getSpecificPassword({ 
+        //busca el password del usuario en la tabla de Passwords con su email
+        Password: password
       });
 
-      // Si la respuesta contiene un token, asume que la autenticación fue exitosa
-      //lastimosamente aun no me entrega ningun token aun
-      
-      if (response.data && Passwordresponse.data && response.data.token) {
-        console.log('Login exitoso:', response.data);
-        localStorage.setItem('userToken', response.data.token);
-        navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
-        
-        // Redirige al usuario a la página de UserInformation
-       // history.push('/user-information');
+      const foundPassword = passwordResponse.data.find(user => user.Password === password);
+      if(foundPassword){
+        console.log('fecha de creaion de usuario',foundPassword.Creado_en)
+      }
+      else{
+        console.log("no encotnré la contraseña :c")
+      };
+  
+      if (foundUser) {
+        // Verifica la contraseña
+        if (foundPassword) {
+          console.log('Login exitoso:', userResponse.data.CorreoElectronico);
+          localStorage.setItem('userToken', userResponse.data.token);
+          navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
+        } else {
+          console.log('Contraseña incorrecta. Por favor, inténtalo de nuevo.');
+        }
       } else {
-        console.log('Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.');
+        console.log('Usuario no encontrado. Por favor, verifica tus credenciales.');
       }
     } catch (error) {
       console.error('Error durante el login:', error);
