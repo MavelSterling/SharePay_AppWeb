@@ -21,39 +21,34 @@ function Login() {
       });
 
       const foundUser = userResponse.data.find(user => user.CorreoElectronico === CorreoElectronico);
-      if(foundUser){
-        console.log("usuario encontrado ",foundUser.CorreoElectronico)
-      }
-      else{
-        console.log("Usuario no encontrado.")
-      };
-  
+      
       const passwordResponse = await getSpecificPassword({ 
         //busca el password del usuario en la tabla de Passwords con su email
         Password: password
       });
-
+      
       
       if (foundUser) {
-        // Verifica la contraseña
+        console.log("usuario encontrado ", foundUser.Apodo)
         const foundPassword = passwordResponse.data.find(user => user.Password === password);
-        if(foundPassword){
-          console.log('fecha de creaion de usuario',foundPassword.Creado_en)
-        }
-        else{
-          console.log("Contraseña incorrecta.")
-        };
+        // Verifica la contraseña
         
         if (foundPassword) {
-          console.log('Login exitoso:', userResponse.data.CorreoElectronico);
+          console.log('fecha de creacion de usuario',foundPassword.Creado_en)
+          console.log('Login exitoso: bienvenido', foundUser.Apodo);
           localStorage.setItem('userToken', userResponse.data.token);
-          localStorage.setItem('CorreoElectronicoActivo', userResponse.data.CorreoElectronico);
+          localStorage.setItem('CorreoElectronicoActivo', foundUser.CorreoElectronico);
+          console.log("usuario activo ", localStorage.getItem('CorreoElectronicoActivo'))
+          
+          
           navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
         } else {
+          console.log("Contraseña incorrecta.")
           console.log('Por favor, inténtalo de nuevo.');
         }
       } else {
-        console.log('Usuario no encontrado. Por favor, verifica tus credenciales.');
+        console.log('Por favor, verifica tus credenciales.');
+        console.log("Usuario no encontrado.")
       }
     } catch (error) {
       console.error('Error durante el login:', error);

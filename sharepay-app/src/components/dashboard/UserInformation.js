@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
-import { getSpecificPassword, getSpecificUser } from '../../api/service';
+import { getUsers, getSpecificPasswordfromUser, getSpecificUser } from '../../api/service';
 
 
 function UserInformation() {
@@ -12,54 +12,85 @@ function UserInformation() {
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
 
+    
+    useEffect(() => {
+        async function fetchData() {
+            const correoElectronicoActivo = localStorage.getItem('CorreoElectronicoActivo');
+    
+            try {
+                const responseUsuarios = await getUsers(); // Obtener todos los usuarios
+                const responsePasswords = await getSpecificPasswordfromUser(correoElectronicoActivo);
+    
+                if (responseUsuarios.status === 200 && responsePasswords.status === 200) {
+                    const usuarios = responseUsuarios.data;
+                    const passwords = responsePasswords.data;
+    
+                    // Filtrar el usuario activo
+                    const usuarioActivo = usuarios.find(usuario => usuario.CorreoElectronico === correoElectronicoActivo);
+                    const passwordActivo = passwords.find(password => password.UserID === usuarioActivo.ID);
+    
+                    setEmail(usuarioActivo.CorreoElectronico);
+                    setFullName(usuarioActivo.NombreCompleto);
+                    setNickname(usuarioActivo.Apodo);
+                    setPassword(passwordActivo.Password);
+                    setAvatarPreview(usuarioActivo.FotoOAvatar)
+
+                    console.log(usuarioActivo.FotoOAvatar)
+                } else {
+                    console.error("No se pudo obtener la información del usuario o la contraseña.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+    
+        fetchData();
+    }, []);
+    
+
     const handleUpdate = async (e) => {
         e.preventDefault();
-        //const userToken = localStorage.getItem("userToken");
-
+    
         const formData = new FormData();
         formData.append('email', email);
         formData.append('full_name', fullName);
         formData.append('nickname', nickname);
         formData.append('password', password);
-
+    
         if (avatar) {
             formData.append('avatar', avatar);
         }
-
-        //de los archivos locales, recupera el dato correoElectronicoActivo para buscar la informacion correspondiente
+    
         const correoElectronicoActivo = localStorage.getItem('CorreoElectronicoActivo');
-        console.log(correoElectronicoActivo)
-
+    
         try {
-            const responseUsuario = await getSpecificUser({
-                //buscamos en el Json de usuarios, el que coincide con correoElectronicoActivo
-                CorreoElectronico: correoElectronicoActivo
-            })
-
-            const responsePassword = await getSpecificPassword({
-                //buscamos en el Json de Passwords, el que coincide con la contraseña
-                Password: correoElectronicoActivo
-            })
-
-            const data = await responseUsuario.json();
-            const dataPassword = await responsePassword.json();
-
-            // Aquí puedes manejar la respuesta del servidor
-            if (responseUsuario.ok) {
-                console.log("Información actualizada correctamente");
-                // Actualiza el estado con los nuevos datos
-                setEmail(data.CorreoElectronico);
-                setFullName(data.NombreCompleto);
-                setNickname(data.Apodo);
+            const responseUsuario = await getSpecificUser(correoElectronicoActivo);
+            const responsePassword = await getSpecificPasswordfromUser(correoElectronicoActivo);
+        
+            console.log("Respuesta Usuario:", responseUsuario);
+            console.log("Respuesta Password:", responsePassword);
+        
+            if (responseUsuario.status === 200 && responsePassword.status === 200) {
+                const dataUsuario = responseUsuario.json().data;
+                const dataPassword = responsePassword.json().data;
+        
+                setEmail(dataUsuario.CorreoElectronico);
+                setFullName(dataUsuario.NombreCompleto);
+                setNickname(dataUsuario.Apodo);
                 setPassword(dataPassword.Password);
+                setAvatarPreview(dataUsuario.FotoOAvatar)
+                console.log("Información actualizada correctamente");
             } else {
-                alert(data.error || "Ocurrió un error al actualizar la información");
+                console.error("No se pudo obtener la información del usuario o la contraseña.");
+                alert("Ocurrió un error al actualizar la información.");
             }
         } catch (error) {
             console.error("Error:", error);
             alert("Ocurrió un error al intentar conectar con el servidor.");
         }
+        
     };
+    
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
@@ -81,13 +112,13 @@ function UserInformation() {
                 }
             });
 
-            const data = await responseUsuario.json();
+            const dataUsuario = await responseUsuario.json();
 
             if (responseUsuario.ok) {
                 alert("Cuenta desactivada correctamente");
                 // Aquí se puede redirigir al usuario a la página de inicio o hacer log out
             } else {
-                alert(data.error || "Ocurrió un error al intentar desactivar la cuenta");
+                alert(dataUsuario.error || "Ocurrió un error al intentar desactivar la cuenta");
             }
         } catch (error) {
             console.error("Error:", error);

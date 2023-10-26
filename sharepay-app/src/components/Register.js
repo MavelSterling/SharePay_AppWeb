@@ -4,9 +4,7 @@ import logo from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 //import { createUser, getUsers } from '../api/service'
 import { createUser } from '../api/service'
-import { createPassword } from '../api/service';
-
-
+import { getSpecificUser, createPassword } from '../api/service';
 
 
 
@@ -39,9 +37,16 @@ function Register() {
                 CorreoElectronico: formData.get("email"),
                 NombreCompleto: formData.get("fullName"),
                 Apodo: formData.get("nickname"),
-                //FotoOAvatar: "https://static.vecteezy.com/system/resources/previews/019/896/012/original/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png",
+                FotoOAvatar: formData.get("avatar"),
                 Estado: "activo"
             })
+
+            const userResponse = await getSpecificUser({
+                email: email
+              })
+
+            const foundUser = userResponse.data.find(user => user.CorreoElectronico === email)
+            
             if (response.data) {
                 // Registro exitoso
                 console.log('Registro exitoso:', response.data);
@@ -60,6 +65,9 @@ function Register() {
                         console.error('Error al guardar la contraseña:', passwordResponse.data);
                     }
                     
+                    localStorage.setItem('userToken', userResponse.data.token);
+                    localStorage.setItem('CorreoElectronicoActivo', foundUser.CorreoElectronico);
+                    console.log("usuario activo ", localStorage.getItem('CorreoElectronicoActivo'))
                     navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
                 } catch (error) {
                     console.error('Error al guardar la contraseña:', error);
