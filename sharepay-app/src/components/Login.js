@@ -1,36 +1,49 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Container, Paper, Grid, Typography, TextField, Button, Link, useTheme, useMediaQuery } from '@mui/material';
 import logo from '../assets/Logo.png';
+import { getSpecificPassword, getSpecificUser } from '../api/service';
 //import { useHistory } from 'react-router-dom';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [CorreoElectronico, setCorreoElectronico] = useState('');
   const [password, setPassword] = useState('');
-  //const history = useHistory();
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+        formData.append('CorreoElectronico', CorreoElectronico);
+        formData.append('password', password);
     
     try {
       // Realiza la solicitud POST al endpoint de autenticación de Django
-      const response = await axios.post('http://tu-dominio.com/api-token-auth/', {
-        username: username,
-        password: password
+      const response = await getSpecificUser({
+        email: CorreoElectronico
+      });
+
+      const Passwordresponse = await getSpecificPassword({ 
+        email: CorreoElectronico
       });
 
       // Si la respuesta contiene un token, asume que la autenticación fue exitosa
-      if (response.data && response.data.token) {
+      //lastimosamente aun no me entrega ningun token aun
+      
+      if (response.data && Passwordresponse.data && response.data.token) {
+        console.log('Login exitoso:', response.data);
         localStorage.setItem('userToken', response.data.token);
+        navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
         
         // Redirige al usuario a la página de UserInformation
        // history.push('/user-information');
       } else {
-        alert('Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.');
+        console.log('Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.');
       }
     } catch (error) {
       console.error('Error durante el login:', error);
-      alert('Error al intentar iniciar sesión. Por favor, verifica tus credenciales.');
+      console.log('Error al intentar iniciar sesión. Por favor, verifica tus credenciales.');
     }
   };
 
@@ -56,9 +69,9 @@ function Login() {
                 margin="normal"
                 required
                 fullWidth
-                label="Usuario"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                label="Correo Electronico"
+                value={CorreoElectronico}
+                onChange={(e) => setCorreoElectronico(e.target.value)}
               />
               <TextField
                 variant="outlined"
