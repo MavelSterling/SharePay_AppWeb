@@ -1,36 +1,58 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Container, Paper, Grid, Typography, TextField, Button, Link, useTheme, useMediaQuery } from '@mui/material';
 import logo from '../assets/Logo.png';
+import { getSpecificPassword, getSpecificUser } from '../api/service';
 //import { useHistory } from 'react-router-dom';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [CorreoElectronico, setCorreoElectronico] = useState('');
   const [password, setPassword] = useState('');
-  //const history = useHistory();
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+  
     try {
       // Realiza la solicitud POST al endpoint de autenticación de Django
-      const response = await axios.post('http://tu-dominio.com/api-token-auth/', {
-        username: username,
-        password: password
+      const userResponse = await getSpecificUser({
+        email: CorreoElectronico
       });
 
-      // Si la respuesta contiene un token, asume que la autenticación fue exitosa
-      if (response.data && response.data.token) {
-        localStorage.setItem('userToken', response.data.token);
+      const foundUser = userResponse.data.find(user => user.CorreoElectronico === CorreoElectronico);
+      
+      const passwordResponse = await getSpecificPassword({ 
+        //busca el password del usuario en la tabla de Passwords con su email
+        Password: password
+      });
+      
+      
+      if (foundUser) {
+        console.log("usuario encontrado ", foundUser.Apodo)
+        const foundPassword = passwordResponse.data.find(user => user.Password === password);
+        // Verifica la contraseña
         
-        // Redirige al usuario a la página de UserInformation
-       // history.push('/user-information');
+        if (foundPassword) {
+          console.log('fecha de creacion de usuario',foundPassword.Creado_en)
+          console.log('Login exitoso: bienvenido', foundUser.Apodo);
+          localStorage.setItem('userToken', userResponse.data.token);
+          localStorage.setItem('CorreoElectronicoActivo', foundUser.CorreoElectronico);
+          console.log("usuario activo ", localStorage.getItem('CorreoElectronicoActivo'))
+          
+          
+          navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
+        } else {
+          console.log("Contraseña incorrecta.")
+          console.log('Por favor, inténtalo de nuevo.');
+        }
       } else {
-        alert('Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.');
+        console.log('Por favor, verifica tus credenciales.');
+        console.log("Usuario no encontrado.")
       }
     } catch (error) {
       console.error('Error durante el login:', error);
-      alert('Error al intentar iniciar sesión. Por favor, verifica tus credenciales.');
+      console.log('Error al intentar iniciar sesión. Por favor, verifica tus credenciales.');
     }
   };
 
@@ -56,9 +78,9 @@ function Login() {
                 margin="normal"
                 required
                 fullWidth
-                label="Usuario"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                label="Correo Electronico"
+                value={CorreoElectronico}
+                onChange={(e) => setCorreoElectronico(e.target.value)}
               />
               <TextField
                 variant="outlined"
