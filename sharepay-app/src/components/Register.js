@@ -38,7 +38,8 @@ function Register() {
             })
             if (response.data) {
                 // Registro exitoso
-                console.log('Registro exitoso:', response.data);
+                //console.log('Registro exitoso:', response.data);
+                localStorage.setItem('id',response.data.UserID)
                 navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
 
             }

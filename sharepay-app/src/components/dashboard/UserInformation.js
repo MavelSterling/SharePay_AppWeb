@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
-
+import { getUserUnique } from '../../api/service';
 
 function UserInformation() {
     const [email, setEmail] = useState('');
@@ -11,8 +11,24 @@ function UserInformation() {
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
 
+    useEffect(() => {
+        // Update the document title using the browser API
+        //document.title = `You clicked ${count} times`;
+
+        const idU = localStorage.getItem('id')
+        getUserUnique(idU)
+            .then(res => {
+                setEmail(res.data.CorreoElectronico)
+                setFullName(res.data.NombreCompleto)
+                setNickname(res.data.Apodo)
+            })
+
+
+    });
+
     const handleUpdate = async (e) => {
         e.preventDefault();
+
         const userToken = localStorage.getItem("userToken");
 
         const formData = new FormData();
@@ -86,40 +102,40 @@ function UserInformation() {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div style={{ flex: 1, padding: '20px' }}>
-            <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
+                <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
 
                 <Grid container spacing={3}>
                     {/* Columna izquierda */}
                     <Grid item xs={12} md={6}>
-                        <TextField 
+                        <TextField
                             fullWidth
                             label="Correo electrónico"
-                            type="email" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
-                        <TextField 
+                        <TextField
                             fullWidth
                             label="Nombre completo"
-                            type="text" 
-                            value={fullName} 
-                            onChange={(e) => setFullName(e.target.value)} 
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
                             style={{ marginTop: '10px' }}
                         />
-                        <TextField 
+                        <TextField
                             fullWidth
                             label="Apodo"
-                            type="text" 
-                            value={nickname} 
-                            onChange={(e) => setNickname(e.target.value)} 
+                            type="text"
+                            value={nickname}
+                            onChange={(e) => setNickname(e.target.value)}
                             style={{ marginTop: '10px' }}
                         />
-                        <TextField 
+                        <TextField
                             fullWidth
                             label="Contraseña"
-                            type="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             style={{ marginTop: '10px' }}
                         />
                     </Grid>

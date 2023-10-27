@@ -6,4 +6,6 @@ const api = axios.create({
 
 export const getUsers = () => api.get('/Usuarios/')
 
+export const getUserUnique = (user) => api.get(`/Usuarios/${user}`)
+
 export const createUser = (data) => api.post('/Usuarios/', data) 
