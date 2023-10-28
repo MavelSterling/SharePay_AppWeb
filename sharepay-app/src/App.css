@@ -57,6 +57,10 @@
   -webkit-transform-origin: center; /* Safari y Chrome */
   -moz-transform-origin: center;    /* Firefox */
   -o-transform-origin: center;      /* Opera */
+  z-index: 2;  /* Se apila por encima de .bubble */
+  position: relative;
+
+
 }
 
 
@@ -157,4 +161,32 @@
 .sidebar.closed {
   width: 0;
   overflow: hidden;
+}
+
+.animated-background {
+  background: linear-gradient(160deg, #ADD8E6, #69a1c9); /* Fondo con degradado */
+  overflow: hidden; /* Evita que las burbujas salgan del contenedor */
+  position: relative;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -10%;
+  background-color: rgba(255, 255, 255, 0.25); /* Burbujas semi-transparentes */
+  border-radius: 50%;
+  animation: floatBubble ease-in infinite;
+  z-index: 1;
+}
+
+@keyframes floatBubble {
+  0% {
+      transform: translateY(0);
+  }
+  100% {
+      transform: translateY(-100vh);
+  }
+}
+h1 {
+  position: relative;
+  z-index: 2;  /* Se apila por encima de .bubble */
 }

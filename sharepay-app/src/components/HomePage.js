@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from '../assets/Logo.png';
 import { Link } from 'react-router-dom';
 
 function HomePage() {
+    useEffect(() => {
+        const bubbleCount = 20;
+        const bubbleContainer = document.querySelector('.animated-background');
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            bubble.style.width = `${Math.random() * 100}px`;
+            bubble.style.height = bubble.style.width;
+            bubble.style.left = `${Math.random() * 100}vw`;
+            bubble.style.animationDuration = `${Math.random() * 2 + 3}s`;
+            bubbleContainer.appendChild(bubble);
+        }
+    }, []);
+
     return (
-        <div style={{ 
-            backgroundColor: '#ADD8E6', 
+        <div className="animated-background elevated-element" style={{ 
             minHeight: '100vh', 
             padding: '50px 0', 
             display: 'flex', 
