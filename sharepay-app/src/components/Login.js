@@ -60,11 +60,11 @@ function Login() {
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper elevation={3} style={{ padding: isMobile ? '15px' : '30px', marginTop: isMobile ? '10vh' : '20vh', backgroundColor: 'transparent' }}>
-        <Grid container spacing={3} direction="column" alignItems="center">
+    <Container component="main" maxWidth="sm">
+      <Paper elevation={2} style={{ padding: isMobile ? '12px' : '30px', marginTop: isMobile ? '10vh' : '20vh' }}>
+        <Grid container spacing={1} direction="column" alignItems="center">
           <Grid item>
-            <img src={logo} alt="App Logo" width={isMobile ? 80 : 100} />
+            <img src={logo} alt="App Logo" width={isMobile ? 70 : 180} />
           </Grid>
           
           <Grid item>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Paper, Typography, TextField, Button, Grid } from '@mui/material';
+import { Container, Paper, Typography, TextField, Button, Grid,useTheme, useMediaQuery } from '@mui/material';
 import logo from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 //import { createUser, getUsers } from '../api/service'
@@ -86,12 +86,15 @@ function Register() {
         }
     };
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+
     return (
         <Container component="main" maxWidth="sm" style={{ display: 'flex', flexDirection: 'column', minHeight: '90vh', justifyContent: 'center' }}>
-            <Paper elevation={3} style={{ padding: '20px' }}>
+            <Paper elevation={1} style={{ padding: isMobile ? '12px' : '20px', marginTop: isMobile ? '10vh' : '15vh' }}>
                 <Grid container spacing={1} direction="column" alignItems="center">
                     <Grid item xs={12}>
-                        <img src={logo} alt="App Logo" width={160} />
+                    <img src={logo} alt="App Logo" width={isMobile ? 80 : 180} />
                     </Grid>
                     <Grid item xs={10}>
                         <Typography variant="h5" align="center">Registrarse</Typography>
