@@ -87,17 +87,17 @@ function Register() {
     };
 
     return (
-        <Container component="main" maxWidth="md" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', justifyContent: 'center' }}>
+        <Container component="main" maxWidth="sm" style={{ display: 'flex', flexDirection: 'column', minHeight: '90vh', justifyContent: 'center' }}>
             <Paper elevation={3} style={{ padding: '20px' }}>
-                <Grid container spacing={3} direction="column" alignItems="center">
+                <Grid container spacing={1} direction="column" alignItems="center">
                     <Grid item xs={12}>
-                        <img src={logo} alt="App Logo" width={100} />
+                        <img src={logo} alt="App Logo" width={160} />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={10}>
                         <Typography variant="h5" align="center">Registrarse</Typography>
                     </Grid>
-                    <Grid item xs={12} sm={8} md={6}>
-                        <form onSubmit={handleRegister}>
+                    <Grid item xs={10} sm={8} md={6}>
+                            <form onSubmit={handleRegister} >
                             <TextField
                                 variant="outlined"
                                 margin="normal"

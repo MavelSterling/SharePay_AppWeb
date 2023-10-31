@@ -59,17 +59,11 @@
   -o-transform-origin: center;      /* Opera */
   z-index: 2;  /* Se apila por encima de .bubble */
   position: relative;
-
-
 }
-
 
 .navbar {
   padding: 0.5rem 1rem;
 }
-
-
-
 .sidebar ul {
   list-style: none;
   padding: 0; /* Elimina el espacio en la lista superior */
@@ -265,4 +259,44 @@ button:hover {
   width: 100px; /* Define el ancho deseado para el botón */
   cursor: pointer;
   margin-left: 4px; /* Agrega un espacio entre el input y el botón */
+}
+
+.paper {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+
+}
+
+/* Estilos para el formulario */
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px; /* Agrega relleno al formulario */
+  border-radius: 8px; /* Bordes redondeados al formulario */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+.input {
+  margin-bottom: 15px;
+}
+
+.avatar-upload {
+  display: none;
+}
+
+.avatar-label {
+  margin-top: 20px;
+}
+
+/* Fondo de página */
+body {
+  background-color: #e9eff1;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
