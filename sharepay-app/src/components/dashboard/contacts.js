@@ -48,13 +48,18 @@ function Contacts() {
 
                 <h2 style={{ textAlign: 'center' }}> Mis Contactos</h2>
 
-                <h2>Buscar Contactos</h2>
-                <input 
-                    value={searchEmail} 
-                    onChange={e => setSearchEmail(e.target.value)} 
-                    placeholder="Buscar por correo electrónico" 
-                />
-                <button onClick={handleSearch}>Buscar</button>
+                <h3>Buscar Contactos</h3>
+                <div className="search-container">
+                    <input 
+                        value={searchEmail} 
+                        onChange={e => setSearchEmail(e.target.value)} 
+                        placeholder="Buscar por correo electrónico" 
+                        className="search-input"
+                    />
+                    <button className="button-search" onClick={handleSearch}>Buscar</button>
+
+
+                </div>
 
                 <ul>
                     {searchResults.map(user => (
