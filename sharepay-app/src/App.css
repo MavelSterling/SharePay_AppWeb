@@ -186,7 +186,31 @@
       transform: translateY(-100vh);
   }
 }
+/* Aplicar la animación al título */
+
+
+
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
 h1 {
+  animation: fadeInUp 5s ease both;
   position: relative;
   z-index: 2;  /* Se apila por encima de .bubble */
+}
+
+button {
+  transition: transform 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.2); /* Ajusta el factor de escala */
 }
