@@ -68,23 +68,35 @@
   padding: 0.5rem 1rem;
 }
 
-.sidebar{
-  width: 18rem;
-  height: calc(100vh - 52px);
-}
+
 
 .sidebar ul {
   list-style: none;
-  padding: 1rem 2rem;
+  padding: 0; /* Elimina el espacio en la lista superior */
+  margin: 0; /* Elimina el margen exterior */
+  width: 100%; /* Ajusta el ancho al 100% del contenedor */
 }
 
 .sidebar ul li {
   margin-bottom: 1rem;
+  text-align: center; /* Centra el texto horizontalmente */
 }
 
 .sidebar ul li a {
   text-decoration: none;
+  color: #000; /* Color de texto */
+  font-size: 1rem; /* Tamaño de fuente */
+  padding: 0.5rem; /* Espaciado interior para enlaces */
+  border-radius: 5px; /* Bordes redondeados */
+  display: block; /* Hace que todo el enlace sea clickeable */
+  transition: background-color 0.2s, color 0.2s; /* Efecto de transición en hover */
 }
+
+.sidebar ul li a:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el ratón por encima */
+  color: #ADD8E6; /* Color de texto al pasar el ratón por encima */
+}
+
 
 /* Media Queries para mejorar la responsividad */
 @media screen and (max-width: 768px) {
@@ -102,6 +114,10 @@
     height: auto;
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
+    display: flex;
+    
+
   }
 }
 
@@ -155,7 +171,7 @@
 }
 
 .sidebar.open {
-  width: 250px;
+  width: 18rem;
 }
 
 .sidebar.closed {
@@ -203,6 +219,11 @@
 
 h1 {
   animation: fadeInUp 5s ease both;
+  position: relative;
+  z-index: 2;  /* Se apila por encima de .bubble */
+}
+h2 {
+  animation: fadeInUp 0.5s ease both;
   position: relative;
   z-index: 2;  /* Se apila por encima de .bubble */
 }
