@@ -235,3 +235,34 @@ button {
 button:hover {
   transform: scale(1.2); /* Ajusta el factor de escala */
 }
+.search-container {
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos */
+  margin-top: 15px;
+}
+
+.search-input {
+  flex: 1; /* El input ocupará el espacio restante */
+  padding: 10px; /* Añade relleno para un aspecto más agradable */
+  border: 1px solid #ccc;/* Agrega un borde para destacar el input */
+  border-radius: 5px;/* Bordes redondeados */
+  font-size: 16px;/* Tamaño de fuente */
+  margin-right: 5px; /* Espacio entre el input y el botón */
+}
+
+.search-message {
+  font-size: 14px; /* Tamaño de fuente para el mensaje */
+  color: #777; /* Color de texto para el mensaje */
+  margin-top: 5px; /* Espacio superior entre el input y el mensaje */
+}
+.button-search {
+  padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #0a363b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  width: 100px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+  margin-left: 4px; /* Agrega un espacio entre el input y el botón */
+}
