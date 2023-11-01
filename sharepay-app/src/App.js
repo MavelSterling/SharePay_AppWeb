@@ -10,6 +10,7 @@ import HomePage from './components/HomePage';
 import './App.css';
 import Contacts from './components/dashboard/contacts';
 import DashboardWrapper from './components/DashboardWrapper';
+import Events from './components/dashboard/Events';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="user-information" element={<UserInformation />} />
             <Route path="contacts" element={<Contacts />} />
+            <Route path="events" element={<Events />} />
         </Route>
       </Routes>
     </Router>
