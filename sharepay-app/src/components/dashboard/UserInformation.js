@@ -1,49 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
+import { getUsers, getSpecificPasswordfromUser, getSpecificUser } from '../../api/service';
 
 
 function UserInformation() {
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [nickname, setNickname] = useState('');
+    const [password, setPassword] = useState('');
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
 
+    
+    useEffect(() => {
+        async function fetchData() {
+            const correoElectronicoActivo = localStorage.getItem('CorreoElectronicoActivo');
+    
+            try {
+                const responseUsuarios = await getUsers(); // Obtener todos los usuarios
+                const responsePasswords = await getSpecificPasswordfromUser(correoElectronicoActivo);
+    
+                if (responseUsuarios.status === 200 && responsePasswords.status === 200) {
+                    const usuarios = responseUsuarios.data;
+                    const passwords = responsePasswords.data;
+    
+                    // Filtrar el usuario activo
+                    const usuarioActivo = usuarios.find(usuario => usuario.CorreoElectronico === correoElectronicoActivo);
+                    const passwordActivo = passwords.find(password => password.UserID === usuarioActivo.ID);
+    
+                    setEmail(usuarioActivo.CorreoElectronico);
+                    setFullName(usuarioActivo.NombreCompleto);
+                    setNickname(usuarioActivo.Apodo);
+                    setPassword(passwordActivo.Password);
+                    setAvatarPreview(usuarioActivo.FotoOAvatar)
+
+                    console.log(usuarioActivo.FotoOAvatar)
+                } else {
+                    console.error("No se pudo obtener la información del usuario o la contraseña.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+    
+        fetchData();
+    }, []);
+    
+
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const userToken = localStorage.getItem("userToken");
-
+    
         const formData = new FormData();
         formData.append('email', email);
         formData.append('full_name', fullName);
         formData.append('nickname', nickname);
+        formData.append('password', password);
+    
         if (avatar) {
             formData.append('avatar', avatar);
         }
-
+    
+        const correoElectronicoActivo = localStorage.getItem('CorreoElectronicoActivo');
+    
         try {
-            const response = await fetch('http://tu-dominio.com/api/updateUserInfo/', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Token ${userToken}`
-                },
-                body: formData
-            });
-
-            const data = await response.json();
-
-            // Aquí puedes manejar la respuesta del servidor
-            if (response.ok) {
-                alert("Información actualizada correctamente");
+            const responseUsuario = await getSpecificUser(correoElectronicoActivo);
+            const responsePassword = await getSpecificPasswordfromUser(correoElectronicoActivo);
+        
+            console.log("Respuesta Usuario:", responseUsuario);
+            console.log("Respuesta Password:", responsePassword);
+        
+            if (responseUsuario.status === 200 && responsePassword.status === 200) {
+                const dataUsuario = responseUsuario.json().data;
+                const dataPassword = responsePassword.json().data;
+        
+                setEmail(dataUsuario.CorreoElectronico);
+                setFullName(dataUsuario.NombreCompleto);
+                setNickname(dataUsuario.Apodo);
+                setPassword(dataPassword.Password);
+                setAvatarPreview(dataUsuario.FotoOAvatar)
+                console.log("Información actualizada correctamente");
             } else {
-                alert(data.error || "Ocurrió un error al actualizar la información");
+                console.error("No se pudo obtener la información del usuario o la contraseña.");
+                alert("Ocurrió un error al actualizar la información.");
             }
         } catch (error) {
             console.error("Error:", error);
             alert("Ocurrió un error al intentar conectar con el servidor.");
         }
+        
     };
+    
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
@@ -58,20 +105,20 @@ function UserInformation() {
         // Con un endpoint que maneje la desactivación de cuentas:
         const userToken = localStorage.getItem("userToken");
         try {
-            const response = await fetch('http://tu-dominio.com/api/deactivateAccount/', {
+            const responseUsuario = await fetch('http://tu-dominio.com/api/deactivateAccount/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${userToken}`
                 }
             });
 
-            const data = await response.json();
+            const dataUsuario = await responseUsuario.json();
 
-            if (response.ok) {
+            if (responseUsuario.ok) {
                 alert("Cuenta desactivada correctamente");
                 // Aquí se puede redirigir al usuario a la página de inicio o hacer log out
             } else {
-                alert(data.error || "Ocurrió un error al intentar desactivar la cuenta");
+                alert(dataUsuario.error || "Ocurrió un error al intentar desactivar la cuenta");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -83,7 +130,7 @@ function UserInformation() {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div style={{ flex: 1, padding: '20px' }}>
-                <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
+            <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
 
                 <Grid container spacing={3}>
                     {/* Columna izquierda */}
@@ -109,6 +156,14 @@ function UserInformation() {
                             type="text" 
                             value={nickname} 
                             onChange={(e) => setNickname(e.target.value)} 
+                            style={{ marginTop: '10px' }}
+                        />
+                        <TextField 
+                            fullWidth
+                            label="Contraseña"
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
                             style={{ marginTop: '10px' }}
                         />
                     </Grid>

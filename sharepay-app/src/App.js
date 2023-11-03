@@ -1,3 +1,5 @@
+// App.js
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import React from 'react';
 import Dashboard from './components/dashboard/Dashboard';
@@ -5,19 +7,24 @@ import UserInformation from './components/dashboard/UserInformation';
 import Login from './components/Login';
 import Register from './components/Register';
 import HomePage from './components/HomePage';
-import NavBar from './components/Navbar';
 import './App.css';
+import Contacts from './components/dashboard/contacts';
+import DashboardWrapper from './components/DashboardWrapper';
+import Events from './components/dashboard/Events';
 
 function App() {
   return (
     <Router>
-      <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/user-information" element={<UserInformation />} />
+        <Route path="/dashboard" element={<DashboardWrapper />}>
+            <Route index element={<Dashboard />} />
+            <Route path="user-information" element={<UserInformation />} />
+            <Route path="contacts" element={<Contacts />} />
+            <Route path="events" element={<Events />} />
+        </Route>
       </Routes>
     </Router>
   );
