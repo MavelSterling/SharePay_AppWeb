@@ -189,10 +189,10 @@ function UserInformation() {
 
                     {/* Botones */}
                     <Grid item xs={12} container justifyContent="space-between">
-                        <Button variant="contained" color="primary" onClick={handleUpdate}>
+                        <Button  className="button-info" variant="contained" onClick={handleUpdate}>
                             Actualizar información
                         </Button>
-                        <Button variant="contained" color="secondary" onClick={handleDeactivateAccount}>
+                        <Button  className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount}>
                             Desactivar cuenta
                         </Button>
                     </Grid>

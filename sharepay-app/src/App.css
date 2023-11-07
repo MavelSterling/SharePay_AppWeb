@@ -229,6 +229,18 @@ button {
 button:hover {
   transform: scale(1.2); /* Ajusta el factor de escala */
 }
+.button-info {
+  background-color: #0a363b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  width: 120px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  transform: scale(1.2); /* Ajusta el factor de escala */
+
+}
 .search-container {
   display: flex;
   align-items: center; /* Centra verticalmente los elementos */
