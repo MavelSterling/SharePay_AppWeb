@@ -22,9 +22,9 @@ function HomePage() {
                 <img 
                     src={logo} 
                     alt="SharePay Logo" 
-                    width="70%"
-                    className="rotating-logo" 
-                    style={{ marginBottom: '35px' }} 
+                    width="50%"
+                    class="swinging-logo" 
+                    style={{ marginBottom: '30px' }} 
                 />
                 <h1 style={{ fontSize: '2rem' }}>Bienvenidos a SharePay App</h1>
             </div>

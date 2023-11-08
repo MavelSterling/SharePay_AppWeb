@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
-import { getUsers, getSpecificPasswordfromUser, getSpecificUser } from '../../api/service';
+import { getUserByToken, getUsers, getSpecificPasswordfromUser, getSpecificUser } from '../../api/service';
 
 
 function UserInformation() {
@@ -15,18 +15,19 @@ function UserInformation() {
     
     useEffect(() => {
         async function fetchData() {
-            const correoElectronicoActivo = localStorage.getItem('CorreoElectronicoActivo');
+            const userToken = localStorage.getItem('userToken');
+            console.log(userToken)
     
             try {
-                const responseUsuarios = await getUsers(); // Obtener todos los usuarios
-                const responsePasswords = await getSpecificPasswordfromUser(correoElectronicoActivo);
+                const responseUsuarios = await getUserByToken(userToken); // Obtener todos los usuarios
+                const responsePasswords = await getSpecificPasswordfromUser(userToken);
     
                 if (responseUsuarios.status === 200 && responsePasswords.status === 200) {
                     const usuarios = responseUsuarios.data;
                     const passwords = responsePasswords.data;
     
                     // Filtrar el usuario activo
-                    const usuarioActivo = usuarios.find(usuario => usuario.CorreoElectronico === correoElectronicoActivo);
+                    const usuarioActivo = usuarios.find(usuario => usuario.CorreoElectronico === userToken);
                     const passwordActivo = passwords.find(password => password.UserID === usuarioActivo.ID);
     
                     setEmail(usuarioActivo.CorreoElectronico);

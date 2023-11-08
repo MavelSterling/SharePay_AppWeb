@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 
 function Login() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const [CorreoElectronico, setCorreoElectronico] = useState('');
+  const [username, setUsuario] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
@@ -16,16 +16,18 @@ function Login() {
     e.preventDefault();
 
     try {
-      // Intenta obtener un token a partir de las credenciales brindadas por el usuario
-      const response = await getToken(CorreoElectronico, password);
+      // Intenta obtener un token a partir de las credenciales brindadas por el username
+      
+      const response = await getToken(username, password);
       
       if (response.data.token) {
         // El inicio de sesión fue exitoso, el token está en response.data.token
         const token = response.data.token;
         // Puedes almacenar el token en el almacenamiento local o en una cookie para su uso posterior
         localStorage.setItem('userToken', token);
+        console.log(token)
         
-        // Luego, redirige al usuario a la página deseada (por ejemplo, la página de inicio de la aplicación)
+        // Luego, redirige al username a la página deseada (por ejemplo, la página de inicio de la aplicación)
         navigate("/dashboard/user-information");
       } else {
         // Si no se obtuvo un token, el inicio de sesión falló
@@ -58,9 +60,9 @@ function Login() {
                 margin="normal"
                 required
                 fullWidth
-                label="Correo Electronico"
-                value={CorreoElectronico}
-                onChange={(e) => setCorreoElectronico(e.target.value)}
+                label="Nickname o Usuario"
+                value={username}
+                onChange={(e) => setUsuario(e.target.value)}
               />
               <TextField
                 variant="outlined"
