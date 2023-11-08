@@ -57,30 +57,40 @@
   -webkit-transform-origin: center; /* Safari y Chrome */
   -moz-transform-origin: center;    /* Firefox */
   -o-transform-origin: center;      /* Opera */
+  z-index: 2;  /* Se apila por encima de .bubble */
+  position: relative;
 }
-
 
 .navbar {
   padding: 0.5rem 1rem;
 }
-
-.sidebar{
-  width: 18rem;
-  height: calc(100vh - 52px);
-}
-
 .sidebar ul {
   list-style: none;
-  padding: 1rem 2rem;
+  padding: 0; /* Elimina el espacio en la lista superior */
+  margin: 0; /* Elimina el margen exterior */
+  width: 100%; /* Ajusta el ancho al 100% del contenedor */
 }
 
 .sidebar ul li {
   margin-bottom: 1rem;
+  text-align: center; /* Centra el texto horizontalmente */
 }
 
 .sidebar ul li a {
   text-decoration: none;
+  color: #000; /* Color de texto */
+  font-size: 1rem; /* Tamaño de fuente */
+  padding: 0.5rem; /* Espaciado interior para enlaces */
+  border-radius: 5px; /* Bordes redondeados */
+  display: block; /* Hace que todo el enlace sea clickeable */
+  transition: background-color 0.2s, color 0.2s; /* Efecto de transición en hover */
 }
+
+.sidebar ul li a:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el ratón por encima */
+  color: #ADD8E6; /* Color de texto al pasar el ratón por encima */
+}
+
 
 /* Media Queries para mejorar la responsividad */
 @media screen and (max-width: 768px) {
@@ -98,6 +108,10 @@
     height: auto;
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
+    display: flex;
+    
+
   }
 }
 
@@ -151,10 +165,305 @@
 }
 
 .sidebar.open {
-  width: 250px;
+  width: 18rem;
 }
 
 .sidebar.closed {
   width: 0;
   overflow: hidden;
+}
+
+.animated-background {
+  background: linear-gradient(160deg, #ADD8E6, #69a1c9); /* Fondo con degradado */
+  overflow: hidden; /* Evita que las burbujas salgan del contenedor */
+  position: relative;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -10%;
+  background-color: rgba(255, 255, 255, 0.25); /* Burbujas semi-transparentes */
+  border-radius: 50%;
+  animation: floatBubble ease-in infinite;
+  z-index: 1;
+}
+
+@keyframes floatBubble {
+  0% {
+      transform: translateY(0);
+  }
+  100% {
+      transform: translateY(-100vh);
+  }
+}
+/* Aplicar la animación al título */
+
+
+
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+h1 {
+  animation: fadeInUp 5s ease both;
+  position: relative;
+  z-index: 2;  /* Se apila por encima de .bubble */
+}
+h2 {
+  animation: fadeInUp 0.5s ease both;
+  position: relative;
+  z-index: 2;  /* Se apila por encima de .bubble */
+}
+
+button {
+  transition: transform 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.2); /* Ajusta el factor de escala */
+}
+.button-info {
+  background-color: #0a363b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  width: 120px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  transform: scale(1.2); /* Ajusta el factor de escala */
+  margin-top: 15px;
+
+}
+.search-container {
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos */
+  margin-top: 15px;
+}
+
+.search-input {
+  flex: 1; /* El input ocupará el espacio restante */
+  padding: 10px; /* Añade relleno para un aspecto más agradable */
+  border: 1px solid #ccc;/* Agrega un borde para destacar el input */
+  border-radius: 5px;/* Bordes redondeados */
+  font-size: 16px;/* Tamaño de fuente */
+  margin-right: 5px; /* Espacio entre el input y el botón */
+}
+
+.search-message {
+  font-size: 14px; /* Tamaño de fuente para el mensaje */
+  color: #777; /* Color de texto para el mensaje */
+  margin-top: 5px; /* Espacio superior entre el input y el mensaje */
+}
+.button-search {
+  padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #0a363b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  width: 100px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+  margin-left: 4px; /* Agrega un espacio entre el input y el botón */
+}
+
+.paper {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+
+}
+
+/* Estilos para el formulario */
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px; /* Agrega relleno al formulario */
+  border-radius: 8px; /* Bordes redondeados al formulario */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+.input {
+  margin-bottom: 15px;
+}
+
+.avatar-upload {
+  display: none;
+}
+
+.avatar-label {
+  margin-top: 20px;
+}
+
+/* Fondo de página */
+body {
+  background-color: #e9eff1;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.events-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.events-left-panel {
+  flex: 1;
+}
+
+.events-right-panel {
+  flex: 3;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.button-event {
+  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #21618C ;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 16px;
+  width: 130px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+}
+
+.button-act {
+  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #1A5276;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 16px;
+  width: 130px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+  margin-top: 10px; /* Espacio superior */
+}
+/* --------------------------------------------------------------*/
+
+/* CSS para el fondo oscuro detrás del modal */
+.event-modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Asegura que esté por encima de otros elementos */
+}
+
+/* CSS para el modal en sí */
+.event-modal {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 500px; /* Ajusta el ancho según tus necesidades */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Asegura que esté por encima del fondo oscuro */
+  width: 500px; /* Ajusta el ancho deseado */
+  height: 380px; /* Ajusta el alto deseado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Asegura que el modal esté centrado vertical y horizontalmente */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* CSS para el botón de cerrar (la 'x') */
+.event-modal .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+/* Otros estilos que desees aplicar */
+.event-modal h3 {
+  font-size: 25px;
+}
+
+.event-modal input,
+.event-modal textarea,
+.event-modal button {
+  display: block;
+  margin: 12px 0;
+}
+.column-event {
+  flex: 2;
+  padding: 15px;
+  /* Ajusta el espaciado y los márgenes según tus necesidades */
+}
+
+.avatar-container-event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.modal-content {
+  display: flex;
+  flex-direction: row;
+  /* Establece un ancho máximo o el ancho deseado para el modal */
+  max-width: 2000px;
+
+}
+.button-event-modal {
+  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #146d9d;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  width: 150px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+}
+
+.button-event-modal-update {
+  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #146d9d;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  width: 150px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+}
+
+.button-event-modal-delete {
+  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #872c0d;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  width: 150px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
 }
