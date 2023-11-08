@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Container, Paper, Grid, Typography, TextField, Button, Link, useTheme, useMediaQuery } from '@mui/material';
+import { Container, Paper, Grid, Typography, TextField, Button, Link } from '@mui/material';
 import logo from '../assets/Logo.png';
-import { getSpecificPassword, getSpecificUser } from '../api/service';
-//import { useHistory } from 'react-router-dom';
+import { getToken} from '../api/service';
+import { useMediaQuery } from 'react-responsive';
 
 function Login() {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [CorreoElectronico, setCorreoElectronico] = useState('');
   const [password, setPassword] = useState('');
 
@@ -13,51 +14,30 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
-    try {
-      // Realiza la solicitud POST al endpoint de autenticación de Django
-      const userResponse = await getSpecificUser({
-        email: CorreoElectronico
-      });
 
-      const foundUser = userResponse.data.find(user => user.CorreoElectronico === CorreoElectronico);
+    try {
+      // Intenta obtener un token a partir de las credenciales brindadas por el usuario
+      const response = await getToken(CorreoElectronico, password);
       
-      const passwordResponse = await getSpecificPassword({ 
-        //busca el password del usuario en la tabla de Passwords con su email
-        Password: password
-      });
-      
-      
-      if (foundUser) {
-        console.log("usuario encontrado ", foundUser.Apodo)
-        const foundPassword = passwordResponse.data.find(user => user.Password === password);
-        // Verifica la contraseña
+      if (response.data.token) {
+        // El inicio de sesión fue exitoso, el token está en response.data.token
+        const token = response.data.token;
+        // Puedes almacenar el token en el almacenamiento local o en una cookie para su uso posterior
+        localStorage.setItem('userToken', token);
         
-        if (foundPassword) {
-          console.log('fecha de creacion de usuario',foundPassword.Creado_en)
-          console.log('Login exitoso: bienvenido', foundUser.Apodo);
-          localStorage.setItem('userToken', userResponse.data.token);
-          localStorage.setItem('CorreoElectronicoActivo', foundUser.CorreoElectronico);
-          console.log("usuario activo ", localStorage.getItem('CorreoElectronicoActivo'))
-          
-          
-          navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
-        } else {
-          console.log("Contraseña incorrecta.")
-          console.log('Por favor, inténtalo de nuevo.');
-        }
+        // Luego, redirige al usuario a la página deseada (por ejemplo, la página de inicio de la aplicación)
+        navigate("/dashboard/user-information");
       } else {
-        console.log('Por favor, verifica tus credenciales.');
-        console.log("Usuario no encontrado.")
+        // Si no se obtuvo un token, el inicio de sesión falló
+        console.log('Inicio de sesión fallido, credenciales incorrectas.');
+        alert('Inicio de sesión fallido, credenciales incorrectas.');
       }
     } catch (error) {
-      console.error('Error durante el login:', error);
-      console.log('Error al intentar iniciar sesión. Por favor, verifica tus credenciales.');
+      // Maneja los errores en caso de problemas de red o servidor
+      console.error('Error durante el inicio de sesión:', error);
+      alert('Error durante el inicio de sesión:', error);
     }
-  };
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+  }
 
   return (
     <Container component="main" maxWidth="xs">

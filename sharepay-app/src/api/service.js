@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/BackendApp/api/v1'
-})
+});
 
 export const getUsers = (access_token) => api.get('/Usuarios/', {
     headers: {
