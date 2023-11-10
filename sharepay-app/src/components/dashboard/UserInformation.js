@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import { Button, Grid, TextField , TextareaAutosize} from '@mui/material';
-import { getUserByUsername, updateUserInfo, updateUserProfile, getProfileByID } from '../../api/service';
-
+import { Button, Grid, TextField } from '@mui/material';
+import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID } from '../../api/service';
 
 function UserInformation() {
     const [email, setEmail] = useState('');
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [nickname, setNickname] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmpassword, setConfirmPassword] = useState('');
+    const [password, setPassword] = useState(null);
+    const [confirmpassword, setConfirmPassword] = useState(null);
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
     const [bio, setBio] = useState("");
@@ -18,8 +17,6 @@ function UserInformation() {
 
 
     const [isEditable, setIsEditable] = useState(false);
-
-
     
     useEffect(() => {
         async function fetchData() {
@@ -30,8 +27,6 @@ function UserInformation() {
             try {
                 const responseUsuarios = await getUserByUsername(userToken, UserName); // Obtener todos los datos del usuario
                 const responsePerfil = await getProfileByID(userToken, userId);
-                console.log(responseUsuarios)
-                console.log(responsePerfil)
 
                 // //
     
@@ -44,7 +39,6 @@ function UserInformation() {
                     setApellido(infoUser.last_name);
                     setNickname(infoUser.username);
                     setPassword(infoUser.password);
-                    setConfirmPassword(infoUser.password2);
                     setAvatarPreview(infoProfile.FotoOAvatar);
                     setBio(infoProfile.bio)
                 } else {
@@ -59,8 +53,8 @@ function UserInformation() {
     
         fetchData();
     }, []);
-    
 
+    
     const handleUpdate = async (e) => {
         e.preventDefault();
 
@@ -77,35 +71,46 @@ function UserInformation() {
         if (avatar) {
             formDataProfile.append('avatar', avatar);
         }
-    
 
+        
+        
         const localToken = localStorage.getItem('userToken');
-    
-        if(isEditable) {
-            try {//CORREGIR LAS DOS LINEAS QUE VIENEN
-                const responseUsuario = await updateUserInfo(localToken, formDataUser);
-                const responsePerfil = await updateUserProfile(localToken, formDataProfile);
-            
-                console.log("Respuesta Usuario:", responseUsuario);
-                console.log("Respuesta Perfil:", responsePerfil);
-            
-                if (responseUsuario.status === 200 && responsePerfil.status === 200) {
-                    const dataUsuario = responseUsuario.json().data;
-                    const dataPassword = responsePerfil.json().data;
-            
-                    setEmail(dataUsuario.CorreoElectronico);
-                    setNombre(dataUsuario.NombreCompleto);
-                    setNickname(dataUsuario.Apodo);
-                    setPassword(dataPassword.Password);
-                    setAvatarPreview(dataUsuario.FotoOAvatar)
-                    console.log("Información actualizada correctamente");
-                } else {
-                    console.error("No se pudo obtener la información del usuario o la contraseña.");
-                    alert("Ocurrió un error al actualizar la información.");
+        
+        if (isEditable) {
+            if (password !== confirmpassword) {
+                // Mostrar mensaje de error o realizar alguna acción apropiada.
+                alert('Las contraseñas no coinciden.');
+                return;
+            } else {
+                try {
+                    const responseUsuario = await updateUserInfo(localToken, formDataUser);
+                    const responsePerfil = await updateProfileInfo(localToken, formDataProfile);
+
+                    console.log("Respuesta Usuario:", responseUsuario);
+                    console.log("Respuesta Perfil:", responsePerfil);
+
+                    if (responseUsuario.status === 200 && responsePerfil.status === 200) {
+                        const dataUsuario = responseUsuario.data;
+                        const dataPassword = responsePerfil.data;
+
+                        setEmail(dataUsuario.CorreoElectronico);
+                        setNombre(dataUsuario.NombreCompleto);
+                        setNickname(dataUsuario.Apodo);
+                        setPassword(dataPassword.Password);
+                        setAvatarPreview(dataUsuario.FotoOAvatar);
+                        setBio(dataUsuario.bio);
+
+                        alert("Información actualizada correctamente");
+                        window.location.reload()
+                    } else {
+                        console.error("No se pudo obtener la información del usuario o la contraseña.");
+                        alert("Ocurrió un error al actualizar la información.");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("Ocurrió un error al intentar conectar con el servidor.");
+                    //window.location.reload()
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Ocurrió un error al intentar conectar con el servidor.");
             }
         }
         
@@ -230,18 +235,17 @@ function UserInformation() {
                                 Subir Avatar
                             </Button>
                         </label>
-                        <TextareaAutosize
+                        <TextField
+                            label="Bio"
+                            multiline
                             minRows={3}
-                            placeholder="Bio"
                             value={bio || ''}
                             onChange={(e) => setBio(e.target.value)}
+                            disabled={!isEditable}
+                            fullWidth
                             style={{
-                                width: '100%',
                                 marginTop: '10px',
-                                padding: '8px',
-                                border: '1px solid #ccc', // Cambié el grosor del borde para que coincida con los otros campos
-                                borderRadius: '4px', // Agregué bordes redondeados para hacerlo más consistente
-                                resize: 'none'
+                                marginBottom: '10px',
                             }}
                         />
                     </Grid>
