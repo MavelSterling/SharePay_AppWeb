@@ -1,22 +1,33 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/BackendApp/'
+  baseURL: 'http://127.0.0.1:8000/api/'
+});
+/*
+const admin = axios.create({
+  baseURL: 'http://127.0.0.1:8000/admin/'
 });
 
+*/
 export const getUsers = (access_token) => api.get('api/v1/Usuarios/', {
     headers: {
       'Authorization': `token ${access_token}`
     }
 });
 
-export const getUserByToken = (token) => {
-    return api.get('/user', {
-      headers: {
-        'Authorization': `Bearer ${token}`, // Envía el token como encabezado de autorización
-      },
-    });
-  };
+// En tu archivo de servicio o donde defines las llamadas a la API
+export const getProfileByID = (userToken, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {
+  headers: {
+    'Authorization': `Token ${userToken}`
+  }
+});
+
+
+export const getUserByUsername = (access_token, username) => api.get(`/get_user_id/?username=${username}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
 
 //este es el login
 export const getToken = (usuario, password) => {
@@ -25,7 +36,8 @@ export const getToken = (usuario, password) => {
         password: password,
     });
   };  
-  
+  /* 
+  */
 
 //este es el registro
 

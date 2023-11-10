@@ -1,45 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import { Button, Grid, TextField } from '@mui/material';
-import { getUserByToken, getUsers, getSpecificPasswordfromUser, getSpecificUser } from '../../api/service';
+import { Button, Grid, TextField , TextareaAutosize} from '@mui/material';
+import { getUserByUsername, getSpecificPasswordfromUser, getSpecificUser, getProfileByID } from '../../api/service';
 
 
 function UserInformation() {
     const [email, setEmail] = useState('');
-    const [fullName, setFullName] = useState('');
+    const [nombre, setNombre] = useState('');
+    const [apellido, setApellido] = useState('');
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmpassword, setConfirmPassword] = useState('');
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
+    const [bio, setBio] = useState('');
 
     
     useEffect(() => {
         async function fetchData() {
             const userToken = localStorage.getItem('userToken');
-            console.log(userToken)
+            const UserName = localStorage.getItem('username');
+            const userId = localStorage.getItem('userId');
     
             try {
-                const responseUsuarios = await getUserByToken(userToken); // Obtener todos los usuarios
-                const responsePasswords = await getSpecificPasswordfromUser(userToken);
-    
-                if (responseUsuarios.status === 200 && responsePasswords.status === 200) {
-                    const usuarios = responseUsuarios.data;
-                    const passwords = responsePasswords.data;
-    
-                    // Filtrar el usuario activo
-                    const usuarioActivo = usuarios.find(usuario => usuario.CorreoElectronico === userToken);
-                    const passwordActivo = passwords.find(password => password.UserID === usuarioActivo.ID);
-    
-                    setEmail(usuarioActivo.CorreoElectronico);
-                    setFullName(usuarioActivo.NombreCompleto);
-                    setNickname(usuarioActivo.Apodo);
-                    setPassword(passwordActivo.Password);
-                    setAvatarPreview(usuarioActivo.FotoOAvatar)
+                const responseUsuarios = await getUserByUsername(userToken, UserName); // Obtener todos los datos del usuario
+                const responsePerfil = await getProfileByID(userToken, userId);
+                //console.log(responseUsuarios)
+                //console.log(responsePerfil)
 
-                    console.log(usuarioActivo.FotoOAvatar)
+                // //
+    
+                if (responseUsuarios.status === 200) {
+                    const infoUser = responseUsuarios.data;
+                    const infoProfile = responsePerfil.data;
+    
+                    setEmail(infoUser.email);
+                    setNombre(infoUser.first_name);
+                    setApellido(infoUser.last_name);
+                    setNickname(infoUser.username);
+                    setPassword(infoUser.password);
+                    setConfirmPassword(infoUser.password2);
+                    setAvatarPreview(infoProfile.FotoOAvatar);
+                    setBio(infoProfile.bio)
+
+                    console.log(infoProfile.bio)
                 } else {
                     console.error("No se pudo obtener la información del usuario o la contraseña.");
                 }
+
+
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -53,10 +62,11 @@ function UserInformation() {
         e.preventDefault();
     
         const formData = new FormData();
-        formData.append('email', email);
-        formData.append('full_name', fullName);
-        formData.append('nickname', nickname);
+        formData.append('username', nickname);
         formData.append('password', password);
+        formData.append('first_name', nombre);
+        formData.append('last_name', apellido);
+        formData.append('email', email);
     
         if (avatar) {
             formData.append('avatar', avatar);
@@ -76,7 +86,7 @@ function UserInformation() {
                 const dataPassword = responsePassword.json().data;
         
                 setEmail(dataUsuario.CorreoElectronico);
-                setFullName(dataUsuario.NombreCompleto);
+                setNombre(dataUsuario.NombreCompleto);
                 setNickname(dataUsuario.Apodo);
                 setPassword(dataPassword.Password);
                 setAvatarPreview(dataUsuario.FotoOAvatar)
@@ -131,47 +141,58 @@ function UserInformation() {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div style={{ flex: 1, padding: '20px' }}>
-            <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
+                <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
 
                 <Grid container spacing={3}>
                     {/* Columna izquierda */}
                     <Grid item xs={12} md={6}>
-                        <TextField 
+                        <TextField
                             fullWidth
                             label="Correo electrónico"
-                            type="email" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
-                        />
-                        <TextField 
-                            fullWidth
-                            label="Nombre completo"
-                            type="text" 
-                            value={fullName} 
-                            onChange={(e) => setFullName(e.target.value)} 
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             style={{ marginTop: '10px' }}
                         />
-                        <TextField 
+                        <TextField
+                            fullWidth
+                            label="Nombre/s"
+                            type="text"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                            style={{ marginTop: '10px' }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Apellido/s"
+                            type="text"
+                            value={apellido}
+                            onChange={(e) => setApellido(e.target.value)}
+                            style={{ marginTop: '10px' }}
+                        />
+                        <TextField
                             fullWidth
                             label="Apodo"
-                            type="text" 
-                            value={nickname} 
-                            onChange={(e) => setNickname(e.target.value)} 
+                            type="text"
+                            value={nickname}
+                            onChange={(e) => setNickname(e.target.value)}
                             style={{ marginTop: '10px' }}
                         />
-                        <TextField 
+                        <TextField
                             fullWidth
                             label="Contraseña"
-                            type="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             style={{ marginTop: '10px' }}
                         />
+                        
+
                     </Grid>
 
                     {/* Columna derecha */}
                     <Grid item xs={12} md={6} container direction="column" alignItems="center" justifyContent="flex-start">
-                        <div style={{ width: '150px', height: '150px', border: '1px solid black', marginBottom: '10px' }}>
+                        <div style={{ width: '150px', height: '150px', marginBottom: '20px' }}>
                             {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : "No image uploaded"}
                         </div>
                         <input
@@ -186,14 +207,29 @@ function UserInformation() {
                                 Subir Avatar
                             </Button>
                         </label>
+                        <TextareaAutosize
+                            minRows={3}
+                            placeholder="Bio"
+                            value={bio}
+                            onChange={(e) => setBio(e.target.value)}
+                            style={{
+                                width: '100%',
+                                marginTop: '10px',
+                                padding: '8px',
+                                border: '1px solid #ccc', // Cambié el grosor del borde para que coincida con los otros campos
+                                borderRadius: '4px', // Agregué bordes redondeados para hacerlo más consistente
+                                resize: 'none'
+                            }}
+                        />
                     </Grid>
+
 
                     {/* Botones */}
                     <Grid item xs={12} container justifyContent="space-between">
-                        <Button  className="button-info" variant="contained" onClick={handleUpdate}>
+                        <Button className="button-info" variant="contained" onClick={handleUpdate}>
                             Actualizar información
                         </Button>
-                        <Button  className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount}>
+                        <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount}>
                             Desactivar cuenta
                         </Button>
                     </Grid>

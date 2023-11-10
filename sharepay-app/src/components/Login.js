@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Container, Paper, Grid, Typography, TextField, Button, Link } from '@mui/material';
 import logo from '../assets/Logo.png';
-import { getToken} from '../api/service';
+import { getToken, getUserByUsername} from '../api/service';
 import { useMediaQuery } from 'react-responsive';
 
 function Login() {
@@ -16,30 +16,40 @@ function Login() {
     e.preventDefault();
 
     try {
-      // Intenta obtener un token a partir de las credenciales brindadas por el username
-      
-      const response = await getToken(username, password);
-      
-      if (response.data.token) {
-        // El inicio de sesión fue exitoso, el token está en response.data.token
-        const token = response.data.token;
-        // Puedes almacenar el token en el almacenamiento local o en una cookie para su uso posterior
-        localStorage.setItem('userToken', token);
-        console.log(token)
-        
-        // Luego, redirige al username a la página deseada (por ejemplo, la página de inicio de la aplicación)
-        navigate("/dashboard/user-information");
-      } else {
-        // Si no se obtuvo un token, el inicio de sesión falló
-        console.log('Inicio de sesión fallido, credenciales incorrectas.');
-        alert('Inicio de sesión fallido, credenciales incorrectas.');
-      }
+        const response = await getToken(username, password);
+
+        if (response.data.token) {
+            const token = response.data.token;
+
+            // Obtener el ID del usuario
+            const userResponse = await getUserByUsername(token, username);
+            
+            if (userResponse.data.user_id) {
+                const userId = userResponse.data.user_id;
+
+                localStorage.setItem('userToken', token);
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('username', username)
+
+                console.log('token: ',token);
+                console.log('UserID: ', userId);
+                alert('Bienvenido ', username)
+                navigate("/dashboard/user-information");
+            } else {
+                console.log('Error al obtener el ID del usuario.');
+                alert('Error al obtener el ID del usuario.');
+            }
+        } else {
+            console.log('Inicio de sesión fallido, credenciales incorrectas.');
+            alert('Inicio de sesión fallido, credenciales incorrectas.');
+        }
     } catch (error) {
-      // Maneja los errores en caso de problemas de red o servidor
-      console.error('Error durante el inicio de sesión:', error);
-      alert('Error durante el inicio de sesión:', error);
+        console.error('Error durante el inicio de sesión:', error);
+        alert('Error durante el inicio de sesión:', error);
     }
-  }
+};
+
+  
 
   return (
     <Container component="main" maxWidth="xs">
