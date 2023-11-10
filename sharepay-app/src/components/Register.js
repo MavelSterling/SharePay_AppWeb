@@ -40,6 +40,7 @@ function Register() {
             }
         } catch (error) {
             console.error('Hubo un error al registrarse:', error);
+            alert('hubo un error al registrarse, por favor, verifica los datos')
         }
     };
 

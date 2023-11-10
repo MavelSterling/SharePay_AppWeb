@@ -3,27 +3,31 @@ import axios from 'axios'
 const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/'
 });
-/*
-const admin = axios.create({
-  baseURL: 'http://127.0.0.1:8000/admin/'
+
+export const updateUserInfo = (access_token, userData) => api.post('/update_user/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+    'Content-Type': 'application/json',
+  },
 });
 
-*/
-export const getUsers = (access_token) => api.get('api/v1/Usuarios/', {
-    headers: {
-      'Authorization': `token ${access_token}`
-    }
+export const updateUserProfile = (access_token, userData) => api.post('/update_perfil/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+    'Content-Type': 'application/json',
+  },
 });
+
 
 // En tu archivo de servicio o donde defines las llamadas a la API
-export const getProfileByID = (userToken, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {
+export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {
   headers: {
-    'Authorization': `Token ${userToken}`
+    'Authorization': `Token ${access_token}`
   }
 });
 
 
-export const getUserByUsername = (access_token, username) => api.get(`/get_user_id/?username=${username}`, {
+export const getUserByUsername = (access_token, username) => api.get(`/get_user/?username=${username}`, {
   headers: {
     'Authorization': `token ${access_token}`
   }
@@ -48,12 +52,3 @@ export const registerUser = (userData) => {
       },
     });
   };
-
-//export const getSpecificUser = (email) => api.get(`/Usuarios/?CorreoElectronico=${email}`);
-export const getSpecificUser = (email) => api.get(`api/v1/Usuarios/?UserID__CorreoElectronico=${email}`);
-//export const getSpecificPassword = (email) => api.get(`/Passwords/?Passwords=${email}`);
-export const getSpecificPassword = (password) => api.get(`api/v1/Passwords/?UserID__Password=${password}`);
-
-
-
-export const getSpecificPasswordfromUser = (email) => api.get(`api/v1/Passwords/?UserID__CorreoElectronico=${email}`);

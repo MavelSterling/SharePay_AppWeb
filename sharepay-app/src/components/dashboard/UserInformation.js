@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField , TextareaAutosize} from '@mui/material';
-import { getUserByUsername, getSpecificPasswordfromUser, getSpecificUser, getProfileByID } from '../../api/service';
+import { getUserByUsername, updateUserInfo, updateUserProfile, getProfileByID } from '../../api/service';
 
 
 function UserInformation() {
@@ -13,7 +13,12 @@ function UserInformation() {
     const [confirmpassword, setConfirmPassword] = useState('');
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
-    const [bio, setBio] = useState('');
+    const [bio, setBio] = useState("");
+
+
+
+    const [isEditable, setIsEditable] = useState(false);
+
 
     
     useEffect(() => {
@@ -25,8 +30,8 @@ function UserInformation() {
             try {
                 const responseUsuarios = await getUserByUsername(userToken, UserName); // Obtener todos los datos del usuario
                 const responsePerfil = await getProfileByID(userToken, userId);
-                //console.log(responseUsuarios)
-                //console.log(responsePerfil)
+                console.log(responseUsuarios)
+                console.log(responsePerfil)
 
                 // //
     
@@ -42,8 +47,6 @@ function UserInformation() {
                     setConfirmPassword(infoUser.password2);
                     setAvatarPreview(infoProfile.FotoOAvatar);
                     setBio(infoProfile.bio)
-
-                    console.log(infoProfile.bio)
                 } else {
                     console.error("No se pudo obtener la información del usuario o la contraseña.");
                 }
@@ -60,44 +63,50 @@ function UserInformation() {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-    
-        const formData = new FormData();
-        formData.append('username', nickname);
-        formData.append('password', password);
-        formData.append('first_name', nombre);
-        formData.append('last_name', apellido);
-        formData.append('email', email);
-    
+
+        setIsEditable(!isEditable)
+
+        const formDataUser = new FormData();
+        formDataUser.append('email', email);
+        formDataUser.append('first_name', nombre);
+        formDataUser.append('last_name', apellido);
+        formDataUser.append('password', password);
+
+        const formDataProfile = new FormData();
+        formDataProfile.append('bio', bio);
         if (avatar) {
-            formData.append('avatar', avatar);
+            formDataProfile.append('avatar', avatar);
         }
     
-        const correoElectronicoActivo = localStorage.getItem('CorreoElectronicoActivo');
+
+        const localToken = localStorage.getItem('userToken');
     
-        try {
-            const responseUsuario = await getSpecificUser(correoElectronicoActivo);
-            const responsePassword = await getSpecificPasswordfromUser(correoElectronicoActivo);
-        
-            console.log("Respuesta Usuario:", responseUsuario);
-            console.log("Respuesta Password:", responsePassword);
-        
-            if (responseUsuario.status === 200 && responsePassword.status === 200) {
-                const dataUsuario = responseUsuario.json().data;
-                const dataPassword = responsePassword.json().data;
-        
-                setEmail(dataUsuario.CorreoElectronico);
-                setNombre(dataUsuario.NombreCompleto);
-                setNickname(dataUsuario.Apodo);
-                setPassword(dataPassword.Password);
-                setAvatarPreview(dataUsuario.FotoOAvatar)
-                console.log("Información actualizada correctamente");
-            } else {
-                console.error("No se pudo obtener la información del usuario o la contraseña.");
-                alert("Ocurrió un error al actualizar la información.");
+        if(isEditable) {
+            try {//CORREGIR LAS DOS LINEAS QUE VIENEN
+                const responseUsuario = await updateUserInfo(localToken, formDataUser);
+                const responsePerfil = await updateUserProfile(localToken, formDataProfile);
+            
+                console.log("Respuesta Usuario:", responseUsuario);
+                console.log("Respuesta Perfil:", responsePerfil);
+            
+                if (responseUsuario.status === 200 && responsePerfil.status === 200) {
+                    const dataUsuario = responseUsuario.json().data;
+                    const dataPassword = responsePerfil.json().data;
+            
+                    setEmail(dataUsuario.CorreoElectronico);
+                    setNombre(dataUsuario.NombreCompleto);
+                    setNickname(dataUsuario.Apodo);
+                    setPassword(dataPassword.Password);
+                    setAvatarPreview(dataUsuario.FotoOAvatar)
+                    console.log("Información actualizada correctamente");
+                } else {
+                    console.error("No se pudo obtener la información del usuario o la contraseña.");
+                    alert("Ocurrió un error al actualizar la información.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Ocurrió un error al intentar conectar con el servidor.");
             }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Ocurrió un error al intentar conectar con el servidor.");
         }
         
     };
@@ -150,41 +159,55 @@ function UserInformation() {
                             fullWidth
                             label="Correo electrónico"
                             type="email"
-                            value={email}
+                            value={email || ''}
                             onChange={(e) => setEmail(e.target.value)}
+                            disabled={!isEditable}
                             style={{ marginTop: '10px' }}
                         />
                         <TextField
                             fullWidth
                             label="Nombre/s"
                             type="text"
-                            value={nombre}
+                            value={nombre || ''}
                             onChange={(e) => setNombre(e.target.value)}
+                            disabled={!isEditable}
                             style={{ marginTop: '10px' }}
                         />
                         <TextField
                             fullWidth
                             label="Apellido/s"
                             type="text"
-                            value={apellido}
+                            value={apellido || ''}
                             onChange={(e) => setApellido(e.target.value)}
+                            disabled={!isEditable}
                             style={{ marginTop: '10px' }}
                         />
                         <TextField
                             fullWidth
                             label="Apodo"
                             type="text"
-                            value={nickname}
+                            value={nickname || ''}
                             onChange={(e) => setNickname(e.target.value)}
+                            disabled={true}
                             style={{ marginTop: '10px' }}
                         />
                         <TextField
                             fullWidth
                             label="Contraseña"
                             type="password"
-                            value={password}
+                            value={password || ''}
                             onChange={(e) => setPassword(e.target.value)}
-                            style={{ marginTop: '10px' }}
+                            disabled={!isEditable}
+                            style={{ marginTop: '10px', display: isEditable ? 'block' : 'none' }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Confirmar contraseña"
+                            type="password"
+                            value={confirmpassword || ''}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            disabled={!isEditable}
+                            style={{ marginTop: '10px', display: isEditable ? 'block' : 'none' }}
                         />
                         
 
@@ -210,7 +233,7 @@ function UserInformation() {
                         <TextareaAutosize
                             minRows={3}
                             placeholder="Bio"
-                            value={bio}
+                            value={bio || ''}
                             onChange={(e) => setBio(e.target.value)}
                             style={{
                                 width: '100%',
@@ -227,7 +250,7 @@ function UserInformation() {
                     {/* Botones */}
                     <Grid item xs={12} container justifyContent="space-between">
                         <Button className="button-info" variant="contained" onClick={handleUpdate}>
-                            Actualizar información
+                        {isEditable ? 'Enviar datos' : 'Actualizar datos'}
                         </Button>
                         <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount}>
                             Desactivar cuenta
@@ -237,6 +260,6 @@ function UserInformation() {
             </div>
         </div>
     );
-}
 
+}
 export default UserInformation;
