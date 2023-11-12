@@ -6,26 +6,16 @@ const api = axios.create({
 
 
 
-export const updateUserInfo = (access_token, userData) => {
-  // Convertir FormData a objeto JSON
-  const formDataObject = {};
-  userData.forEach((value, key) => {
-    formDataObject[key] = value;
-  });
+export const updateUserInfo = (access_token, userData) => api.post('/update_user/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
 
-  // Realizar la solicitud con el objeto JSON
-  return api.post('/update_user/', formDataObject, {
-    headers: {
-      'Authorization': `Token ${access_token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-};
 
 export const updateProfileInfo = (access_token, userData) => api.post('/update_perfil/', userData, {
   headers: {
     'Authorization': `Token ${access_token}`,
-    'Content-Type': 'application/json',
   },
 });
 

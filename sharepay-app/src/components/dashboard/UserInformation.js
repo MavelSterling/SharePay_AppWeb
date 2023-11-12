@@ -38,7 +38,6 @@ function UserInformation() {
                     setNombre(infoUser.first_name);
                     setApellido(infoUser.last_name);
                     setNickname(infoUser.username);
-                    setPassword(infoUser.password);
                     setAvatarPreview(infoProfile.FotoOAvatar);
                     setBio(infoProfile.bio)
                 } else {
@@ -54,67 +53,92 @@ function UserInformation() {
         fetchData();
     }, []);
 
+    function validatePassword(password, confirmPassword) {
+        const minLength = 8;
+        if (password == null) {
+            alert(`El campo contraseña está vacío`);
+            return false;
+        }
+
+        if (password.length < minLength) {
+            alert(`La contraseña debe tener al menos ${minLength} caracteres.`);
+            return false;
+        }
+      
+        if (password !== confirmPassword) {
+            alert('Las contraseñas no coinciden.');
+            return false;
+        }
+      
+        // Agrega más criterios según sea necesario
+      
+        return true; // La contraseña cumple con los requisitos
+    }
+      
+
     
     const handleUpdate = async (e) => {
         e.preventDefault();
-
-        setIsEditable(!isEditable)
-
-        const formDataUser = new FormData();
-        formDataUser.append('email', email);
-        formDataUser.append('first_name', nombre);
-        formDataUser.append('last_name', apellido);
-        formDataUser.append('password', password);
-
-        const formDataProfile = new FormData();
-        formDataProfile.append('bio', bio);
-        if (avatar) {
-            formDataProfile.append('avatar', avatar);
-        }
-
-        
-        
-        const localToken = localStorage.getItem('userToken');
-        
+      
+        setIsEditable(!isEditable);
+      
         if (isEditable) {
-            if (password !== confirmpassword) {
-                // Mostrar mensaje de error o realizar alguna acción apropiada.
-                alert('Las contraseñas no coinciden.');
-                return;
+          const jsonDataUser = {
+            username: nickname,
+            email: email,
+            first_name: nombre,
+            last_name: apellido,
+            password: password,
+          };
+      
+          const jsonDataProfile = {
+            username: nickname,
+            bio: bio,
+          };
+      
+          if (avatar) {
+            jsonDataProfile.FotoOAvatar = avatar;
+          }
+      
+          const localToken = localStorage.getItem('userToken');
+      
+          // Validación de contraseñas
+          if (!validatePassword(password, confirmpassword)) {
+            return; // Salir de la función si la validación de contraseña falla
+          }
+      
+          try {
+            const responseUsuario = await updateUserInfo(localToken, jsonDataUser);
+            const responsePerfil = await updateProfileInfo(localToken, jsonDataProfile);
+      
+            console.log('Respuesta Usuario:', responseUsuario);
+            console.log('Respuesta Perfil:', responsePerfil);
+      
+            if (responseUsuario.status === 200 && responsePerfil.status === 200) {
+              const dataUsuario = responseUsuario.data;
+              const dataPerfil = responsePerfil.data;
+      
+              setEmail(dataUsuario.username);
+              setNombre(dataUsuario.first_name);
+              setApellido(dataUsuario.last_name);
+              setNickname(dataUsuario.Apodo);
+              setAvatarPreview(dataPerfil.FotoOAvatar);
+              setBio(dataPerfil.bio);
+      
+              alert('Información actualizada correctamente');
+              window.location.reload();
             } else {
-                try {
-                    const responseUsuario = await updateUserInfo(localToken, formDataUser);
-                    const responsePerfil = await updateProfileInfo(localToken, formDataProfile);
-
-                    console.log("Respuesta Usuario:", responseUsuario);
-                    console.log("Respuesta Perfil:", responsePerfil);
-
-                    if (responseUsuario.status === 200 && responsePerfil.status === 200) {
-                        const dataUsuario = responseUsuario.data;
-                        const dataPassword = responsePerfil.data;
-
-                        setEmail(dataUsuario.CorreoElectronico);
-                        setNombre(dataUsuario.NombreCompleto);
-                        setNickname(dataUsuario.Apodo);
-                        setPassword(dataPassword.Password);
-                        setAvatarPreview(dataUsuario.FotoOAvatar);
-                        setBio(dataUsuario.bio);
-
-                        alert("Información actualizada correctamente");
-                        window.location.reload()
-                    } else {
-                        console.error("No se pudo obtener la información del usuario o la contraseña.");
-                        alert("Ocurrió un error al actualizar la información.");
-                    }
-                } catch (error) {
-                    console.error("Error:", error);
-                    alert("Ocurrió un error al intentar conectar con el servidor.");
-                    //window.location.reload()
-                }
+              console.error('No se pudo obtener la información del usuario o la contraseña.');
+              alert('No se pudo obtener la información del usuario o la contraseña.');
             }
+          } catch (error) {
+            console.error('Error:', error);
+            alert('Ocurrió un error al intentar conectar con el servidor.');
+            // window.location.reload()
+          }
         }
-        
-    };
+      };
+      
     
 
     const handleAvatarChange = (e) => {
@@ -125,6 +149,12 @@ function UserInformation() {
             setAvatarPreview(previewURL);
         }
     };
+
+    const handleCancel = (e) => {
+        setIsEditable(false);
+        setPassword('');
+        setConfirmPassword('');
+    }
 
     const handleDeactivateAccount = async () => {
         // Con un endpoint que maneje la desactivación de cuentas:
@@ -151,119 +181,146 @@ function UserInformation() {
         }
     };
 
-    return (
-        <div style={{ display: 'flex' }}>
-            <Sidebar />
-            <div style={{ flex: 1, padding: '20px' }}>
-                <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
+    var respuesta = null;
 
-                <Grid container spacing={3}>
-                    {/* Columna izquierda */}
-                    <Grid item xs={12} md={6}>
-                        <TextField
-                            fullWidth
-                            label="Correo electrónico"
-                            type="email"
-                            value={email || ''}
-                            onChange={(e) => setEmail(e.target.value)}
-                            disabled={!isEditable}
-                            style={{ marginTop: '10px' }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Nombre/s"
-                            type="text"
-                            value={nombre || ''}
-                            onChange={(e) => setNombre(e.target.value)}
-                            disabled={!isEditable}
-                            style={{ marginTop: '10px' }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Apellido/s"
-                            type="text"
-                            value={apellido || ''}
-                            onChange={(e) => setApellido(e.target.value)}
-                            disabled={!isEditable}
-                            style={{ marginTop: '10px' }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Apodo"
-                            type="text"
-                            value={nickname || ''}
-                            onChange={(e) => setNickname(e.target.value)}
-                            disabled={true}
-                            style={{ marginTop: '10px' }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Contraseña"
-                            type="password"
-                            value={password || ''}
-                            onChange={(e) => setPassword(e.target.value)}
-                            disabled={!isEditable}
-                            style={{ marginTop: '10px', display: isEditable ? 'block' : 'none' }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Confirmar contraseña"
-                            type="password"
-                            value={confirmpassword || ''}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            disabled={!isEditable}
-                            style={{ marginTop: '10px', display: isEditable ? 'block' : 'none' }}
-                        />
+    if(localStorage.getItem('userToken') == null){
+        respuesta = (
+            <div style={{ display: 'flex' }}>usted no tiene permisos para ver esta pagina, por favor inicie sesion</div>
+        )
+    }else{
+        respuesta = (
+            <div style={{ display: 'flex' }}>
+                <Sidebar />
+                <div style={{ flex: 1, padding: '20px' }}>
+                    <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
+    
+                    <Grid container spacing={3}>
+                        {/* Columna izquierda */}
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                label="Correo electrónico"
+                                type="email"
+                                value={email || ''}
+                                onChange={(e) => setEmail(e.target.value)}
+                                disabled={!isEditable}
+                                style={{ marginTop: '10px' }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Nombre/s"
+                                type="text"
+                                value={nombre || ''}
+                                onChange={(e) => setNombre(e.target.value)}
+                                disabled={!isEditable}
+                                style={{ marginTop: '10px' }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Apellido/s"
+                                type="text"
+                                value={apellido || ''}
+                                onChange={(e) => setApellido(e.target.value)}
+                                disabled={!isEditable}
+                                style={{ marginTop: '10px' }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Apodo"
+                                type="text"
+                                value={nickname || ''}
+                                onChange={(e) => setNickname(e.target.value)}
+                                disabled={true}
+                                style={{ marginTop: '10px' }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Contraseña"
+                                type="password"
+                                value={password || ''}
+                                onChange={(e) => setPassword(e.target.value)}
+                                disabled={!isEditable}
+                                style={{ marginTop: '10px', display: isEditable ? 'block' : 'none' }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Confirmar contraseña"
+                                type="password"
+                                value={confirmpassword || ''}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                disabled={!isEditable}
+                                style={{ marginTop: '10px', display: isEditable ? 'block' : 'none' }}
+                            />
+                            
+    
+                        </Grid>
+    
+                        {/* Columna derecha */}
+                        <Grid item xs={12} md={6} container direction="column" alignItems="center" justifyContent="flex-start">
+                            <div style={{ width: '150px', height: '150px', marginBottom: '20px' }}>
+                                {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : "No image uploaded"}
+                            </div>
+                            <input
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                id="avatar-upload"
+                                type="file"
+                                onChange={handleAvatarChange}
+                            />
+                            <label htmlFor="avatar-upload">
+                                <Button variant="contained" color="primary" component="span">
+                                    Subir Avatar
+                                </Button>
+                            </label>
+                            <TextField
+                                label="Bio"
+                                multiline
+                                minRows={3}
+                                value={bio || ''}
+                                onChange={(e) => setBio(e.target.value)}
+                                disabled={!isEditable}
+                                fullWidth
+                                style={{
+                                    marginTop: '10px',
+                                    marginBottom: '10px',
+                                }}
+                            />
+                        </Grid>
+    
+    
                         
-
-                    </Grid>
-
-                    {/* Columna derecha */}
-                    <Grid item xs={12} md={6} container direction="column" alignItems="center" justifyContent="flex-start">
-                        <div style={{ width: '150px', height: '150px', marginBottom: '20px' }}>
-                            {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : "No image uploaded"}
-                        </div>
-                        <input
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                            id="avatar-upload"
-                            type="file"
-                            onChange={handleAvatarChange}
-                        />
-                        <label htmlFor="avatar-upload">
-                            <Button variant="contained" color="primary" component="span">
-                                Subir Avatar
+                        {/* Botones Aceptar y Cancelar */}
+                        <Grid item container xs={6} justifyContent="flex-start">
+                            <Button className="button-info" variant="contained" onClick={handleUpdate} style={{ marginRight: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
+                                {isEditable ? 'Enviar datos' : 'Actualizar datos'}
                             </Button>
-                        </label>
-                        <TextField
-                            label="Bio"
-                            multiline
-                            minRows={3}
-                            value={bio || ''}
-                            onChange={(e) => setBio(e.target.value)}
-                            disabled={!isEditable}
-                            fullWidth
-                            style={{
-                                marginTop: '10px',
-                                marginBottom: '10px',
-                            }}
-                        />
-                    </Grid>
+                            <Button
+                                className="button-info"
+                                variant="contained"
+                                onClick={handleCancel}
+                                disabled={!isEditable}
+                                style={{ marginTop: '10px', display: isEditable ? 'block' : 'none', whiteSpace: 'nowrap', width: 'auto'  }}
+                            >
+                                Cancelar
+                            </Button>
+                        </Grid>
 
 
-                    {/* Botones */}
-                    <Grid item xs={12} container justifyContent="space-between">
-                        <Button className="button-info" variant="contained" onClick={handleUpdate}>
-                        {isEditable ? 'Enviar datos' : 'Actualizar datos'}
-                        </Button>
-                        <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount}>
+                        {/* Botón Desactivar cuenta */}
+                        <Grid item xs={6} container justifyContent="flex-end">
+                            <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount} style={{ marginTop: '10px', whiteSpace: 'nowrap', width: 'auto'  }}>
                             Desactivar cuenta
-                        </Button>
+                            </Button>
+                        </Grid>
+
                     </Grid>
-                </Grid>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
+
+
+    return(respuesta);
 
 }
 export default UserInformation;

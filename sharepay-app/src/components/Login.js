@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Container, Paper, Grid, Typography, TextField, Button, Link } from '@mui/material';
 import logo from '../assets/Logo.png';
 import { getToken, getUserByUsername} from '../api/service';
@@ -11,6 +11,14 @@ function Login() {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
+
+  
+  useEffect(() => {
+    if (localStorage.getItem('userToken') !== null) {
+      alert('Usted ya habia iniciado sesion, bienvenido de vuelta')
+      navigate('/dashboard/user-information');
+    }
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -47,6 +55,7 @@ function Login() {
         console.error('Error durante el inicio de sesión:', error);
         alert('Error durante el inicio de sesión:', error);
     }
+
 };
 
   
