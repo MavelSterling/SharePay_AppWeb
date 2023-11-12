@@ -3,7 +3,7 @@ import { Container, Paper, Typography, TextField, Button, Grid,useTheme, useMedi
 import logo from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 //import { createUser, getUsers } from '../api/service'
-import { registerUser } from '../api/service';
+import { registerUser, validatePassword } from '../api/service';
 
 
 
@@ -30,14 +30,20 @@ function Register() {
             last_name: apellidos,
           };
         
-          try {
+        if (!validatePassword(password, confirmPassword)) {
+            setPassword("");
+            setConfirmPassword("");
+            return;
+        }
+
+        try {
             const response = await registerUser(userData);
             if (response.data) {
                 // Registro exitoso
                 console.log('Registro exitoso:', response.data);
                 alert('Registro exitoso');
                 navigate("/login");
-            }
+        }
         } catch (error) {
             console.error('Hubo un error al registrarse:', error);
             alert('hubo un error al registrarse, por favor, verifica los datos')

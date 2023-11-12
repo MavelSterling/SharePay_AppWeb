@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
-import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID } from '../../api/service';
+import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword} from '../../api/service';
+import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 
 function UserInformation() {
     const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ function UserInformation() {
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
     const [bio, setBio] = useState("");
+    const [isActive, setIsActive] = useState(null);
 
 
 
@@ -39,7 +41,9 @@ function UserInformation() {
                     setApellido(infoUser.last_name);
                     setNickname(infoUser.username);
                     setAvatarPreview(infoProfile.FotoOAvatar);
-                    setBio(infoProfile.bio)
+                    setBio(infoProfile.bio);
+                    setIsActive(infoUser.is_active);
+                    console.log(isActive)
                 } else {
                     console.error("No se pudo obtener la información del usuario o la contraseña.");
                 }
@@ -53,29 +57,7 @@ function UserInformation() {
         fetchData();
     }, []);
 
-    function validatePassword(password, confirmPassword) {
-        const minLength = 8;
-        if (password == null) {
-            alert(`El campo contraseña está vacío`);
-            return false;
-        }
-
-        if (password.length < minLength) {
-            alert(`La contraseña debe tener al menos ${minLength} caracteres.`);
-            return false;
-        }
-      
-        if (password !== confirmPassword) {
-            alert('Las contraseñas no coinciden.');
-            return false;
-        }
-      
-        // Agrega más criterios según sea necesario
-      
-        return true; // La contraseña cumple con los requisitos
-    }
-      
-
+    const navigate = useNavigate();  // Usa el hook useNavigate
     
     const handleUpdate = async (e) => {
         e.preventDefault();
@@ -104,6 +86,8 @@ function UserInformation() {
       
           // Validación de contraseñas
           if (!validatePassword(password, confirmpassword)) {
+            setPassword(null);
+            setConfirmPassword(null);
             return; // Salir de la función si la validación de contraseña falla
           }
       
@@ -152,28 +136,29 @@ function UserInformation() {
 
     const handleCancel = (e) => {
         setIsEditable(false);
-        setPassword('');
-        setConfirmPassword('');
+        setPassword(null);
+        setConfirmPassword(null);
     }
 
     const handleDeactivateAccount = async () => {
         // Con un endpoint que maneje la desactivación de cuentas:
-        const userToken = localStorage.getItem("userToken");
+        const localToken = localStorage.getItem("userToken");
+        const jsonDataUser = {
+            username: nickname,
+            is_active: 0//esto desactiva el usuario
+          };
         try {
-            const responseUsuario = await fetch('http://tu-dominio.com/api/deactivateAccount/', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Token ${userToken}`
-                }
-            });
+            const responseUsuario = await updateUserInfo(localToken, jsonDataUser);
 
-            const dataUsuario = await responseUsuario.json();
-
-            if (responseUsuario.ok) {
+            if (responseUsuario.status === 200) {
                 alert("Cuenta desactivada correctamente");
-                // Aquí se puede redirigir al usuario a la página de inicio o hacer log out
+                console.log('Usuario ha desactivado su cuenta, cerrando sesión...');
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('username');
+                navigate('/');
             } else {
-                alert(dataUsuario.error || "Ocurrió un error al intentar desactivar la cuenta");
+                alert(responseUsuario.error || "Ocurrió un error al intentar desactivar la cuenta");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -290,8 +275,8 @@ function UserInformation() {
     
                         
                         {/* Botones Aceptar y Cancelar */}
-                        <Grid item container xs={6} justifyContent="flex-start">
-                            <Button className="button-info" variant="contained" onClick={handleUpdate} style={{ marginRight: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
+                        <Grid item container xs={6}  style={{ marginTop: '10px', marginLeft: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
+                            <Button className="button-info" variant="contained" onClick={handleUpdate} style={{ marginTop: '10px', marginRight: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
                                 {isEditable ? 'Enviar datos' : 'Actualizar datos'}
                             </Button>
                             <Button
@@ -307,7 +292,7 @@ function UserInformation() {
 
 
                         {/* Botón Desactivar cuenta */}
-                        <Grid item xs={6} container justifyContent="flex-end">
+                        <Grid item xs={10} container justifyContent="flex-end" >
                             <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount} style={{ marginTop: '10px', whiteSpace: 'nowrap', width: 'auto'  }}>
                             Desactivar cuenta
                             </Button>
