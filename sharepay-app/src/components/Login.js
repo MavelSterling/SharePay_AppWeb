@@ -34,10 +34,12 @@ function Login() {
             
             if (userResponse.data.user_id) {
                 const userId = userResponse.data.user_id;
+                const userEmail = userResponse.data.email;
 
                 localStorage.setItem('userToken', token);
                 localStorage.setItem('userId', userId);
-                localStorage.setItem('username', username)
+                localStorage.setItem('username', username);
+                localStorage.setItem('email', userEmail);
 
                 console.log('token: ',token);
                 console.log('UserID: ', userId);

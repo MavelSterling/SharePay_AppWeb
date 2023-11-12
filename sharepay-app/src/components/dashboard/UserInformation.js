@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
-import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword} from '../../api/service';
+import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword, getUserByEmail} from '../../api/service';
 import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 
 function UserInformation() {
@@ -14,7 +14,7 @@ function UserInformation() {
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
     const [bio, setBio] = useState("");
-    const [isActive, setIsActive] = useState(null);
+    const [isActive, setIsActive] = useState(false);
 
 
 
@@ -43,7 +43,6 @@ function UserInformation() {
                     setAvatarPreview(infoProfile.FotoOAvatar);
                     setBio(infoProfile.bio);
                     setIsActive(infoUser.is_active);
-                    console.log(isActive)
                 } else {
                     console.error("No se pudo obtener la información del usuario o la contraseña.");
                 }

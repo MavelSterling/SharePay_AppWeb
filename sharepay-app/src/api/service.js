@@ -32,13 +32,28 @@ export const getUserByUsername = (access_token, username) => api.get(`/get_user/
   }
 });
 
+export const getContacts = (access_token, userID) => api.get(`/get_contacts/?user=${userID}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
+
+
+
+export const getUserByEmail = (access_token, email) => api.get(`/get_user/?email=${email}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
+
+
 //este es el login
 export const getToken = (usuario, password) => {
     return api.post('/generate_token/', {
         username: usuario,
         password: password,
     });
-  };  
+};  
   /* 
   */
 
@@ -49,7 +64,7 @@ export const registerUser = (userData) => {
         'Content-Type': 'application/json',
       },
     });
-  };
+};
 
   export function validatePassword(password, confirmPassword) {
     const minLength = 8;
@@ -120,4 +135,4 @@ export const registerUser = (userData) => {
     // Agrega más criterios según sea necesario
   
     return true; // La contraseña cumple con los requisitos
-  }
+};
