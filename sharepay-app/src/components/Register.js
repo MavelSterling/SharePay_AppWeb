@@ -3,79 +3,50 @@ import { Container, Paper, Typography, TextField, Button, Grid,useTheme, useMedi
 import logo from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 //import { createUser, getUsers } from '../api/service'
-import { createUser } from '../api/service'
-import { getSpecificUser, createPassword } from '../api/service';
+import { registerUser, validatePassword } from '../api/service';
 
 
 
 function Register() {
+    const [usuario, setUsuario] = useState('');
     const [email, setEmail] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [nickname, setNickname] = useState('');
+    const [nombres, setNombres] = useState("");
+    const [apellidos, setApellidos] = useState("");
     const [avatar, setAvatar] = useState(null);
     const [password, setPassword] = useState('');
-    
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('email', email);
-        formData.append('fullName', fullName);
-        formData.append('nickname', nickname);
-        formData.append('password', password);
-        if (avatar) {
-            formData.append('avatar', avatar);
+        const userData = {
+            username: usuario,
+            password: password,
+            password2: confirmPassword,
+            email: email,
+            first_name: nombres,
+            last_name: apellidos,
+          };
+        
+        if (!validatePassword(password, confirmPassword)) {
+            setPassword("");
+            setConfirmPassword("");
+            return;
         }
 
-        console.log(formData.get("email"))
-        
         try {
-            const response = await createUser({
-                CorreoElectronico: formData.get("email"),
-                NombreCompleto: formData.get("fullName"),
-                Apodo: formData.get("nickname"),
-                FotoOAvatar: formData.get("avatar"),
-                Estado: "activo"
-            })
-
-            const userResponse = await getSpecificUser({
-                email: email
-              })
-
-            const foundUser = userResponse.data.find(user => user.CorreoElectronico === email)
-            
+            const response = await registerUser(userData);
             if (response.data) {
                 // Registro exitoso
                 console.log('Registro exitoso:', response.data);
-
-                // Ahora, guarda la contraseña en la tabla de contraseñas
-                try {
-                    // Ahora, guarda la contraseña en la tabla de contraseñas
-                    const passwordResponse = await createPassword({
-                        CorreoElectronico: formData.get('email'),
-                        Password: formData.get('password'),
-                    });
-            
-                    if (passwordResponse.status === 201) {
-                        console.log('Contraseña guardada con éxito');
-                    } else {
-                        console.error('Error al guardar la contraseña:', passwordResponse.data);
-                    }
-                    
-                    localStorage.setItem('userToken', userResponse.data.token);
-                    localStorage.setItem('CorreoElectronicoActivo', foundUser.CorreoElectronico);
-                    console.log("usuario activo ", localStorage.getItem('CorreoElectronicoActivo'))
-                    navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
-                } catch (error) {
-                    console.error('Error al guardar la contraseña:', error);
-                }
-
-            }
+                alert('Registro exitoso');
+                navigate("/login");
+        }
         } catch (error) {
             console.error('Hubo un error al registrarse:', error);
+            alert('hubo un error al registrarse, por favor, verifica los datos')
         }
     };
 
@@ -94,13 +65,14 @@ function Register() {
             <Paper elevation={1} style={{ padding: isMobile ? '12px' : '20px', marginTop: isMobile ? '10vh' : '15vh' }}>
                 <Grid container spacing={1} direction="column" alignItems="center">
                     <Grid item xs={12}>
-                    <img src={logo} alt="App Logo" width={isMobile ? 80 : 180} />
+                        <img src={logo} alt="App Logo" width={isMobile ? 80 : 180} />
                     </Grid>
                     <Grid item xs={10}>
                         <Typography variant="h5" align="center">Registrarse</Typography>
                     </Grid>
                     <Grid item xs={10} sm={8} md={6}>
-                            <form onSubmit={handleRegister} >
+                        <form onSubmit={handleRegister}>
+
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -116,18 +88,27 @@ function Register() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="Nombre completo"
-                                value={fullName}
-                                onChange={(e) => setFullName(e.target.value)}
+                                label="Nombres"
+                                value={nombres}
+                                onChange={(e) => setNombres(e.target.value)}
                             />
                             <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="Apodo"
-                                value={nickname}
-                                onChange={(e) => setNickname(e.target.value)}
+                                label="Apellidos"
+                                value={apellidos}
+                                onChange={(e) => setApellidos(e.target.value)}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Nickname (Usuario)"
+                                value={usuario}
+                                onChange={(e) => setUsuario(e.target.value)}
                             />
                             <TextField
                                 variant="outlined"
@@ -135,9 +116,19 @@ function Register() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="contraseña"
+                                label="Contraseña"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <TextField
+                                variant="outlined"
+                                type="password"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Confirma la contraseña"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                             />
                             <input
                                 accept="image/*"
@@ -169,6 +160,3 @@ function Register() {
 }
 
 export default Register;
-
-// para ver usuarios
-// http://127.0.0.1:8000/BackendApp/api/v1/Usuarios/
