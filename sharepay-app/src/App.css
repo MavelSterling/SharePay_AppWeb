@@ -227,6 +227,7 @@ button {
 button:hover {
   transform: scale(1.2); /* Ajusta el factor de escala */
 }
+
 .button-info {
   background-color: #0a363b;
   color: white;
@@ -240,6 +241,7 @@ button:hover {
   margin-top: 15px;
 
 }
+
 .search-container {
   display: flex;
   align-items: center; /* Centra verticalmente los elementos */
@@ -357,6 +359,7 @@ table {
   cursor: pointer;
   margin-top: 10px; /* Espacio superior */
 }
+
 /* --------------------------------------------------------------*/
 
 /* CSS para el fondo oscuro detrás del modal */
