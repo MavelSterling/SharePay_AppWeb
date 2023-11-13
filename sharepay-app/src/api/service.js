@@ -32,7 +32,7 @@ export const getUserByUsername = (access_token, username) => api.get(`/get_user/
   }
 });
 
-export const getContacts = (access_token, userID) => api.get(`/get_contacts/?user=${userID}`, {
+export const getContacts = (access_token, username) => api.get(`/get_contacts/?username=${username}`, {
   headers: {
     'Authorization': `token ${access_token}`
   }
