@@ -290,9 +290,11 @@ function UserInformation() {
                         </Grid>
 
 
+
                         {/* Botón Desactivar cuenta */}
                         <Grid item xs={10} container justifyContent="flex-end" >
                             <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount} style={{ marginTop: '10px', whiteSpace: 'nowrap', width: 'auto'  }}>
+
                             Desactivar cuenta
                             </Button>
                         </Grid>
