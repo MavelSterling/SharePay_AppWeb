@@ -342,21 +342,10 @@ table {
   border: none;
   border-radius: 7px;
   font-size: 16px;
-  width: 130px; /* Define el ancho deseado para el botón */
+  width: 140px; /* Define el ancho deseado para el botón */
   cursor: pointer;
-}
-
-.button-act {
-  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
-  background-color: #1A5276;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-size: 16px;
-  width: 130px; /* Define el ancho deseado para el botón */
-
-  cursor: pointer;
-  margin-top: 10px; /* Espacio superior */
+  transition: transform 0.2s ease;
+  transform: scale(1.18); /* Ajusta el factor de escala */
 }
 
 .button-act {
@@ -369,6 +358,8 @@ table {
   width: 130px; /* Define el ancho deseado para el botón */
   cursor: pointer;
   margin-top: 10px; /* Espacio superior */
+  transition: transform 0.2s ease;
+  transform: scale(1.18); /* Ajusta el factor de escala */
 }
 /* --------------------------------------------------------------*/
 
@@ -455,6 +446,8 @@ table {
   font-size: 15px;
   width: 150px; /* Define el ancho deseado para el botón */
   cursor: pointer;
+  transition: transform 0.2s ease;
+  transform: scale(1.2); /* Ajusta el factor de escala */
 }
 
 .button-event-modal-update {
@@ -466,6 +459,8 @@ table {
   font-size: 15px;
   width: 150px; /* Define el ancho deseado para el botón */
   cursor: pointer;
+  transition: transform 0.2s ease;
+  transform: scale(1.2); /* Ajusta el factor de escala */
 }
 
 .button-event-modal-delete {
@@ -477,4 +472,69 @@ table {
   font-size: 15px;
   width: 150px; /* Define el ancho deseado para el botón */
   cursor: pointer;
+  transition: transform 0.2s ease;
+  transform: scale(1.2); /* Ajusta el factor de escala */
 }
+
+.button-event-modal-cancel {
+  background-color: #ccc; /* Color de fondo */
+  color: #333; /* Color del texto */
+  border: none; /* Sin borde */
+  padding: 10px 20px; /* Relleno */
+  cursor: pointer; /* Cambiar el cursor al pasar por encima */
+  font-size: 15px;
+  border-radius: 7px;
+  width: 100px; /* Define el ancho deseado para el botón */
+  transition: transform 0.2s ease;
+  transform: scale(1.2); /* Ajusta el factor de escala */
+  margin-right: 10px;
+
+
+}
+
+.button-event-modal-cancel:hover {
+  background-color: #aaa; /* Cambiar el color de fondo al pasar por encima */
+}
+
+.button-event-modal-create {
+  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #146d9d;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  width: 150px; /* Define el ancho deseado para el botón */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  transform: scale(1.2); /* Ajusta el factor de escala */
+}
+
+.button-event-modal-create:hover {
+  background-color: #2E4053; /* Cambiar el color de fondo al pasar por encima */
+}
+
+.event-modal input,
+.event-modal textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.event-modal label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.event-modal textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  resize: vertical; /* Permite redimensionar verticalmente */
+}
+

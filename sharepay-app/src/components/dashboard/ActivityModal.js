@@ -7,7 +7,6 @@ function ActivityModal({ isOpen, onClose, onSave }) {
 
   const handleSave = () => {
     if (!activityName || activityValue <= 0) {
-      // Valida que los campos obligatorios estén completados
       alert('Por favor, complete todos los campos obligatorios.');
       return;
     }
@@ -18,13 +17,13 @@ function ActivityModal({ isOpen, onClose, onSave }) {
       description: activityDescription,
     };
 
-    onSave(newActivity); // Llama a la función onSave para guardar la nueva actividad.
-    onClose(); // Cierra el modal.
+    onSave(newActivity);
+    onClose();
   };
 
   return (
-    <div className={`activity-modal ${isOpen ? 'open' : ''}`}>
-      <div style={{ flex: 3, padding: '20px', textAlign: 'center' }}>
+    <div className={`event-modal ${isOpen ? 'open' : ''}`}>
+      <div style={{ padding: '20px', textAlign: 'center' }}>
         <span className="close" onClick={onClose}>
           &times;
         </span>
@@ -33,29 +32,41 @@ function ActivityModal({ isOpen, onClose, onSave }) {
 
         <div className="modal-content">
           <div className="column-event">
-        <input
-          type="text"
-          placeholder="Nombre de la actividad"
-          value={activityName}
-          onChange={(e) => setActivityName(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Valor total"
-          value={activityValue}
-          onChange={(e) => setActivityValue(Number(e.target.value))}
-        />
-      </div>
-      <div className="column-event">
+            <label>Nombre de la actividad:</label>
+            <input
+              type="text"
+              placeholder=""
+              value={activityName}
+              onChange={(e) => setActivityName(e.target.value)}
+            />
 
-        <textarea
-          placeholder="Descripción"
-          value={activityDescription}
-          onChange={(e) => setActivityDescription(e.target.value)}
-        />
+            
+            <label>Descripción:</label>
+            <textarea
+              placeholder=""
+              value={activityDescription}
+              onChange={(e) => setActivityDescription(e.target.value)}
+            />
+          </div>
+
+          <div className="column-event">
+          <label>Valor total:</label>
+            <input
+              type="number"
+              placeholder="0"
+              value={activityValue}
+              onChange={(e) => setActivityValue(Number(e.target.value))}
+            />
+          </div>
         </div>
 
-        <button className="button-event-modal" onClick={handleSave}>Crear</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+          <button className="button-event-modal-cancel" onClick={onClose}>
+            Cancelar
+          </button>
+          <button className="button-event-modal-create" onClick={handleSave}>
+            Crear actividad
+          </button>
         </div>
       </div>
     </div>
@@ -63,3 +74,5 @@ function ActivityModal({ isOpen, onClose, onSave }) {
 }
 
 export default ActivityModal;
+
+
