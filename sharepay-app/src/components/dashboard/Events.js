@@ -12,7 +12,6 @@ function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isActivityModalOpen, setActivityModalOpen] = useState(false);
 
-  const [isActivityModalOpen, setActivityModalOpen] = useState(false);
 
   // Función para cargar los eventos desde la API de Django.
   const fetchEvents = async () => {
