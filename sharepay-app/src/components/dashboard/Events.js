@@ -140,7 +140,7 @@ function Events() {
                       setDetailModalOpen(true);
                     }}
                   >
-                    Ver Evento
+                    Ver Actividad
                   </button>
                 </td>
               </tr>
