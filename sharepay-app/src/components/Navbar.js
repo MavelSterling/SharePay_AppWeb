@@ -10,7 +10,10 @@ const NavBar = () => {
         // - Llamar a una API para cerrar sesión
 
         // - Limpiar tokens o información de usuario del localStorage o context
-        localStorage.removeItem('CorreoElectronicoActivo');
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        
         
         console.log('Usuario ha cerrado sesión');
 

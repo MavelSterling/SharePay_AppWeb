@@ -130,7 +130,7 @@
   position: absolute;  /* Posicionamiento absoluto para que pueda moverse libremente dentro del NavBar */
   top: 10px;  /* Posición desde el borde superior */
   right: 10px;  /* Posición desde el borde derecho */
-  background-color: #8eb9e6;  /* Color de fondo azul para el botón */
+  background-color: #0056b3;  /* Color de fondo azul para el botón */
   color: #ADD8E6;  /* Color de texto blanco para el botón */
   border: none;  /* Eliminar el borde del botón */
   padding: 5px 15px;  /* Espaciado interno para el botón */
@@ -138,9 +138,7 @@
   border-radius: 5px;  /* Bordes redondeados para el botón */
 }
 
-.logoutButton:hover {
-  background-color: #0056b3;  /* Cambiar el color de fondo a un azul más oscuro al pasar por encima del botón */
-}
+
 
 .sidebar-container {
   display: flex;
@@ -346,6 +344,19 @@ table {
   font-size: 16px;
   width: 130px; /* Define el ancho deseado para el botón */
   cursor: pointer;
+}
+
+.button-act {
+  padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #1A5276;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 16px;
+  width: 130px; /* Define el ancho deseado para el botón */
+
+  cursor: pointer;
+  margin-top: 10px; /* Espacio superior */
 }
 
 .button-act {

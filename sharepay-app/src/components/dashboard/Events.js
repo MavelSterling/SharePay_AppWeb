@@ -12,6 +12,8 @@ function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isActivityModalOpen, setActivityModalOpen] = useState(false);
 
+  const [isActivityModalOpen, setActivityModalOpen] = useState(false);
+
   // Función para cargar los eventos desde la API de Django.
   const fetchEvents = async () => {
     try {
@@ -27,6 +29,7 @@ function Events() {
     try {
       await axios.post('URL_de_tu_API/events', newEvent);
       setModalOpen(false); // Cierra el modal de creación de evento.
+
       fetchEvents(); // Recarga la lista de eventos.
     } catch (error) {
       console.error('Error al crear un evento:', error);
@@ -43,13 +46,13 @@ function Events() {
       console.error('Error al crear una actividad:', error);
     }
   };
-
   useEffect(() => {
     fetchEvents();
   }, []); // Cargar eventos al cargar la página.
 
   return (
     <div style={{ display: 'flex' }}>
+
       <Sidebar />
       <div style={{ flex: 1, padding: '20px' }}>
         <h2>Eventos y Actividades</h2>
@@ -125,6 +128,50 @@ function Events() {
             </tr>
           </thead>
           <tbody>
+            {events.map((event) => (
+              <tr key={event.id}>
+                <td>{event.creator}</td>
+                <td>{event.date}</td>
+                <td>{event.name}</td>
+                <td>{event.type}</td>
+                <td>
+                  <button
+                    onClick={() => {
+                      setSelectedEvent(event);
+                      setDetailModalOpen(true);
+                    }}
+                  >
+                    Ver Evento
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div>
+          <button className="button-act" onClick={() => setActivityModalOpen(true)}>
+            Nueva Actividad
+          </button>
+
+          {isActivityModalOpen && (
+            <ActivityModal
+              onClose={() => setActivityModalOpen(false)} // Cierra el modal de actividades
+              onCreate={createActivity}
+            />
+          )}
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre de la actividad</th>
+              <th>Monto total</th>
+              <th>Participantes</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+
             {/* Mapea y muestra la lista de actividades aquí */}
           </tbody>
         </table>
