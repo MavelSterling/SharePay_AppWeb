@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
-import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword, getUserByEmail} from '../../api/service';
+import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword} from '../../api/service';
 import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 
 function UserInformation() {
