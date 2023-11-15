@@ -225,7 +225,7 @@ button {
 }
 
 button:hover {
-  transform: scale(1.2); /* Ajusta el factor de escala */
+  transform: scale(1.1); /* Ajusta el factor de escala */
 }
 .button-info {
   background-color: #0a363b;
@@ -387,8 +387,8 @@ table {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000; /* Asegura que esté por encima del fondo oscuro */
-  width: 500px; /* Ajusta el ancho deseado */
-  height: 380px; /* Ajusta el alto deseado */
+  width: 700px; /* Ajusta el ancho deseado */
+  height: 500px; /* Ajusta el alto deseado */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -398,6 +398,15 @@ table {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
+}
+
+.event-modal {
+
+  width: 110%; /* Hace que el modal ocupe el 100% del ancho del contenedor */
+  max-height: 80vh; /* Establece una altura máxima del 80% del alto de la ventana */
+  flex-direction: column; /* Asegura que los elementos estén apilados verticalmente */
 }
 
 /* CSS para el botón de cerrar (la 'x') */
@@ -450,6 +459,7 @@ table {
   transition: transform 0.2s ease;
   transform: scale(1.2); /* Ajusta el factor de escala */
 }
+
 
 .button-event-modal-update {
   padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
@@ -539,3 +549,86 @@ table {
   resize: vertical; /* Permite redimensionar verticalmente */
 }
 
+/*--------------------------*/
+
+ /* Estilos para el fondo oscuro detrás del modal - ActivityModal */
+ .event-modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Asegura que esté por encima de otros elementos */
+}
+
+/* CSS para el modal en sí */
+
+
+/* CSS para el botón de cerrar (la 'x') */
+.event-modal .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+/* Estilos adicionales para mejorar la apariencia */
+.event-modal h3 {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.modal-content {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.column-event {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.column-event label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.column-event textarea,
+.column-event input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-event-modal-create {
+  padding: 8px 12px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+
+.button-event-modal-create {
+  background-color: #146d9d;
+  color: white;
+}
+
+.button-event-modal-create:hover {
+  background-color: #2e4053;
+}
