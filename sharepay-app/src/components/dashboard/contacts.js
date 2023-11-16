@@ -1,73 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useCallback} from 'react';
 import Sidebar from './Sidebar';
-import { Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
-import { getUserByEmail , getContacts} from '../../api/service';
+import { Table, TableBody, TableCell, TableHead, TableRow, Button, darkScrollbar } from '@mui/material';
+import { getUserByUsername , getContacts} from '../../api/service';
 
-
-const ContactsTable = ({ contacts, handleAddContact, handleDeleteContact }) => {
+const ContactsTable = ({ Title, contacts, handleDeleteContact }) => {
   return (
-    <Table style={{ minWidth: 650, marginBottom: 20 }}>
-      <TableHead >
+    <Table style={{ marginBottom: 20, borderCollapse: 'collapse', width: '100%', border: 'none' }}>
+      <TableHead>
         <TableRow>
-          <TableCell style={{ fontWeight: 'bold', fontSize: 16 }}>Apodo</TableCell>
-          <TableCell style={{ fontWeight: 'bold', fontSize: 16 }}>Estado de la solicitud</TableCell>
-          <TableCell style={{ fontWeight: 'bold', fontSize: 16 }}>Acciones</TableCell>
+          <TableCell colSpan={2} style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 20 , border: 'none' }}>
+            {Title}
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {contacts.map(contact => (
+        {contacts.map((contact) => (
           <TableRow key={contact.id}>
-            <TableCell>{contact.remitente}</TableCell>
-            <TableCell>{contact.estado}</TableCell>
-            <TableCell>
-              <Button
-                style={{ marginRight: 10, background: '#4CAF50', color: 'white' }}
-                onClick={() => handleAddContact(contact)}
-              >
-                Invitar
-              </Button>
-              <Button
-                style={{ background: '#f44336', color: 'white' }}
-                onClick={() => handleDeleteContact(contact.id)}
-              >
-                Eliminar
-              </Button>
+            <TableCell className="center-vertically" style={{ border: 'none' }}>
+              <img
+                src={contact.remitente.avatar}
+                alt="Avatar"
+                style={{ width: 40, height: 40, borderRadius: '50%', marginRight: 30 }}
+              />
+              {contact.remitente.username}
+            </TableCell>
+            <TableCell style={{ border: 'none', textAlign: 'right' }}>
+              {contact.estado === 'Pendiente' ? (
+                <Button
+                  style={{ background: '#f44336', color: 'white' }}
+                  onClick={() => handleDeleteContact(contact.id)}
+                >
+                  Cancelar Solicitud
+                </Button>
+              ) : (
+                <Button
+                  style={{ background: '#f44336', color: 'white' }}
+                  onClick={() => handleDeleteContact(contact.id)}
+                >
+                  Eliminar Contacto
+                </Button>
+              )}
             </TableCell>
           </TableRow>
         ))}
+        {contacts.length === 0 && (
+          null
+        )}
       </TableBody>
+
     </Table>
   );
 };
 
-
-
 function Contacts() {
     const [contacts, setContacts] = useState([]);
-    const [searchEmail, setSearchEmail] = useState('');
+    const [searchUser, setSearchUser] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-
-    useEffect(() => {
-        loadContacts();
-    }, []);
-
-    const loadContacts = async () => {
-        const contactosDelUsuario = await getContacts(userToken, Usuario);
-        const data = contactosDelUsuario.data;
-        setContacts(data.user_contacts);
-    };
 
     const userToken = localStorage.getItem('userToken');
     const Usuario = localStorage.getItem('username');
+    
+    const loadContacts = useCallback(async () => {
+      const contactosDelUsuario = await getContacts(userToken, Usuario);
+      const data = contactosDelUsuario.data;
+      setContacts(data.user_contacts);
+    }, [userToken, Usuario]);
+
+    useEffect(() => {
+      loadContacts();
+    }, [loadContacts]);
+    
+    
 
 
     const handleSearch = async () => {
-        if (!searchEmail) return;
+        if (!searchUser) return;
         //if(!userToken) return;
         // Llamada a la API para buscar usuarios por correo electrónico
-        const responseBusqueda = await getUserByEmail(userToken, searchEmail);
-        const data = responseBusqueda.data;
-        setSearchResults(data);
+        try {
+          const responseBusqueda = await getUserByUsername(userToken, searchUser);
+          const data = responseBusqueda.data;
+          setSearchResults(data);
+        } catch (error) {
+          console.log('La búsqueda no arrojó resultados.');
+          alert('La búsqueda no arrojó resultados.');
+        }
     };
 
     const handleAddContact = (newContact) => {
@@ -76,11 +93,8 @@ function Contacts() {
         loadContacts();
     };
 
-    const handleDeleteContact = async (contactId) => {
-        // Llamada a la API para eliminar un contacto
-        // Verificar si no tienen eventos activos juntos antes de eliminar
-        // Luego, podrías recargar tus contactos
-        loadContacts();
+    const handleDeleteContact = async () => {
+        
     };
 
 
@@ -89,41 +103,42 @@ function Contacts() {
             <Sidebar />
             <div style={{ flex: 1, padding: '20px' }}>
 
-                <h2 style={{ textAlign: 'center' }}> Mis Contactos</h2>
+                <h2 style={{ textAlign: 'center' }}>Dashboard de contactos</h2>
 
-                <h3>Buscar Contactos</h3>
+                <h3>Agregar Contactos</h3>
                 <div className="search-container">
                     <input 
-                        value={searchEmail} 
-                        onChange={e => setSearchEmail(e.target.value)} 
-                        placeholder="Buscar por correo electrónico" 
+                        value={searchUser} 
+                        onChange={e => setSearchUser(e.target.value)} 
+                        placeholder="Buscar por Apodo (Nickname)" 
                         className="search-input"
                     />
                     <button className="button-search" onClick={handleSearch}>Buscar</button>
-
-
                 </div>
 
-                <ul>
-                    {searchResults.map(user => (
-                        <li key={user.id}>
-                            {user.name} - {user.email}
-                            <button onClick={() => handleAddContact(user)}>Añadir</button>
-                        </li>
-                    ))}
-                </ul>
-                
-                {contacts && contacts.length > 0 ? (
                 <ContactsTable
-                    contacts={contacts}
-                    handleAddContact={handleAddContact}
-                    handleDeleteContact={handleDeleteContact}
+                  Title={'Mis contactos'}
+                  contacts={contacts.filter(contact => contact.estado === 'Aceptada')}
+                  handleDeleteContact={handleDeleteContact}
                 />
-                ) : (
-                <p style={{ textAlign: 'center', marginTop: '40px' }}>
-                    Aún no hay contactos agregados.
-                </p>
+                {contacts.filter(contact => contact.estado === 'Aceptada').length > 0 ? null : (
+                  <p style={{ textAlign: 'center', marginTop: '10px', marginBottom: '60px' }}>
+                    Aún no hay Contactos agregados.
+                  </p>
                 )}
+
+                <ContactsTable
+                  Title={'Solicitudes Enviadas'}
+                  contacts={contacts.filter(contact => contact.estado === 'Pendiente')}
+                  handleDeleteContact={handleDeleteContact}
+                />
+
+                {contacts.filter(contact => contact.estado === 'Pendiente').length > 0 ? null : (
+                  <p style={{ textAlign: 'center', marginTop: '40px' }}>
+                    Aún no hay Solicitudes Enviadas.
+                  </p>
+                )}
+
 
                
             </div>

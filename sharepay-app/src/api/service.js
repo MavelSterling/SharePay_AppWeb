@@ -17,6 +17,11 @@ export const updateProfileInfo = (access_token, userData) => api.post('/update_p
   },
 });
 
+export const updateContactInfo = (access_token, userData) => api.post('/update_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
 
 // En tu archivo de servicio o donde defines las llamadas a la API
 export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {

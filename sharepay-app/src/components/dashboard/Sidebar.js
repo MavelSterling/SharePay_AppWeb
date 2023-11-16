@@ -33,6 +33,11 @@ function Sidebar() {
                             </Link>
                         </li>
                         <li>
+                            <Link to="/dashboard/contacts">
+                            <FaUserFriends /> Contactos
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/dashboard/events">
                             <FcCalendar /> Eventos
                             </Link>
@@ -40,11 +45,6 @@ function Sidebar() {
                         <li>
                             <Link to="/dashboard/payments">
                             <FcCurrencyExchange /> Pagos
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/contacts">
-                            <FaUserFriends /> Contactos
                             </Link>
                         </li>
                     </ul>
