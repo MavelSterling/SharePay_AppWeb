@@ -58,6 +58,7 @@ function Events() {
       console.error('Error al crear una actividad:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchEvents();
