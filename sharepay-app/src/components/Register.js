@@ -72,6 +72,7 @@ function Register() {
                     </Grid>
                     <Grid item xs={10} sm={8} md={6}>
                         <form onSubmit={handleRegister}>
+
                             <TextField
                                 variant="outlined"
                                 margin="normal"

@@ -10,6 +10,7 @@ function Events() {
   const [isDetailModalOpen, setDetailModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
   const [isActivityModalOpen, setActivityModalOpen] = useState(false);
 
   // Función para cargar los eventos desde la API de Django.
@@ -26,12 +27,15 @@ function Events() {
   const createEvent = async (newEvent) => {
     try {
       await axios.post('URL_de_tu_API/events', newEvent);
+
       setModalOpen(false); // Cierra el modal de creación de evento.
+
       fetchEvents(); // Recarga la lista de eventos.
     } catch (error) {
       console.error('Error al crear un evento:', error);
     }
   };
+
 
   // Función para crear una nueva actividad.
   const createActivity = async (newActivity) => {
@@ -44,12 +48,14 @@ function Events() {
     }
   };
 
+
   useEffect(() => {
     fetchEvents();
   }, []); // Cargar eventos al cargar la página.
 
   return (
     <div style={{ display: 'flex' }}>
+
       <Sidebar />
       <div style={{ flex: 1, padding: '20px' }}>
         <h2>Eventos y Actividades</h2>
@@ -129,6 +135,7 @@ function Events() {
           </tbody>
         </table>
       </div>
+
     </div>
   );
 }
