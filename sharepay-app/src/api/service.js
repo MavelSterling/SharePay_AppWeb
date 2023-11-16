@@ -4,6 +4,7 @@ const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/'
 });
 
+
 export const updateUserInfo = (access_token, userData) => api.post('/update_user/', userData, {
   headers: {
     'Authorization': `Token ${access_token}`,
@@ -23,6 +24,7 @@ export const updateContactInfo = (access_token, userData) => api.post('/update_c
   },
 });
 
+
 // En tu archivo de servicio o donde defines las llamadas a la API
 export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {
   headers: {
@@ -30,6 +32,11 @@ export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfile
   }
 });
 
+export const checkCommonEvents = (access_token, userData) => api.get('/have_common_events/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
 
 export const getUserByUsername = (access_token, username) => api.get(`/get_user/?username=${username}`, {
   headers: {

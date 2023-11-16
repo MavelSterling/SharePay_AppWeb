@@ -1,7 +1,7 @@
 import React, { useState, useEffect , useCallback} from 'react';
 import Sidebar from './Sidebar';
 import { Table, TableBody, TableCell, TableHead, TableRow, Button, darkScrollbar } from '@mui/material';
-import { getUserByUsername , getContacts} from '../../api/service';
+import {checkCommonEvents , updateContactInfo , getUserByUsername , getContacts} from '../../api/service';
 
 const ContactsTable = ({ Title, contacts, handleDeleteContact }) => {
   return (
@@ -57,14 +57,14 @@ function Contacts() {
     const [searchUser, setSearchUser] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
-    const userToken = localStorage.getItem('userToken');
-    const Usuario = localStorage.getItem('username');
+    const Token_Activo = localStorage.getItem('userToken');
+    const Usuario_Activo = localStorage.getItem('username');
     
     const loadContacts = useCallback(async () => {
-      const contactosDelUsuario = await getContacts(userToken, Usuario);
+      const contactosDelUsuario = await getContacts(Token_Activo, Usuario_Activo);
       const data = contactosDelUsuario.data;
       setContacts(data.user_contacts);
-    }, [userToken, Usuario]);
+    }, [Token_Activo, Usuario_Activo]);
 
     useEffect(() => {
       loadContacts();
@@ -78,7 +78,7 @@ function Contacts() {
         //if(!userToken) return;
         // Llamada a la API para buscar usuarios por correo electrónico
         try {
-          const responseBusqueda = await getUserByUsername(userToken, searchUser);
+          const responseBusqueda = await getUserByUsername(Token_Activo, searchUser);
           const data = responseBusqueda.data;
           setSearchResults(data);
         } catch (error) {
@@ -95,6 +95,43 @@ function Contacts() {
 
     const handleDeleteContact = async () => {
         
+      // Verificar si no tienen eventos activos juntos antes de eliminar
+      try {
+        const buscar = {
+          Emisor: Usuario_Activo,
+          Remitente: searchUser,
+        };
+
+        const EventosEnComun = await checkCommonEvents(Token_Activo, buscar);
+        console.log('eventos: ', EventosEnComun , EventosEnComun.data)
+
+        if (EventosEnComun){
+          alert('No se pudo eliminar debido a eventos en común');
+        } else {
+
+          const jsonDataContact = {
+            Emisor: Usuario_Activo,
+            Remitente: searchUser,
+            Estado: 'Rechazada',
+          }
+
+          const responseUpdate = await updateContactInfo(Token_Activo, jsonDataContact);
+
+          if (responseUpdate.status === 200){
+            alert('Información actualizada correctamente');
+            window.location.reload();
+          } else {
+            console.error('No se pudo actualizar la información.');
+            alert('No se pudo actualizar la información.');
+          }
+        }
+      } catch (error) {
+        console.error('Hubo un error al intentar contactar con el servidor.');
+        alert('Hubo un error al intentar contactar con el servidor.');
+        }
+
+        // Luego, podrías recargar tus contactos
+        loadContacts();
     };
 
 
