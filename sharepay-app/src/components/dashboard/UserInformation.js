@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
 import { getProfileByUsername , getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword, getUserByEmail} from '../../api/service';
+
 import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 
 function UserInformation() {
@@ -288,9 +289,11 @@ function UserInformation() {
                         </Grid>
 
 
+
                         {/* Botón Desactivar cuenta */}
                         <Grid item xs={10} container justifyContent="flex-end" >
                             <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount} style={{ marginTop: '10px', whiteSpace: 'nowrap', width: 'auto'  }}>
+
                             Desactivar cuenta
                             </Button>
                         </Grid>

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import EventModal from './EventModal';
 import EventDetailModal from './EventDetailModal';
-import ActivityModal from './ActivityModal'; // Importa el nuevo componente para actividades
-import axios from 'axios'; // Para realizar solicitudes a la API de Django.
+import ActivityModal from './ActivityModal';
+import axios from 'axios';
 import Sidebar from './Sidebar';
 
 function Events() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDetailModalOpen, setDetailModalOpen] = useState(false);
+  const [isActivityModalOpen, setActivityModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [saveActivity, setSaveActivity] = useState(null);
+  const [availableEvents, setAvailableEvents] = useState([]);
+  const [activities, setActivities] = useState([]);
 
-  const [isActivityModalOpen, setActivityModalOpen] = useState(false);
-
-  // Función para cargar los eventos desde la API de Django.
   const fetchEvents = async () => {
     try {
       const response = await axios.get('URL_de_tu_API/events');
@@ -23,90 +24,79 @@ function Events() {
     }
   };
 
-  // Función para crear un nuevo evento.
+  const fetchActivities = async (eventId) => {
+    try {
+      const response = await axios.get(`URL_de_tu_API/events/${eventId}/activities`);
+      setActivities(response.data);
+    } catch (error) {
+      console.error('Error al cargar las actividades:', error);
+    }
+  };
+
   const createEvent = async (newEvent) => {
     try {
-      await axios.post('URL_de_tu_API/events', newEvent);
-
-      setModalOpen(false); // Cierra el modal de creación de evento.
-
-      fetchEvents(); // Recarga la lista de eventos.
+      const response = await axios.post('URL_de_tu_API/events', newEvent);
+      setModalOpen(false);
+      fetchEvents();
+      setSelectedEvent(response.data);
+      setSaveActivity(createActivity);
+      setAvailableEvents(events);
+      // Limpiar actividades al crear un nuevo evento
+      setActivities([]);
     } catch (error) {
       console.error('Error al crear un evento:', error);
     }
   };
 
-
-  // Función para crear una nueva actividad.
-  const createActivity = async (newActivity) => {
+  const createActivity = async (newActivity, eventId) => {
     try {
-      await axios.post('URL_de_tu_API/activities', newActivity);
-      setActivityModalOpen(false); // Cierra el modal de creación de actividad.
-      fetchEvents(); // Recarga la lista de eventos y actividades.
+      await axios.post(`URL_de_tu_API/events/${eventId}/activities`, newActivity);
+      setActivityModalOpen(false);
+      // Recargar la lista de actividades después de crear una nueva actividad
+      fetchActivities(eventId);
     } catch (error) {
       console.error('Error al crear una actividad:', error);
     }
   };
-
+  
 
   useEffect(() => {
     fetchEvents();
-  }, []); // Cargar eventos al cargar la página.
+  }, []);
+
+  useEffect(() => {
+    // Cuando se selecciona un evento, cargar las actividades correspondientes
+    if (selectedEvent) {
+      fetchActivities(selectedEvent.id);
+    }
+  }, [selectedEvent]);
 
   return (
     <div style={{ display: 'flex' }}>
-
       <Sidebar />
       <div style={{ flex: 1, padding: '20px' }}>
         <h2>Eventos y Actividades</h2>
         <button className="button-event" onClick={() => setModalOpen(true)}>
           Nuevo Evento
         </button>
-        {isModalOpen && (
-            <EventModal
-              onClose={() => setModalOpen(false)} // Cierra el modal de eventos
-              onSave={createEvent}
-            />
-          )}
 
-          {isDetailModalOpen && (
-            <EventDetailModal
-              event={selectedEvent}
-              onClose={() => setDetailModalOpen(false)} // Cierra el modal de detalles de eventos
-            />
-          )}
+        {isModalOpen && (
+          <EventModal
+            onClose={() => setModalOpen(false)}
+            onSave={createEvent}
+          />
+        )}
+
+        {isDetailModalOpen && (
+          <EventDetailModal
+            event={selectedEvent}
+            onClose={() => setDetailModalOpen(false)}
+          />
+        )}
 
         <h3>Mis eventos</h3>
         <table>
-          <thead>
-            <tr>
-              <th>Creador de Evento</th>
-              <th>Fecha</th>
-              <th>Nombre del Evento</th>
-              <th>Tipo</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.id}>
-                <td>{event.creator}</td>
-                <td>{event.date}</td>
-                <td>{event.name}</td>
-                <td>{event.type}</td>
-                <td>
-                  <button
-                    onClick={() => {
-                      setSelectedEvent(event);
-                      setDetailModalOpen(true);
-                    }}
-                  >
-                    Ver Evento
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {/* ... (tu tabla de eventos actual) */}
         </table>
 
         <div>
@@ -116,26 +106,59 @@ function Events() {
 
           {isActivityModalOpen && (
             <ActivityModal
-              onClose={() => setActivityModalOpen(false)} // Cierra el modal de actividades
-              onCreate={createActivity}
+              onClose={() => setActivityModalOpen(false)}
+              onSave={saveActivity}
+              selectedEvent={selectedEvent}
+              availableEvents={availableEvents}
             />
           )}
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre de la actividad</th>
-              <th>Monto total</th>
-              <th>Participantes</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Mapea y muestra la lista de actividades aquí */}
-          </tbody>
-        </table>
-      </div>
 
+        {selectedEvent && (
+          <div>
+            <h3>Actividades del evento "{selectedEvent.name}"</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre de la actividad</th>
+                  <th>Monto total</th>
+                  <th>Participantes</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {activities.map((activity) => (
+                  <tr key={activity.id}>
+                    <td>{activity.name}</td>
+                    <td>{activity.value}</td>
+                    <td>{activity.participants.map((participant) => participant.name).join(', ')}</td>
+                    <td>{activity.description}</td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          // Abrir la ventana modal con la información de la actividad para actualizar
+                          setActivityModalOpen(true);
+                          // Configurar la función para actualizar la actividad
+                        }}
+                      >
+                        Actualizar
+                      </button>
+                      <button
+                        onClick={() => {
+                          // Lógica para eliminar la actividad
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
