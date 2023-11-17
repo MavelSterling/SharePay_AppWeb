@@ -24,6 +24,11 @@ export const updateContactInfo = (access_token, userData) => api.post('/update_c
   },
 });
 
+export const createCotnact = (access_token, userData) => api.post('/create_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
 
 // devuelve el perfil directamente
 export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {
@@ -33,13 +38,11 @@ export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfile
 });
 
 //devuelve una lista de resultados, donde el atributo [0] es el perfil
-export const getProfileByUsername = (access_token, username) => api.get(`/api/v1/Perfiles/?search=${username}`, {
+export const searchProfileByUsername = (access_token, username) => api.get(`/api/v1/Perfiles/?search=${username}`, {
   headers: {
     'Authorization': `Token ${access_token}`
   }
 });
-
-
 
 
 export const checkCommonEvents = (access_token, userData) => api.get('/have_common_events/', userData, {

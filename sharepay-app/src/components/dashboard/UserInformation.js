@@ -28,11 +28,11 @@ function UserInformation() {
     
             try {
                 const responseUsuarios = await getUserByUsername(userToken, UserName); // Obtener todos los datos del usuario
-                const responsePerfil = await getProfileByUsername(userToken, UserName); // Obtener el perfil del usuario
+                const responsePerfil = await getProfileByID(userToken, userId); // Obtener el perfil del usuario
     
                 if (responseUsuarios.status === 200 && responsePerfil.status === 200) {
                     const infoUser = responseUsuarios.data;
-                    const infoProfile = responsePerfil.data[0];
+                    const infoProfile = responsePerfil.data;
     
                     setEmail(infoUser.email);
                     setNombre(infoUser.first_name);
