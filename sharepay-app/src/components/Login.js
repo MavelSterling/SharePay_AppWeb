@@ -1,63 +1,66 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
-import { Container, Paper, Grid, Typography, TextField, Button, Link, useTheme, useMediaQuery } from '@mui/material';
+import React, { useState, useEffect} from 'react';
+import { Container, Paper, Grid, Typography, TextField, Button, Link } from '@mui/material';
 import logo from '../assets/Logo.png';
-import { getSpecificPassword, getSpecificUser } from '../api/service';
-//import { useHistory } from 'react-router-dom';
+import { getToken, getUserByUsername} from '../api/service';
+import { useMediaQuery } from 'react-responsive';
 
 function Login() {
-  const [CorreoElectronico, setCorreoElectronico] = useState('');
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const [username, setUsuario] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
+  
+  useEffect(() => {
+    if (localStorage.getItem('userToken') !== null) {
+      alert('Usted ya habia iniciado sesion, bienvenido de vuelta')
+      navigate('/dashboard/user-information');
+    }
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
-      // Realiza la solicitud POST al endpoint de autenticación de Django
-      const userResponse = await getSpecificUser({
-        email: CorreoElectronico
-      });
+        const response = await getToken(username, password);
 
-      const foundUser = userResponse.data.find(user => user.CorreoElectronico === CorreoElectronico);
-      
-      const passwordResponse = await getSpecificPassword({ 
-        //busca el password del usuario en la tabla de Passwords con su email
-        Password: password
-      });
-      
-      
-      if (foundUser) {
-        console.log("usuario encontrado ", foundUser.Apodo)
-        const foundPassword = passwordResponse.data.find(user => user.Password === password);
-        // Verifica la contraseña
-        
-        if (foundPassword) {
-          console.log('fecha de creacion de usuario',foundPassword.Creado_en)
-          console.log('Login exitoso: bienvenido', foundUser.Apodo);
-          localStorage.setItem('userToken', userResponse.data.token);
-          localStorage.setItem('CorreoElectronicoActivo', foundUser.CorreoElectronico);
-          console.log("usuario activo ", localStorage.getItem('CorreoElectronicoActivo'))
-          
-          
-          navigate("/dashboard/user-information");  // <-- Esta línea para redirigir al usuario.
+        if (response.data.token) {
+            const token = response.data.token;
+
+            // Obtener el ID del usuario
+            const userResponse = await getUserByUsername(token, username);
+            
+            if (userResponse.data.user_id) {
+                const userId = userResponse.data.user_id;
+                const userEmail = userResponse.data.email;
+
+                localStorage.setItem('userToken', token);
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('username', username);
+                localStorage.setItem('email', userEmail);
+
+                console.log('token: ',token);
+                console.log('UserID: ', userId);
+                alert('Bienvenido ', username)
+                navigate("/dashboard/user-information");
+            } else {
+                console.log('Error al obtener el ID del usuario.');
+                alert('Error al obtener el ID del usuario.');
+            }
         } else {
-          console.log("Contraseña incorrecta.")
-          console.log('Por favor, inténtalo de nuevo.');
+            console.log('Inicio de sesión fallido, credenciales incorrectas.');
+            alert('Inicio de sesión fallido, credenciales incorrectas.');
         }
-      } else {
-        console.log('Por favor, verifica tus credenciales.');
-        console.log("Usuario no encontrado.")
-      }
     } catch (error) {
-      console.error('Error durante el login:', error);
-      console.log('Error al intentar iniciar sesión. Por favor, verifica tus credenciales.');
+        console.error('Error durante el inicio de sesión:', error);
+        alert('Error durante el inicio de sesión:', error);
     }
-  };
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+};
+
+  
 
   return (
     <Container component="main" maxWidth="sm">
@@ -78,9 +81,9 @@ function Login() {
                 margin="normal"
                 required
                 fullWidth
-                label="Correo Electronico"
-                value={CorreoElectronico}
-                onChange={(e) => setCorreoElectronico(e.target.value)}
+                label="Nickname o Usuario"
+                value={username}
+                onChange={(e) => setUsuario(e.target.value)}
               />
               <TextField
                 variant="outlined"

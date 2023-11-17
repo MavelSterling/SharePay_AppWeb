@@ -1,6 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
+import { getUserByEmail , getContacts} from '../../api/service';
+
+
+const ContactsTable = ({ contacts, handleAddContact, handleDeleteContact }) => {
+  return (
+    <Table style={{ minWidth: 650, marginBottom: 20 }}>
+      <TableHead >
+        <TableRow>
+          <TableCell style={{ fontWeight: 'bold', fontSize: 16 }}>Apodo</TableCell>
+          <TableCell style={{ fontWeight: 'bold', fontSize: 16 }}>Estado de la solicitud</TableCell>
+          <TableCell style={{ fontWeight: 'bold', fontSize: 16 }}>Acciones</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {contacts.map(contact => (
+          <TableRow key={contact.id}>
+            <TableCell>{contact.remitente}</TableCell>
+            <TableCell>{contact.estado}</TableCell>
+            <TableCell>
+              <Button
+                style={{ marginRight: 10, background: '#4CAF50', color: 'white' }}
+                onClick={() => handleAddContact(contact)}
+              >
+                Invitar
+              </Button>
+              <Button
+                style={{ background: '#f44336', color: 'white' }}
+                onClick={() => handleDeleteContact(contact.id)}
+              >
+                Eliminar
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
+
 
 
 function Contacts() {
@@ -9,22 +48,25 @@ function Contacts() {
     const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
-        // Suponiendo que tienes una función para cargar tus contactos desde el backend
         loadContacts();
     }, []);
 
     const loadContacts = async () => {
-        // Llamada a la API para obtener tus contactos
-        const response = await fetch('/api/myContacts'); 
-        const data = await response.json();
-        setContacts(data);
+        const contactosDelUsuario = await getContacts(userToken, Usuario);
+        const data = contactosDelUsuario.data;
+        setContacts(data.user_contacts);
     };
+
+    const userToken = localStorage.getItem('userToken');
+    const Usuario = localStorage.getItem('username');
+
 
     const handleSearch = async () => {
         if (!searchEmail) return;
+        //if(!userToken) return;
         // Llamada a la API para buscar usuarios por correo electrónico
-        const response = await fetch(`/api/searchContacts?email=${searchEmail}`);
-        const data = await response.json();
+        const responseBusqueda = await getUserByEmail(userToken, searchEmail);
+        const data = responseBusqueda.data;
         setSearchResults(data);
     };
 
@@ -40,6 +82,7 @@ function Contacts() {
         // Luego, podrías recargar tus contactos
         loadContacts();
     };
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -70,31 +113,17 @@ function Contacts() {
                     ))}
                 </ul>
                 
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Nombre</TableCell>
-                            <TableCell>Correo Electrónico</TableCell>
-                            <TableCell>Apodo</TableCell>
-                            <TableCell>Estado de la Cuenta</TableCell>
-                            <TableCell>Acciones</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {contacts.map(contact => (
-                            <TableRow key={contact.id}>
-                                <TableCell>{contact.name}</TableCell>
-                                <TableCell>{contact.email}</TableCell>
-                                <TableCell>{contact.nickname}</TableCell>
-                                <TableCell>{contact.active ? 'Sí' : 'No'}</TableCell>
-                                <TableCell>
-                                    <Button color="primary" onClick={() => handleAddContact(contact)}>Invitar</Button>
-                                    <Button color="secondary" onClick={() => handleDeleteContact(contact.id)}>Eliminar</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                {contacts && contacts.length > 0 ? (
+                <ContactsTable
+                    contacts={contacts}
+                    handleAddContact={handleAddContact}
+                    handleDeleteContact={handleDeleteContact}
+                />
+                ) : (
+                <p style={{ textAlign: 'center', marginTop: '40px' }}>
+                    Aún no hay contactos agregados.
+                </p>
+                )}
 
                
             </div>
