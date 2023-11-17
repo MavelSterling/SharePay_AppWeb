@@ -25,12 +25,22 @@ export const updateContactInfo = (access_token, userData) => api.post('/update_c
 });
 
 
-// En tu archivo de servicio o donde defines las llamadas a la API
+// devuelve el perfil directamente
 export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {
   headers: {
     'Authorization': `Token ${access_token}`
   }
 });
+
+//devuelve una lista de resultados, donde el atributo [0] es el perfil
+export const getProfileByUsername = (access_token, username) => api.get(`/api/v1/Perfiles/?search=${username}`, {
+  headers: {
+    'Authorization': `Token ${access_token}`
+  }
+});
+
+
+
 
 export const checkCommonEvents = (access_token, userData) => api.get('/have_common_events/', userData, {
   headers: {
