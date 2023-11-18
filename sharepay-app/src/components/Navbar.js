@@ -56,10 +56,8 @@ const NavBar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
 
+    localStorage.clear()
     console.log('Usuario ha cerrado sesión');
     navigate('/');
   };

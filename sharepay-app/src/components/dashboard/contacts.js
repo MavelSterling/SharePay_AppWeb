@@ -69,7 +69,7 @@ const ContactsTable = ({ Title, contacts, handleAddContact, handleDeleteContact,
                 </Button>
                 <Button
                   style={{ background: '#f44336', color: 'white' , marginLeft: '10px'}}
-                  onClick={() => handleDeleteContact(contact.emisor.username)}
+                  onClick={() => handleDeleteContact(contact)}
                 >
                   Rechazar
                 </Button>
