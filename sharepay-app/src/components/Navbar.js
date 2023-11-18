@@ -10,6 +10,9 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [invitations, setInvitations] = useState([]);
   const [showNoMessages, setShowNoMessages] = useState(false);
+  const [showSesionActiva, setShowSesionActiva] = useState('');
+
+  const usuario_Activo = localStorage.getItem('username');
 
   const handleAcceptInvitation = async (invitation) => {
     // Lógica para aceptar la invitación (puedes realizar una acción específica aquí)
@@ -80,10 +83,14 @@ const NavBar = () => {
           </div>
         ))}
       </div>
-
-      <button onClick={handleLogout} className="logoutButton">Cerrar Sesión</button>
+      {usuario_Activo && <p>Bienvenido {usuario_Activo}</p>}
+      <div>
+        <label>{usuario_Activo}</label>
+        <button onClick={handleLogout} className="logoutButton">Cerrar Sesión</button>
+      </div>
     </div>
   );
+  
 };
 
 export default NavBar;

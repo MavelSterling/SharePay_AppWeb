@@ -72,6 +72,15 @@
 
 .navbar {
   padding: 0.5rem 1rem;
+  position: fixed;
+}
+.sidebar {
+  top: 0; /* Puedes ajustar esto según sea necesario */
+  left: 0;
+  width: 200px; /* Ajusta el ancho según tus necesidades */
+  height: fit-content;
+  background-color: #f0f0f0; /* Color de fondo de la barra lateral */
+  padding-top: 20px; /* Espaciado superior */
 }
 .sidebar ul {
   list-style: none;

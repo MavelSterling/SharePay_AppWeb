@@ -24,6 +24,13 @@ export const updateContactInfo = (access_token, userData) => api.post('/update_c
   },
 });
 
+export const deleteContact = (access_token, userData) => api.post('/delete_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
+
 export const createCotnact = (access_token, userData) => api.post('/create_contactos/', userData, {
   headers: {
     'Authorization': `Token ${access_token}`,
