@@ -11,6 +11,7 @@ import './App.css';
 import Contacts from './components/dashboard/contacts';
 import DashboardWrapper from './components/DashboardWrapper';
 import Events from './components/dashboard/Events';
+import Payments from './components/dashboard/Payments';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="user-information" element={<UserInformation />} />
             <Route path="contacts" element={<Contacts />} />
             <Route path="events" element={<Events />} />
+            <Route path="payments" element={<Payments />} />
         </Route>
       </Routes>
     </Router>
