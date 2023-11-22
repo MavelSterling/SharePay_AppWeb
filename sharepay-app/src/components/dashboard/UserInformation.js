@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Button, Grid, TextField } from '@mui/material';
-import { getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword} from '../../api/service';
+import { getProfileByUsername , getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword, getUserByEmail} from '../../api/service';
+
 import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 
 function UserInformation() {
@@ -28,11 +29,9 @@ function UserInformation() {
     
             try {
                 const responseUsuarios = await getUserByUsername(userToken, UserName); // Obtener todos los datos del usuario
-                const responsePerfil = await getProfileByID(userToken, userId);
-
-                // //
+                const responsePerfil = await getProfileByID(userToken, userId); // Obtener el perfil del usuario
     
-                if (responseUsuarios.status === 200) {
+                if (responseUsuarios.status === 200 && responsePerfil.status === 200) {
                     const infoUser = responseUsuarios.data;
                     const infoProfile = responsePerfil.data;
     
@@ -242,7 +241,7 @@ function UserInformation() {
                         {/* Columna derecha */}
                         <Grid item xs={12} md={6} container direction="column" alignItems="center" justifyContent="flex-start">
                             <div style={{ width: '150px', height: '150px', marginBottom: '20px' }}>
-                                {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : "No image uploaded"}
+                                {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' , borderRadius: '50%'}} /> : "No image uploaded"}
                             </div>
                             <input
                                 accept="image/*"
