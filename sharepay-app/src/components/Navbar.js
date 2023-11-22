@@ -12,6 +12,9 @@ const NavBar = () => {
   const [invitations, setInvitations] = useState([]);
   const [showNoMessages, setShowNoMessages] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [showSesionActiva, setShowSesionActiva] = useState('');
+
+  const usuario_Activo = localStorage.getItem('username');
 
   const handleAcceptInvitation = async (invitation) => {
     // Lógica para aceptar la invitación
@@ -46,10 +49,8 @@ const NavBar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
 
+    localStorage.clear()
     console.log('Usuario ha cerrado sesión');
     navigate('/');
   };
@@ -77,14 +78,18 @@ const NavBar = () => {
         ))}
       </div>
 
-      <button onClick={handleLogout} className="logoutButton">Cerrar Sesión</button>
 
       {/* Renderiza el modal solo cuando showNotificationModal es true */}
       {showNotificationModal && (
         <NotificationModal onClose={closeNotificationModal} message="No hay mensajes nuevos" />
       )}
+      {usuario_Activo && <p>Bienvenido {usuario_Activo}</p>}
+      <div>
+        <button onClick={handleLogout} className="logoutButton">Cerrar Sesión</button>
+      </div>
     </div>
   );
+  
 };
 
 export default NavBar;

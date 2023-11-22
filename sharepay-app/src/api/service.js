@@ -4,6 +4,11 @@ const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/'
 });
 
+const apiwebl = axios.create({
+  baseURL: 'https://riddimental.pythonanywhere.com/api/'
+});
+
+
 export const updateUserInfo = (access_token, userData) => api.post('/update_user/', userData, {
   headers: {
     'Authorization': `Token ${access_token}`,
@@ -17,14 +22,51 @@ export const updateProfileInfo = (access_token, userData) => api.post('/update_p
   },
 });
 
+export const updateContactInfo = (access_token, userData) => api.post('/update_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
 
-// En tu archivo de servicio o donde defines las llamadas a la API
+export const deleteContact = (access_token, userData) => api.post('/delete_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
+
+export const createCotnact = (access_token, userData) => api.post('/create_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
+export const createEvent = (access_token, userData) => api.post('/create_events/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
+// devuelve el perfil directamente
 export const getProfileByID = (access_token, userID) => api.get(`/api/v1/Perfiles/${userID}/`, {
   headers: {
     'Authorization': `Token ${access_token}`
   }
 });
 
+//devuelve una lista de resultados, donde el atributo [0] es el perfil
+export const searchProfileByUsername = (access_token, username) => api.get(`/api/v1/Perfiles/?search=${username}`, {
+  headers: {
+    'Authorization': `Token ${access_token}`
+  }
+});
+
+
+export const checkCommonEvents = (access_token, userData) => api.get('/have_common_events/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
 
 export const getUserByUsername = (access_token, username) => api.get(`/get_user/?username=${username}`, {
   headers: {
@@ -45,6 +87,37 @@ export const getUserByEmail = (access_token, email) => api.get(`/get_user/?email
     'Authorization': `token ${access_token}`
   }
 });
+
+export const getParticipantByUser = (access_token, username) => api.get(`/get_participants/?username=${username}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
+
+
+export const getAllEvents = (access_token) => api.get(`/get_all_events/`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
+
+/*
+export const getActivities = (access_token, username) => api.get(`/get_user/?email=${email}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
+
+
+
+export const createActivity = (access_token, userData) => api.post('/create_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
+ */
+
 
 
 //este es el login
