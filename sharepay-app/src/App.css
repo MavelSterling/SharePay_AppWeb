@@ -122,13 +122,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  position: relative;  /* Se necesita un posicionamiento relativo para que el botón pueda posicionarse de forma absoluta dentro de él */
-  height: 2.5px;  /* Altura del NavBar */
+  position: relative;
+  height: 50px;
+  background-color: #ADD8E6;
+  padding: 0 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  z-index: 1000;
+}
+/* Ajusta la posición del icono de la campana solo para el NavBar */
+.navbar-container .notification-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Mueve el contenido al extremo derecho */
   background-color: #ADD8E6;  /* Color de fondo del NavBar */
-  padding: 20px;  /* Espaciado interno del NavBar */
   box-shadow: 0 3px 6px rgba(0,0,0,0.16);  /* Sombra sutil en el NavBar */
-  z-index: 1000; /*  Asegura que la barra esté siempre en la parte superior*/
+
+
 
 }
 
@@ -153,6 +162,10 @@ que incluye el ícono de campana y el área de notificaciones.*/
   display: flex;
   align-items: center;
   position: relative;
+  justify-content: flex-end; /* Mueve el contenido al extremo derecho */
+  margin-right: 20px; /* Ajusta el margen derecho según sea necesario */
+
+
 }
 
 /* .notification-badge: Establece estilos para la insignia de notificación
@@ -172,6 +185,31 @@ que incluye el ícono de campana y el área de notificaciones.*/
 .notification {
   margin-right: 20px; /* Ajusta el espacio entre el icono de campana y las notificaciones */
 }
+
+/* Añade estilos para el modal */
+.modal-noti{
+  display: block;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+.modal-content-noti {
+  position: relative;
+}
+
+.close-noti {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+
+
+
+
 
 /* ------------------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------------------------*/
