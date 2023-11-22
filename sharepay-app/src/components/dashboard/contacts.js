@@ -17,7 +17,7 @@ const ContactsTable = ({ Title, contacts, handleAddContact, handleDeleteContact,
       <TableBody>
         {Outgoing ? (
           contacts.map((contact) => (
-            <TableRow key={contact.ContactID}>
+            <TableRow key={contact.emisor.id}>
               <TableCell className="center-vertically" style={{ border: 'none', maxWidth: 0 }}>
                 <img
                   src={contact.remitente.avatar}
@@ -95,7 +95,7 @@ const ResultsTable = ({ contacts, ignorelist, handleAddContact }) => {
     <Table style={{ marginBottom: 20, borderCollapse: 'collapse', width: '100%', border: 'none' }}>
       <TableBody>
         {filteredContacts.map((perfil) => (
-          <TableRow key={perfil.user.id}>
+          <TableRow key={perfil.id}>
             <TableCell className="center-vertically" style={{ border: 'none', maxWidth: 0 }}>
               <img
                 src={perfil.FotoOAvatar}

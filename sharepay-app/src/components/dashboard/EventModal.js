@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
+import { textAlign } from '@mui/system';
 
 function EventModal({ isOpen, onClose, onSave }) {
   const [eventName, setEventName] = useState('');
@@ -30,8 +31,7 @@ function EventModal({ isOpen, onClose, onSave }) {
 
   return (
     <div className={`event-modal ${isOpen ? 'open' : ''}`}>
-      <div style={{ flex: 3, padding: '20px', textAlign: 'center' }}>
-
+      <div className="modal-container">
         <span className="close" onClick={onClose}>&times;</span>
 
         <h3>Crear Nuevo Evento</h3>
@@ -55,13 +55,17 @@ function EventModal({ isOpen, onClose, onSave }) {
               value={eventType}
               onChange={(e) => setEventType(e.target.value)}
             />
-            <p style={{ color: 'red' }}>{formError}</p>
+            <p className="error-message">{formError}</p>
           </div>
 
           <div className="column-event">
             <div className="avatar-container-event">
-              <div style={{ width: '150px', height: '150px', border: '1px solid black', marginBottom: '10px' }}>
-                {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : "No image uploaded"}
+              <div className="avatar-preview" style={{ marginBottom: '10px' }}>
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt="Avatar Preview" />
+                ) : (
+                  "No image uploaded"
+                )}
               </div>
               <input
                 type="file"
@@ -70,7 +74,7 @@ function EventModal({ isOpen, onClose, onSave }) {
                 id="avatar-upload-event"
                 onChange={(e) => {
                   setEventImage(e.target.files[0]);
-                  setAvatarPreview(URL.createObjectURL(e.target.files[0])); // Actualiza la vista previa
+                  setAvatarPreview(URL.createObjectURL(e.target.files[0]));
                 }}
               />
               <label htmlFor="avatar-upload-event">
@@ -82,8 +86,11 @@ function EventModal({ isOpen, onClose, onSave }) {
           </div>
         </div>
 
-        <button className="button-event-modal" onClick={handleSave}>Crear evento</button>
-
+        <div className="button-container">
+          <button className="button-event-modal" onClick={handleSave} style={{ margin: '0 auto' }}>
+            Crear evento
+          </button>
+        </div>
       </div>
     </div>
   );

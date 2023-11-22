@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const apilocal = axios.create({
+const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/'
 });
 
-const api = axios.create({
+const apidespliegue = axios.create({
   baseURL: 'https://riddimental.pythonanywhere.com/api/'
 });
 
@@ -36,6 +36,12 @@ export const deleteContact = (access_token, userData) => api.post('/delete_conta
 
 
 export const createCotnact = (access_token, userData) => api.post('/create_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
+export const createEvent = (access_token, userData) => api.post('/create_events/', userData, {
   headers: {
     'Authorization': `Token ${access_token}`,
   },
@@ -81,6 +87,31 @@ export const getUserByEmail = (access_token, email) => api.get(`/get_user/?email
     'Authorization': `token ${access_token}`
   }
 });
+
+
+export const getEventsByUsername = (access_token, username) => api.get(`/get_events/?username=${username}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
+
+/*
+export const getActivities = (access_token, username) => api.get(`/get_user/?email=${email}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
+
+
+
+export const createActivity = (access_token, userData) => api.post('/create_contactos/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
+ */
+
 
 
 //este es el login
