@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/'
 });
 
-const apidespliegue = axios.create({
+const apiwebl = axios.create({
   baseURL: 'https://riddimental.pythonanywhere.com/api/'
 });
 
@@ -88,8 +88,14 @@ export const getUserByEmail = (access_token, email) => api.get(`/get_user/?email
   }
 });
 
+export const getParticipantByUser = (access_token, username) => api.get(`/get_participants/?username=${username}`, {
+  headers: {
+    'Authorization': `token ${access_token}`
+  }
+});
 
-export const getEventsByUsername = (access_token, username) => api.get(`/get_events/?username=${username}`, {
+
+export const getAllEvents = (access_token) => api.get(`/get_all_events/`, {
   headers: {
     'Authorization': `token ${access_token}`
   }
