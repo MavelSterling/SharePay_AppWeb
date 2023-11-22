@@ -83,7 +83,6 @@ const NavBar = () => {
       </div>
       {usuario_Activo && <p>Bienvenido {usuario_Activo}</p>}
       <div>
-        <label>{usuario_Activo}</label>
         <button onClick={handleLogout} className="logoutButton">Cerrar Sesión</button>
       </div>
     </div>
