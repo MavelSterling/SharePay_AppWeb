@@ -1,5 +1,3 @@
-// App.js
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import React from 'react';
 import Dashboard from './components/dashboard/Dashboard';
