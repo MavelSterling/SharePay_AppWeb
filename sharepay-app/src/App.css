@@ -173,9 +173,9 @@
 }
 
 
-
+  
 /* Media Query para mejorar la responsividad en dispositivos móviles y tablets */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 765px) {
   /* Ajustes de estilo para la cabecera de la aplicación en dispositivos móviles */
   .App-header {
     font-size: calc(8px + 1.5vmin);
