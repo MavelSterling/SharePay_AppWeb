@@ -175,39 +175,7 @@
 
 
   
-/* Media Query para mejorar la responsividad en dispositivos móviles y tablets */
-@media screen and (max-width: 765px) {
-  /* Ajustes de estilo para la cabecera de la aplicación en dispositivos móviles */
-  .App-header {
-    font-size: calc(8px + 1.5vmin);
-  }
 
-  /* Ajustes de estilo para la barra de navegación en dispositivos móviles */
-  .navbar {
-    padding: 0.5rem 1rem;
-  }
-
-  /* Ajustes de estilo para la barra lateral en dispositivos móviles */
-  .sidebar {
-    width: 90%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid #ADD8E6;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
-    display: flex;
-  }
-  .event-modal {
-    box-shadow: none;
-  }
-  .modal-container {
-    width: 90%;
-  }
-
-  .column-event {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-}
 
 
 /* ------------------------------------------------------------------------------------*/
@@ -813,4 +781,84 @@ table {
 
 .button-event-modal-create:hover {
   background-color: #2e4053;
+}
+
+
+/*------------------------------------------------------------*/
+/*------------------------------------------------------------*/
+
+/* Media Query para mejorar la responsividad en dispositivos móviles y tablets */
+@media screen and (max-width: 768px) {
+  /* Ajustes de estilo para la cabecera de la aplicación en dispositivos móviles */
+  .App-header {
+    font-size: calc(8px + 1.5vmin);
+  }
+
+  /* Ajustes de estilo para la barra de navegación en dispositivos móviles */
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+
+  /* Ajustes de estilo para la barra lateral en dispositivos móviles */
+  .sidebar {
+    width: 90%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ADD8E6;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
+    display: flex;
+  }
+  .event-modal {
+    box-shadow: none;
+  }
+  .modal-container {
+    width: 90%;
+  }
+
+  .column-event {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  /* CSS para el botón de cerrar (la 'x') */
+.event-modal .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 32px;
+  cursor: pointer;
+}
+/* Ajustes específicos para ActivityModal en dispositivos móviles */
+.event-modal.open {
+  /* Agrega estilos específicos cuando el modal está abierto, si es necesario */
+  width: 80%; /* O ajusta según tus necesidades */
+  margin: 0; /* Elimina el margen si es necesario */
+}
+
+
+/* Ajustes específicos para ActivityModal en dispositivos móviles */
+.event-modal.open {
+  /* Agrega estilos específicos cuando el modal está abierto en dispositivos móviles */
+
+  /* Cambia la dirección de flexión para mostrar los elementos en una columna */
+  flex-direction: column;
+
+  /* Ajusta el ancho según tus necesidades */
+  width: 80%;
+
+  /* Elimina el margen si es necesario */
+  margin: 0;
+}
+
+/* Estilos específicos para los elementos internos en dispositivos móviles */
+.event-modal.open .modal-content {
+  /* Puedes ajustar estos estilos según tus necesidades */
+  padding: 10px;
+}
+
+/* Ajustes para los elementos internos en dispositivos móviles */
+.event-modal.open .column-event {
+  /* Puedes ajustar estos estilos según tus necesidades */
+  width: 100%;
+  margin-bottom: 10px;
+}
 }
