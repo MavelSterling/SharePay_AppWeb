@@ -140,7 +140,8 @@
 .sidebar {
   top: 0; /* Puedes ajustar esto según sea necesario */
   left: 0;
-  width: 200px; /* Ajusta el ancho según tus necesidades */
+  /* width: 200px;  Ajusta el ancho  */
+  width: 90vw;
   height: fit-content;
   background-color: #f0f0f0; /* Color de fondo de la barra lateral */
   padding-top: 20px; /* Espaciado superior */
@@ -173,9 +174,9 @@
 }
 
 
-
+  
 /* Media Query para mejorar la responsividad en dispositivos móviles y tablets */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 765px) {
   /* Ajustes de estilo para la cabecera de la aplicación en dispositivos móviles */
   .App-header {
     font-size: calc(8px + 1.5vmin);
@@ -188,12 +189,15 @@
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
-    width: 100%;
+    width: 90%;
     height: auto;
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
     display: flex;
+  }
+  .event-modal {
+    box-shadow: none;
   }
 }
 
