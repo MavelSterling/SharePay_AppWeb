@@ -188,7 +188,7 @@
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
-    width: 100%;
+    width: 90%;
     height: auto;
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
