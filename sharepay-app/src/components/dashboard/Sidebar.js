@@ -26,7 +26,7 @@ function Sidebar() {
                         <img src={logo} alt="SharePay Logo" width={100} />
                         <h2>SharePay App</h2>
                     </div>
-                    <ul>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                         <li>
                             <Link to="/dashboard/user-information">
                             <FaUser /> Información del usuario
