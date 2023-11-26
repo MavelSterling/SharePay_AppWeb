@@ -851,13 +851,13 @@ table {
 
 /* Estilos específicos para los elementos internos en dispositivos móviles */
 .event-modal.open .modal-content {
-  /* Puedes ajustar estos estilos según tus necesidades */
+  /* se puede ajustar estos estilos */
   padding: 10px;
 }
 
 /* Ajustes para los elementos internos en dispositivos móviles */
 .event-modal.open .column-event {
-  /* Puedes ajustar estos estilos según tus necesidades */
+  /* se puede ajustar estos estilos  */
   width: 100%;
   margin-bottom: 10px;
 }
