@@ -199,6 +199,14 @@
   .event-modal {
     box-shadow: none;
   }
+  .modal-container {
+    width: 90%;
+  }
+
+  .column-event {
+    width: 100%;
+    margin-bottom: 15px;
+  }
 }
 
 
