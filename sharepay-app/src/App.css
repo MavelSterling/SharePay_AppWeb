@@ -173,17 +173,20 @@
 }
 
 
-/* Media Queries para mejorar la responsividad */
+
+/* Media Query para mejorar la responsividad en dispositivos móviles y tablets */
 @media screen and (max-width: 768px) {
-  /* Reglas para dispositivos con ancho de pantalla menor a 768px (tablets y móviles) */
+  /* Ajustes de estilo para la cabecera de la aplicación en dispositivos móviles */
   .App-header {
     font-size: calc(8px + 1.5vmin);
   }
 
+  /* Ajustes de estilo para la barra de navegación en dispositivos móviles */
   .navbar {
     padding: 0.5rem 1rem;
   }
 
+  /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
     width: 100%;
     height: auto;
@@ -191,10 +194,9 @@
     border-bottom: 1px solid #ADD8E6;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
     display: flex;
-    
-
   }
 }
+
 
 /* ------------------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------------------------*/
