@@ -274,7 +274,7 @@ function UserInformation() {
                         
                         {/* Botones Aceptar y Cancelar */}
                         <Grid item container xs={6}  style={{ marginTop: '10px', marginLeft: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
-                            <Button className="button-info" variant="contained" onClick={handleUpdate} style={{ marginTop: '10px', marginRight: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
+                            <Button className="button-info" variant="contained" onClick={handleUpdate} style={{ marginTop: '10px', marginRight: '35px' , whiteSpace: 'nowrap', width: 'auto',fontSize: '18px' }}>
                                 {isEditable ? 'Enviar datos' : 'Actualizar datos'}
                             </Button>
                             <Button
