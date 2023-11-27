@@ -290,7 +290,7 @@ const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) =>
     <TableBody>
     {events.map((event) => (
           <TableRow key={event.Evento.EventoID}>
-            <TableCell className="center-vertically" style={{ border: 'none', maxWidth: 0 }}>
+            <TableCell className="center-vertically" style={{ border: 'none', maxWidth: 0 , flex: 'center'  }}>
               <img
                 src={event.Evento.Avatar}
                 alt="Avatar"
@@ -300,7 +300,7 @@ const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) =>
             <TableCell className="center-vertically" style={{ border: 'none', paddingTop: '5px', paddingLeft: '30px', textAlign: 'left' }}>
               {event.Evento.Nombre}
             </TableCell>
-            <TableCell className="center-vertically" style={{ border: 'none', paddingTop: '5px', paddingLeft: '1px', textAlign: 'left' }}>
+            <TableCell className="center-vertically" style={{ border: 'none', paddingTop: '5px', paddingLeft: '1px', textAlign: 'center' }}>
               Tipo: {event.Evento.Tipo}
             </TableCell>
             <TableCell className="center-vertically" style={{ border: 'none', paddingTop: '5px', paddingLeft: '1px', textAlign: 'center' }}>
