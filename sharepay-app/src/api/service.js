@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const apilocal = axios.create({
+const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/'
 });
 
-const api = axios.create({
+const apiweb = axios.create({
   baseURL: 'https://riddimental.pythonanywhere.com/api/'
 });
 
@@ -28,11 +28,24 @@ export const updateContactInfo = (access_token, userData) => api.post('/update_c
   },
 });
 
+export const updateEventInfo = (access_token, userData) => api.post('/update_event/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
 export const deleteContact = (access_token, userData) => api.post('/delete_contactos/', userData, {
   headers: {
     'Authorization': `Token ${access_token}`,
   },
 });
+
+export const deleteEvent = (access_token, eventID) => api.post('/delete_event/', { eventID }, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
 
 
 export const createCotnact = (access_token, userData) => api.post('/create_contactos/', userData, {
@@ -94,6 +107,12 @@ export const getParticipantByUser = (access_token, username) => api.get(`/get_pa
   }
 });
 
+//devuelve las actividades de un evento
+export const getEventActivities = (access_token, eventID) => api.get(`/get_event_activities/?eventID=${eventID}`, {
+  headers: {
+    'Authorization': `Token ${access_token}`
+  }
+});
 
 export const getAllEvents = (access_token) => api.get(`/get_all_events/`, {
   headers: {
