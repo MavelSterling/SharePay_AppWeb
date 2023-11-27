@@ -797,6 +797,24 @@ table {
   /* Ajustes de estilo para la barra de navegación en dispositivos móviles */
   .navbar {
     padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 50px;
+    background-color: #ADD8E6;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    z-index: 1000;
+  }
+
+  /* Ajusta la posición del icono de la campana solo para el NavBar */
+  .navbar-container .notification-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Mueve el contenido al extremo derecho */
+    background-color: #ADD8E6;  /* Color de fondo del NavBar */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);  /* Sombra sutil en el NavBar */
+    width: 100%; /* Ocupa todo el ancho disponible */
   }
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
@@ -808,57 +826,48 @@ table {
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
     display: flex;
   }
+
+  /* Ajustes de estilo para el modal en dispositivos móviles */
   .event-modal {
     box-shadow: none;
   }
+
   .modal-container {
     width: 90%;
   }
 
   .column-event {
-    width: 100%;
+    width: 90%;
     margin-bottom: 15px;
   }
+
   /* CSS para el botón de cerrar (la 'x') */
-.event-modal .close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 32px;
-  cursor: pointer;
-}
-/* Ajustes específicos para ActivityModal en dispositivos móviles */
-.event-modal.open {
-  /* Agrega estilos específicos cuando el modal está abierto, si es necesario */
-  width: 80%; /* O ajusta según tus necesidades */
-  margin: 0; /* Elimina el margen si es necesario */
-}
+  .event-modal .close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 32px;
+    cursor: pointer;
+  }
 
+  /* Ajustes específicos para ActivityModal en dispositivos móviles */
+  .event-modal.open {
+    /* Agrega estilos específicos cuando el modal está abierto en dispositivos móviles */
+    flex-direction: column;
+    width: 100%; /* O ajusta según tus necesidades */
+    margin: 0; /* Elimina el margen si es necesario */
+  }
 
-/* Ajustes específicos para ActivityModal en dispositivos móviles */
-.event-modal.open {
-  /* Agrega estilos específicos cuando el modal está abierto en dispositivos móviles */
+  /* Estilos específicos para los elementos internos en dispositivos móviles */
+  .event-modal.open .modal-content {
+    /* se puede ajustar estos estilos */
+    padding: 10px;
+  }
 
-  /* Cambia la dirección de flexión para mostrar los elementos en una columna */
-  flex-direction: column;
-
-  /* Ajusta el ancho según tus necesidades */
-  width: 80%;
-
-  /* Elimina el margen si es necesario */
-  margin: 0;
-}
-
-/* Estilos específicos para los elementos internos en dispositivos móviles */
-.event-modal.open .modal-content {
-  /* se puede ajustar estos estilos */
-  padding: 10px;
-}
-
-/* Ajustes para los elementos internos en dispositivos móviles */
-.event-modal.open .column-event {
-  /* se puede ajustar estos estilos  */
-  width: 100%;
-  margin-bottom: 10px;
-}
+  /* Ajustes para los elementos internos en dispositivos móviles */
+  .event-modal.open .column-event {
+    /* se puede ajustar estos estilos  */
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
