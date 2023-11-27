@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ActivityModal from './ActivityModal';
 import Sidebar from './Sidebar';
 import { TextField, TextareaAutosize, Table, TableBody, TableCell, TableRow, Button, Dialog, DialogTitle, DialogContent , FormControl, InputLabel, Select, MenuItem} from '@mui/material';
-import { getEventActivities, getAllEvents, getParticipantByUser, createEvent } from '../../api/service';
+import {deleteEvent, updateEventInfo, getEventActivities, getAllEvents, getParticipantByUser, createEvent } from '../../api/service';
 import axios from 'axios';
 
 const Overlay = ({ isOpen, onClick }) => (
@@ -14,7 +14,8 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
   const [eventName, setEventName] = useState(eventInfo.Evento ? eventInfo.Evento.Nombre : '');
   const [eventDescription, setEventDescription] = useState(eventInfo.Evento ? eventInfo.Evento.Descripcion : '');
   const [eventType, setEventType] = useState(eventInfo.Evento ? eventInfo.Evento.Tipo : '');
-  const handleUpdate = () => {
+  
+  const handleUpdate = async () => {
     const updatedEvent = {
       id: eventInfo.Evento.EventoID,
       nombre: eventName,
@@ -22,8 +23,12 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
       tipo: eventType,
     };
 
-    // Llama a la función de actualización proporcionada por el padre
-    onUpdate(updatedEvent);
+
+    try {
+      const updateEventResponse = await updateEventInfo(localStorage.getItem('userToken'), updatedEvent)
+    } catch (error) {
+      alert('Hubo un error al actualizar los datos del evento.')
+    }
     setIsEditing(false);
   };
 
@@ -39,11 +44,27 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
     }
   };  
 
-  const handleDelete = () => {
-    // Llama a la función de eliminación proporcionada por el padre
-    onDelete(eventInfo.Evento.id);
-    onClose();
+  const handleDelete = async (eventID) => {
+    try {
+      const activities = await getEventActivities(localStorage.getItem('userToken'), eventID);
+  
+      if (activities.data.activities) {
+        alert('No se puede eliminar el evento ya que tiene actividades pendientes');
+      } else {
+        const deleteResponse = await deleteEvent(localStorage.getItem('userToken'), eventID);
+        onClose();  // Close the dialog or perform any other necessary actions on success
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error);
+  
+      // Handle the error (display an error message, log it, etc.)
+      // Example: alert('Error deleting event. Please try again.');
+  
+      // You may choose to close the dialog even if an error occurs
+      onClose();
+    }
   };
+  
 
   if (!eventInfo.Evento) {
     return (
@@ -56,6 +77,7 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
       </Dialog>
     );
   }
+
 
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm">
@@ -110,14 +132,14 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
                   />
             </div>
             <div className="button-container">
-              <p style={{ marginTop:20, marginBottom:20,  margin: '0 auto'}}>Creado por {eventInfo.Apodo}</p>
+              <p style={{ marginTop:20, marginBottom:20,  margin: '0 auto'}}>Creado por {eventInfo.Evento.Creador}</p>
             </div>
             <p>Descripción: {eventInfo.Evento.Descripcion}</p>
             <p>Tipo: {eventInfo.Evento.Tipo}</p>
             <Button onClick={() => validateEditing(eventInfo.Evento.EventoID)}>Editar</Button>
           </>
         )}
-        <Button onClick={handleDelete}>Eliminar evento</Button>
+        <Button onClick={() => handleDelete(eventInfo.Evento.EventoID)}>Eliminar evento</Button>
         <Button onClick={onClose}>Cerrar</Button>
       </DialogContent>
     </Dialog>
@@ -141,7 +163,6 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
       avatar: avatar,
       // Otros campos necesarios para la creación del evento
     };
-    console.log(newEvent)
 
     // Llama a la función de creación proporcionada por el padre
     onCreate(newEvent);
@@ -250,7 +271,7 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
 
         {/* Centro */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-          <Button variant="contained" color="primary" onClick={handleCreate}>
+          <Button variant="contained" color="primary" onClick={() => { handleCreate(); onClose(); }}>
             Crear evento
           </Button>
         </div>

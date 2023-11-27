@@ -28,11 +28,24 @@ export const updateContactInfo = (access_token, userData) => api.post('/update_c
   },
 });
 
+export const updateEventInfo = (access_token, userData) => api.post('/update_event/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
 export const deleteContact = (access_token, userData) => api.post('/delete_contactos/', userData, {
   headers: {
     'Authorization': `Token ${access_token}`,
   },
 });
+
+export const deleteEvent = (access_token, eventID) => api.post('/delete_event/', { eventID }, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
+
 
 
 export const createCotnact = (access_token, userData) => api.post('/create_contactos/', userData, {
