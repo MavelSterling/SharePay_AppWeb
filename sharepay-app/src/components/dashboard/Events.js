@@ -276,7 +276,7 @@ const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) =>
 
 function Events() {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isDetailModalOpen, setDetailModalOpen] = useState(false);
+ //const [isDetailModalOpen, setDetailModalOpen] = useState(false);
   const [isActivityModalOpen, setActivityModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
