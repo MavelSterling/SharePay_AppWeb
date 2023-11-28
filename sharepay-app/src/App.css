@@ -821,7 +821,7 @@ table {
   /* Estilos para el botón de cerrar sesión en dispositivos móviles */
   .logoutButton {
     position: absolute;
-    top: 30px; /* Ajusta según la altura de tu navbar */
+    top: 25px; /* Ajusta según la altura de tu navbar */
     right: 10px;
     background-color: #0056b3;
     color: #ADD8E6;
