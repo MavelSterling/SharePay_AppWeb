@@ -800,7 +800,7 @@ table {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed; /* Fijar la barra de navegación en la parte superior */
+    /*position: fixed;  Fijar la barra de navegación en la parte superior */
     width: 100%; /* Ocupa todo el ancho disponible */
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
