@@ -796,7 +796,7 @@ table {
 
   /* Ajustes de estilo para la barra de navegación en dispositivos móviles */
   .navbar {
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
