@@ -991,7 +991,7 @@ table {
     font-family: Arial, sans-serif;
     position: relative; /* el body tenga posición relativa */
     z-index: 1000; /* Z-index del fondo, que sea menor que el del sidebar */
-    top: 60px; /* Ajusta según la altura de tu navbar */
+    /*top: 60px;  Ajusta según la altura de tu navbar */
   }
 
   .events-container {
