@@ -847,7 +847,7 @@ table {
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
-    position: fixed; /* Fijar la barra lateral en la parte izquierda */
+    /*position: fixed;  Fijar la barra lateral en la parte izquierda */
     top: 0; /* Alinear en la parte superior */
     left: 0;
     display: flex;
