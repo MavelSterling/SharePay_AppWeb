@@ -817,20 +817,7 @@ table {
     width: 100%; /* Ocupa todo el ancho disponible */
   }
 
-  /* .logoutButton: Establece estilos para el botón de cerrar sesión.*/
-
-.logoutButton {
-  position: absolute;  /* Posicionamiento absoluto para que pueda moverse libremente dentro del NavBar */
-  top: 10px;  /* Posición desde el borde superior */
-  right: 10px;  /* Posición desde el borde derecho */
-  background-color: #0056b3;  /* Color de fondo azul para el botón */
-  color: #ADD8E6;  /* Color de texto blanco para el botón */
-  border: none;  /* Eliminar el borde del botón */
-  padding: 5px 16px;  /* Espaciado interno para el botón */
-  cursor: pointer;  /* Cambiar el cursor al pasar por encima del botón */
-  border-radius: 4px;  /* Bordes redondeados para el botón */
-
-}
+  
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
