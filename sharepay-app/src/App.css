@@ -805,8 +805,9 @@ table {
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     z-index: 1000;
-  }
+    position: fixed;
 
+  }
   /* Ajusta la posición del icono de la campana solo para el NavBar */
   .navbar-container .notification-container {
     display: flex;
@@ -817,7 +818,18 @@ table {
     width: 100%; /* Ocupa todo el ancho disponible */
   }
 
-  
+  /* Estilos para el botón de cerrar sesión en dispositivos móviles */
+  .logoutButton {
+    position: absolute;
+    top: 60px; /* Ajusta según la altura de tu navbar */
+    right: 10px;
+    background-color: #0056b3;
+    color: #ADD8E6;
+    border: none;
+    padding: 5px 10px; /* Ajusta según sea necesario */
+    cursor: pointer;
+    border-radius: 4px;
+  }
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
@@ -860,12 +872,6 @@ table {
 
   .overlay.open {
     display: block;
-  }
-
-  .navbar {
-    padding: 0.5rem 1rem;
-    position: fixed;
-    width: 100%;
   }
 
   .sidebar {
