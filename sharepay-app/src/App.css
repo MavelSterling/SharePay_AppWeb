@@ -837,6 +837,7 @@ table {
     cursor: pointer;  /* Cursor en forma de mano al pasar sobre el botón*/
     z-index: 1000;  /* Asegurarse de que aparezca en la parte superior*/
     position: relative;  /* Posicionamiento relativo para ajustarlo si es necesario*/
+    top: 50px; /* Ajusta según la altura de tu navbar */
   }
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
@@ -862,26 +863,6 @@ table {
     width: 0;
     overflow: hidden;
   }
-
-  .upload-button {
-    /* Estilos para el botón de subir avatar */
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 15px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-  }
-
-  .button-container {
-    /* Estilos para el contenedor del botón */
-    text-align: center;
-  }
-
-  .overlay.open {
-    display: block;
-  }
-
   .sidebar {
     top: 50px; /* Ajusta según la altura de tu navbar */
     height: fit-content;
@@ -917,6 +898,25 @@ table {
     background-color: #0056b3; /* Color de fondo al pasar el ratón por encima */
     color: #ADD8E6; /* Color de texto al pasar el ratón por encima */
   }
+  .upload-button {
+    /* Estilos para el botón de subir avatar */
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .button-container {
+    /* Estilos para el contenedor del botón */
+    text-align: center;
+  }
+
+  .overlay.open {
+    display: block;
+  }
+
 
   /* Ajustes de estilo para el modal en dispositivos móviles */
   .event-modal {
