@@ -847,7 +847,7 @@ table {
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
-    position: fixed; /* Fijar la barra lateral en la parte izquierda */
+    /*position: fixed;  Fijar la barra lateral en la parte izquierda */
     top: 0; /* Alinear en la parte superior */
     left: 0;
     display: flex;
@@ -991,7 +991,7 @@ table {
     font-family: Arial, sans-serif;
     position: relative; /* el body tenga posición relativa */
     z-index: 1000; /* Z-index del fondo, que sea menor que el del sidebar */
-    top: 50px; /* Ajusta según la altura de tu navbar */
+    top: 60px; /* Ajusta según la altura de tu navbar */
   }
 
   .events-container {
