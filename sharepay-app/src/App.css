@@ -830,6 +830,14 @@ table {
     cursor: pointer;
     border-radius: 4px;
   }
+  .toggle-btn {
+    background-color: #ADD8E6;  /* Color de fondo blanco para el botón*/
+    border: none;  /* Sin borde*/
+    font-size: 24px;  /* Tamaño de fuente*/
+    cursor: pointer;  /* Cursor en forma de mano al pasar sobre el botón*/
+    z-index: 1000;  /* Asegurarse de que aparezca en la parte superior*/
+    position: relative;  /* Posicionamiento relativo para ajustarlo si es necesario*/
+  }
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
