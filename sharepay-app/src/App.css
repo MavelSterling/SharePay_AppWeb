@@ -837,7 +837,7 @@ table {
     cursor: pointer;  /* Cursor en forma de mano al pasar sobre el botón*/
     z-index: 1000;  /* Asegurarse de que aparezca en la parte superior*/
     position: relative;  /* Posicionamiento relativo para ajustarlo si es necesario*/
-    top: 50px; /* Ajusta según la altura de tu navbar */
+    bottom: 0;
   }
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
