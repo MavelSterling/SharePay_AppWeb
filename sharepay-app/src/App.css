@@ -801,7 +801,7 @@ table {
     justify-content: space-between;
     align-items: center;
     /*position: fixed;  Fijar la barra de navegación en la parte superior */
-    width: 100%; /* Ocupa todo el ancho disponible */
+    width: auto; /* Ocupa todo el ancho disponible */
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     z-index: 1000;
@@ -833,7 +833,7 @@ table {
 
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
-    width: 90%;
+    width: 70%;
     height: auto;
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
