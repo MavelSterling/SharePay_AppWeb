@@ -962,7 +962,7 @@ table {
     margin-bottom: 10px;
   }
 
-  /* Estilos para el formulario */
+  /* Estilos para el formulario en dispositivos móviles */
   .form {
     display: flex;
     flex-direction: column;
@@ -983,7 +983,7 @@ table {
     margin-top: 20px;
   }
 
-  /* Fondo de página */
+  /* Fondo de página en dispositivos móviles */
   body {
     background-color: #e9eff1;
     margin:   0;
@@ -991,7 +991,7 @@ table {
     font-family: Arial, sans-serif;
     position: relative; /* el body tenga posición relativa */
     z-index: 1000; /* Z-index del fondo, que sea menor que el del sidebar */
-
+    top: 50px; /* Ajusta según la altura de tu navbar */
   }
 
   .events-container {
