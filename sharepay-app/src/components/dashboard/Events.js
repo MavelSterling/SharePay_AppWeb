@@ -10,6 +10,7 @@ const Overlay = ({ isOpen, onClick }) => (
 );
 
 const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
+  const [showActivities, setShowActivities] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [eventName, setEventName] = useState(eventInfo.Evento ? eventInfo.Evento.Nombre : '');
   const [eventDescription, setEventDescription] = useState(eventInfo.Evento ? eventInfo.Evento.Descripcion : '');
@@ -116,9 +117,23 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
               onChange={(e) => setEventType(e.target.value)}
             />
           </div>
-          <div>
-            <Button variant="contained" color="primary" onClick={handleUpdate}>
+          <div style={{marginBottom: '10px'}}>
+            <Button variant="contained" color="primary" onClick={handleUpdate} style={{ marginRight: '5px' }}>
               Actualizar evento
+            </Button>
+            <Button variant="contained" color="secondary" onClick={() => {
+              if (localStorage.getItem('username') === eventInfo.Evento.Creador) {
+                handleDelete(eventInfo.Evento.EventoID);
+              } else {
+                alert('Solamente el creador puede eliminar el evento')
+                onClose()
+              }
+              }} style={{ marginLeft: '5px' }}>Eliminar evento</Button>
+              
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+            <Button variant="contained" color="primary" onClick={handleUpdate}>
+              Volver
             </Button>
           </div>
         </>
@@ -136,11 +151,20 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
             </div>
             <p>Descripción: {eventInfo.Evento.Descripcion}</p>
             <p>Tipo: {eventInfo.Evento.Tipo}</p>
-            <Button onClick={() => validateEditing(eventInfo.Evento.EventoID)}>Editar</Button>
+            <Button onClick={() => {
+              if (localStorage.getItem('username') === eventInfo.Evento.Creador) {
+                validateEditing(eventInfo.Evento.EventoID);
+              } else {
+                alert('Solamente el creador del evento puede modificar los parametros')
+                onClose()
+              }
+            }}>Editar</Button>
+            <Button onClick={() => {
+              setShowActivities(true);
+              }}>Ver Actividades</Button>
+            <Button onClick={onClose}>Cerrar</Button>
           </>
         )}
-        <Button onClick={() => handleDelete(eventInfo.Evento.EventoID)}>Eliminar evento</Button>
-        <Button onClick={onClose}>Cerrar</Button>
       </DialogContent>
     </Dialog>
   );
@@ -306,7 +330,7 @@ const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) =>
             <TableCell className="center-vertically" style={{ border: 'none', paddingTop: '5px', paddingLeft: '1px', textAlign: 'center' }}>
               <Button
                 className='button-normal'
-                style={{ background: 'blue', color: 'white' }}
+                style={{ background: 'green', color: 'white' ,marginLeft: '25px'}}
                 onClick={() => {
                   setEventInfoPopupOpen(true);
                   
