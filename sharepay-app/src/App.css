@@ -800,7 +800,7 @@ table {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: absolute; /* Fijar la barra de navegación en la parte superior */
+    position: fixed; /* Fijar la barra de navegación en la parte superior */
     width: 100%; /* Ocupa todo el ancho disponible */
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
@@ -820,8 +820,8 @@ table {
 
   /* Estilos para el botón de cerrar sesión en dispositivos móviles */
   .logoutButton {
-    position: absolute;
-    top: 25px; /* Ajusta según la altura de tu navbar */
+    position: absolute;  /* Posicionamiento absoluto para que pueda moverse libremente dentro del NavBar */
+    top: 20px; /* Ajusta según la altura de tu navbar */
     right: 10px;
     background-color: #0056b3;
     color: #ADD8E6;
