@@ -37,7 +37,6 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
   const validateEditing = async (eventID) => {
     try {
       const activities = await getEventActivities(localStorage.getItem('userToken'),eventID);
-      console.log(activities.data);
       if (activities.data.activities.length > 0) {
         alert('Ya no puedes editar el evento, tiene actividades registradas')
         setIsEditing(false);
@@ -83,23 +82,22 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
 
 
   const handleShowActivities = async (eventID) => {
-  try {
-    const activities = await getEventActivities(localStorage.getItem('userToken'), eventID);
-    console.log(activities.data.activities);
-    
-    if (activities.data.activities) {
-      setCurrentActivities(activities.data.activities);
-      setShowActivities(true);
-    } else {
-      console.log('El evento no tiene actividades');
+    try {
+      const activities = await getEventActivities(localStorage.getItem('userToken'), eventID);
+      
+      if (activities.data.activities) {
+        setCurrentActivities(activities.data.activities);
+        setShowActivities(true);
+      } else {
+        console.log('El evento no tiene actividades');
+      }
+    } catch (error) {
+      console.log('El evento no tiene actividades:', error);
+      alert('El evento no tiene actividades registradas.');
+      setShowActivities(false);
+      onClose();
     }
-  } catch (error) {
-    console.error('El evento no tiene actividades:', error);
-    alert('El evento no tiene actividades registradas.');
-    setShowActivities(false);
-    onClose();
-  }
-};
+  };
   
   const contentEditar = (
     <>
@@ -190,24 +188,41 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
       <DialogTitle>Actividades del Evento {eventInfo.Evento.Nombre}</DialogTitle>
       <DialogContent>
         <div>
-          {currentActivities.map((activity) => (
-            <div key={activity.id}>
-              <p>Creador: {activity.Creador}</p>
-              <p>Nombre: {activity.nombre}</p>
-              <p>Descripción: {activity.descripcion}</p>
-              <p>Valor: {activity.Valor}</p>
+          {currentActivities.map((activity, index) => (
+            <div key={index} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px',marginRight:'10px',  display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ flex: 1 }}>
+                <p>Actividad: {activity.Nombre}</p>
+                <p>Descripción: {activity.Descripcion}</p>
+                <p>Valor: {activity.Valor} COP</p>
+              </div>
+              {eventInfo.Evento.Creador === localStorage.getItem('username') && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '25px' }}>
+                  <div><Button>Agregar Invitados</Button></div>
+                </div>
+              )}
+              {eventInfo.Evento.Creador !== localStorage.getItem('username') && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '25px' }}>
+                  <div><Button>Ver Invitados</Button></div>
+                </div>
+              )}
             </div>
+          
           ))}
         </div>
       </DialogContent>
       <div style={{ display: 'flex', justifyContent: 'center' , marginBottom:'25px'}}>
-        <Button onClick={() => setShowActivities(false)}>Volver</Button>
-        <Button onClick={onClose}>Cerrar</Button>
+        <Button onClick={() => setShowActivities(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '10px', marginRight: '10px' }}>Volver</Button>
+        {eventInfo.Evento.Creador === localStorage.getItem('username') && (
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '10px', marginRight: '10px' }}>
+                    <div><Button>Crear Actividad</Button></div>
+                  </div>
+                )}
+        <Button onClick={onClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '10px', marginRight: '10px' }}>Cerrar</Button>
       </div>
     </Dialog>
     ) : (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>No hay actividades en el evento {eventInfo.Evento.Nombre}</DialogTitle>
+      <DialogTitle>No hay actividades en el evento '{eventInfo.Evento.Nombre}'</DialogTitle>
       <DialogContent style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
           <Button onClick={() => setShowActivities(false)}>Volver</Button>
@@ -267,7 +282,7 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
     ['https://w7.pngwing.com/pngs/980/935/png-transparent-clapperboard-architecture-sports-activities-text-fashion-logo-thumbnail.png', 'avatar 1'],
     ['https://png.pngtree.com/png-clipart/20220628/original/pngtree-food-logo-png-image_8239850.png', 'avatar 2'],
     ['https://logo.com/image-cdn/images/kts928pd/production/cbe600c9fc90afe063527b300816e390f57a8915-349x346.png', 'avatar 3'],
-    ['https://assets.stickpng.com/images/590605810cbeef0acff9a63c.png', 'avatar 4'],
+    ['https://png.pngtree.com/element_our/png/20181119/cinema-vector-illustration-png_242108.jpg', 'avatar 4'],
     ['https://logowik.com/content/uploads/images/google-shopping.jpg', 'avatar 5'],
     ['https://png.pngtree.com/png-clipart/20230921/original/pngtree-swimming-logo-logo-pool-white-vector-png-image_12645079.png', 'avatar 6']
   ];
@@ -388,7 +403,7 @@ const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) =>
               />
             </TableCell>
             <TableCell className="center-vertically" style={{ border: 'none', paddingTop: '5px', paddingLeft: '30px', textAlign: 'left' }}>
-              {event.Evento.Nombre}
+              {event.Evento.Nombre} creado por {event.Evento.Creador}
             </TableCell>
             <TableCell className="center-vertically" style={{ border: 'none', paddingTop: '5px', paddingLeft: '1px', textAlign: 'center' }}>
               Tipo: {event.Evento.Tipo}
@@ -536,7 +551,7 @@ function Events() {
 
         
 
-        <h3>Mis eventos</h3>
+        <h3>Eventos en los que participo</h3>
           <EventsTable
             events={events}
             setEventInfoPopupOpen={setEventInfoPopupOpen}
@@ -569,8 +584,8 @@ function Events() {
                 </tr>
               </thead>
               <tbody>
-                {activities.map((activity) => (
-                  <tr key={activity.id}>
+                {activities.map((activity, index) => (
+                  <tr key={index}>
                     <td>{activity.name}</td>
                     <td>{activity.value}</td>
                     <td>{activity.participants.map((participant) => participant.name).join(', ')}</td>

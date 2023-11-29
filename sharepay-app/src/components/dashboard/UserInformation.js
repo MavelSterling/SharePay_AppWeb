@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField, Select, InputLabel, FormControl, MenuItem } from '@material-ui/core';
 import { getProfileByUsername , getUserByUsername, updateUserInfo, updateProfileInfo, getProfileByID , validatePassword, getUserByEmail} from '../../api/service';
 
 import { useNavigate } from 'react-router-dom';  // Importar useNavigate
@@ -17,7 +17,14 @@ function UserInformation() {
     const [bio, setBio] = useState("");
     const [isActive, setIsActive] = useState(false);
 
-
+    const OPCIONES_FOTO_AVATAR = [
+        ['https://static.vecteezy.com/system/resources/previews/019/896/012/original/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png', "avatar 1"],
+        ['https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png', "avatar 2"],
+        ['https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/11_avatar-512.png', "avatar 3"],
+        ['https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png', "avatar 4"],
+        ['https://as1.ftcdn.net/v2/jpg/01/21/93/74/1000_F_121937450_E3o8jRG3mKbMaAFprSuNOlyrLraSVVua.jpg', "avatar 5"],
+        ['https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg', "avatar 6"]
+    ]
 
     const [isEditable, setIsEditable] = useState(false);
     
@@ -123,14 +130,10 @@ function UserInformation() {
       
     
 
-    const handleAvatarChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setAvatar(file);
-            const previewURL = URL.createObjectURL(file);
-            setAvatarPreview(previewURL);
-        }
-    };
+      const handleAvatarChange = (selectedValue) => {
+        setAvatar(selectedValue);
+        setAvatarPreview(selectedValue);
+      };
 
     const handleCancel = (e) => {
         setIsEditable(false);
@@ -243,18 +246,45 @@ function UserInformation() {
                             <div style={{ width: '150px', height: '150px', marginBottom: '20px' }}>
                                 {avatarPreview ? <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%' , borderRadius: '50%'}} /> : "No image uploaded"}
                             </div>
-                            <input
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                id="avatar-upload"
-                                type="file"
-                                onChange={handleAvatarChange}
-                            />
-                            <label htmlFor="avatar-upload">
-                                <Button variant="contained" color="primary" component="span">
-                                    Subir Avatar
-                                </Button>
-                            </label>
+                            <FormControl fullWidth variant="outlined" style={{ marginBottom: '16px', marginTop: '16px' }}>
+                                <InputLabel>Seleccionar Avatar</InputLabel>
+                                <Select
+                                disabled={!isEditable}
+                                value={avatarPreview}
+                                onChange={(e) => handleAvatarChange(e.target.value)}
+                                label="Seleccionar Avatar"
+                                renderValue={(selected) => {
+                                    const selectedOption = OPCIONES_FOTO_AVATAR.find((option) => option[0] === selected);
+                                    return (
+                                    <>
+                                        {selectedOption && (
+                                        <>
+                                            <img
+                                            src={selectedOption[0]}
+                                            alt={`Avatar ${selectedOption[1]}`}
+                                            style={{ width: '30px', height: '30px', marginRight: '8px', borderRadius: '50%' }}
+                                            />
+                                            {`  ${selectedOption[1]}`}
+                                        </>
+                                        )}
+                                    </>
+                                    );
+                                }}
+                                >
+                                {OPCIONES_FOTO_AVATAR.map((option) => (
+                                    <MenuItem key={option[1]} value={option[0]}>
+                                    <>
+                                        <img
+                                        src={option[0]}
+                                        alt={`Avatar ${option[1]}`}
+                                        style={{ width: '30px', height: '30px', marginRight: '8px', borderRadius: '50%' }}
+                                        />
+                                        {`Opción número ${option[1]}`}
+                                    </>
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
                             <TextField
                                 label="Bio"
                                 multiline
@@ -269,36 +299,30 @@ function UserInformation() {
                                 }}
                             />
                         </Grid>
-    
-    
-                        
+                    </Grid>
+                    {/* Contenedor de botones */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px', paddingLeft: '35px', paddingRight: '35px' }}>
                         {/* Botones Aceptar y Cancelar */}
-                        <Grid item container xs={6}  style={{ marginTop: '10px', marginLeft: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
-                            <Button className="button-info" variant="contained" onClick={handleUpdate} style={{ marginTop: '10px', marginRight: '35px' , whiteSpace: 'nowrap', width: 'auto' }}>
-                                {isEditable ? 'Enviar datos' : 'Actualizar datos'}
+                        <div style={{ display: 'flex', whiteSpace: 'nowrap', width: 'auto' }}>
+                            <Button className="button-info" variant="contained" onClick={handleUpdate} style={{ marginTop: '10px', marginRight: '35px', whiteSpace: 'nowrap', width: 'auto' }}>
+                            {isEditable ? 'Enviar datos' : 'Actualizar datos'}
                             </Button>
                             <Button
-                                className="button-info"
-                                variant="contained"
-                                onClick={handleCancel}
-                                disabled={!isEditable}
-                                style={{ marginTop: '10px', display: isEditable ? 'block' : 'none', whiteSpace: 'nowrap', width: 'auto'  }}
+                            className="button-info"
+                            variant="contained"
+                            onClick={handleCancel}
+                            disabled={!isEditable}
+                            style={{ marginTop: '10px', display: isEditable ? 'block' : 'none', whiteSpace: 'nowrap', width: 'auto' }}
                             >
-                                Cancelar
+                            Cancelar
                             </Button>
-                        </Grid>
-
-
+                        </div>
 
                         {/* Botón Desactivar cuenta */}
-                        <Grid item xs={10} container justifyContent="flex-end" >
-                            <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount} style={{ marginTop: '10px', whiteSpace: 'nowrap', width: 'auto'  }}>
-
+                        <Button className="button-info" variant="contained" color="secondary" onClick={handleDeactivateAccount} style={{ marginTop: '10px', whiteSpace: 'nowrap', width: 'auto' }}>
                             Desactivar cuenta
-                            </Button>
-                        </Grid>
-
-                    </Grid>
+                        </Button>
+                        </div>
                 </div>
             </div>
         );
