@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ActivityModal from './ActivityModal';
 import Sidebar from './Sidebar';
-import { TextField, TextareaAutosize, Table, TableBody, TableCell, TableRow, Button, Dialog, DialogTitle, DialogContent , FormControl, InputLabel, Select, MenuItem} from '@mui/material';
+import { TextField,Input , TextareaAutosize, Table, TableBody, TableCell, TableRow, Button, Dialog, DialogTitle, DialogContent , FormControl, InputLabel, Select, MenuItem} from '@mui/material';
 import {deleteEvent, updateEventInfo, getEventActivities, getAllEvents, getParticipantByUser, createEvent } from '../../api/service';
 import axios from 'axios';
 
@@ -9,13 +9,14 @@ const Overlay = ({ isOpen, onClick }) => (
   <div className={`overlay ${isOpen ? 'open' : ''}`} onClick={onClick}></div>
 );
 
-const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
+const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDelete , setCreateActivityPopupOpen}) => {
   const [showActivities, setShowActivities] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [eventName, setEventName] = useState(eventInfo.Evento ? eventInfo.Evento.Nombre : '');
   const [eventDescription, setEventDescription] = useState(eventInfo.Evento ? eventInfo.Evento.Descripcion : '');
   const [eventType, setEventType] = useState(eventInfo.Evento ? eventInfo.Evento.Tipo : '');
   const [currentActivities, setCurrentActivities] = useState([]);
+  const [selectedParticipants, setSelectedParticipants] = useState([])
   
   const handleUpdate = async () => {
     const updatedEvent = {
@@ -94,8 +95,6 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
     } catch (error) {
       console.log('El evento no tiene actividades:', error);
       alert('El evento no tiene actividades registradas.');
-      setShowActivities(false);
-      onClose();
     }
   };
   
@@ -131,6 +130,31 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
           value={eventType}
           onChange={(e) => setEventType(e.target.value)}
         />
+      </div>
+      <div style={{ marginBottom: '16px' }}>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel>Seleccionar Participantes</InputLabel>
+          <Select
+            multiple
+            value={selectedParticipants}
+            onChange={(e) => setSelectedParticipants(e.target.value)}
+            label="Seleccionar Participantes"
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 300, // Set the max height of the dropdown list
+                },
+              },
+            }}
+          >
+            {/* Add your participant options dynamically */}
+            {myContacts.map((participant, index) => (
+              <MenuItem key={index} value={participant}>
+                Contacto {participant.Nombre}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
       <div style={{ marginBottom: '10px' }}>
         <Button variant="contained" color="primary" onClick={handleUpdate} style={{ marginRight: '5px' }}>
@@ -214,7 +238,10 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
         <Button onClick={() => setShowActivities(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '10px', marginRight: '10px' }}>Volver</Button>
         {eventInfo.Evento.Creador === localStorage.getItem('username') && (
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '10px', marginRight: '10px' }}>
-                    <div><Button>Crear Actividad</Button></div>
+                    <div><Button onClick={() => {
+                      onClose();
+                      setCreateActivityPopupOpen(true);
+                    }}>Crear Actividad</Button></div>
                   </div>
                 )}
         <Button onClick={onClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '10px', marginRight: '10px' }}>Cerrar</Button>
@@ -224,8 +251,16 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, onUpdate, onDelete }) => {
     <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle>No hay actividades en el evento '{eventInfo.Evento.Nombre}'</DialogTitle>
       <DialogContent style={{ display: 'flex', justifyContent: 'center' }}>
-        <div>
+        <div style={{ display: 'flex', justifyContent: 'center' , marginBottom:'10px', marginTop:'25px'}}>
           <Button onClick={() => setShowActivities(false)}>Volver</Button>
+          {eventInfo.Evento.Creador === localStorage.getItem('username') && (
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '10px', marginRight: '10px' }}>
+                    <div><Button onClick={() => {
+                      onClose();
+                      setCreateActivityPopupOpen(true);
+                    }}>Crear Actividad</Button></div>
+                  </div>
+                )}
           <Button onClick={onClose}>Cerrar</Button>
         </div>
       </DialogContent>
@@ -289,7 +324,7 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
 
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Crear Nuevo Evento</DialogTitle>
+      <DialogTitle style={{ display: 'flex', justifyContent: 'center' }}>Crear Nuevo Evento</DialogTitle>
       <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
         {/* Contenedor de Filas */}
         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -329,7 +364,7 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', marginTop: '20px' }}>
               {/* Mostrar la vista previa del avatar seleccionado */}
-              <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '100%', maxHeight: '100%', borderRadius: '50%' }} />
+              <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '80%', maxHeight: '80%', borderRadius: '50%' }} />
             </div>
             {/* Lista de opciones de avatares */}
             <FormControl fullWidth variant="outlined" style={{ marginBottom: '16px', marginTop: '16px' }}>
@@ -390,6 +425,111 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
   );
 };
 
+const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts}) => {
+  const [eventName, setEventName] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
+  const [valorTotal, setValorTotal] = useState('');
+
+  const handleValorTotalChange = (e) => {
+    const nuevoValor = e.target.value;
+    if (!isNaN(nuevoValor)) {
+      setValorTotal(nuevoValor);
+    }
+  };
+
+  const handleCreate = () => {
+    
+    const newActivity = {
+      EventoID: eventInfo.Evento.EventoID,
+      Nombre: eventName,
+      Descripcion: eventDescription,
+      ValorTotal: valorTotal,
+      // Otros campos necesarios para la creación del evento
+    };
+
+    const newActivityParticipants = {
+
+    };
+
+    // Llama a la función de creación proporcionada por el padre
+    onCreate(newActivity);
+    // Limpia los campos después de la creación
+    setEventName('');
+    setEventDescription('');
+    setValorTotal('');
+  };
+
+  return (
+    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle style={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Actividad</DialogTitle>
+      <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* Contenedor de Filas */}
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {/* Columna Izquierda */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, marginRight: '16px' }}>
+            <div style={{ marginBottom: '16px', marginTop: '16px' }}>
+              <TextField
+                label="Nombre de la actividad"
+                variant="outlined"
+                fullWidth
+                value={eventName}
+                onChange={(e) => setEventName(e.target.value)}
+              />
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <TextField
+                label="Descripción"
+                rows={3}
+                variant="outlined"
+                fullWidth
+                value={eventDescription}
+                onChange={(e) => setEventDescription(e.target.value)}
+              />
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <TextField
+                label="Valor"
+                type="number"
+                variant="outlined"
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                fullWidth
+                value={valorTotal}
+                onChange={(e) => setValorTotal(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Columna Derecha */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+            
+            {/* Lista de participantes de avatares */}
+            <FormControl fullWidth variant="outlined" style={{ marginBottom: '16px', marginTop: '16px' }}>
+              <InputLabel>Invitar Contactos</InputLabel>
+              
+            </FormControl>
+
+          </div>
+        </div>
+
+        {/* Centro */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
+          <Button variant="contained" color="primary" onClick={() => { handleCreate(); onClose(); }}>
+            Crear Actividad
+          </Button>
+        </div>
+
+        {/* Botón Cerrar */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3px' }}>
+          <Button style={{ marginTop: '6px' }} onClick={onClose}>
+            Cerrar
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+
 const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) => (
   <Table style={{ marginBottom: 20, borderCollapse: 'collapse', width: '100%', border: 'none' }}>
     <TableBody>
@@ -435,11 +575,10 @@ const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) =>
 );
 
 function Events() {
-  const [isModalOpen, setModalOpen] = useState(false);
+  //const [isModalOpen, setModalOpen] = useState(false);
  //const [isDetailModalOpen, setDetailModalOpen] = useState(false);
-  const [isActivityModalOpen, setActivityModalOpen] = useState(false);
+  const [isCreateActivityPopupOpen, setCreateActivityPopupOpen] = useState(false);
   const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
   const [saveActivity, setSaveActivity] = useState(null);
   const [availableEvents, setAvailableEvents] = useState([]);
   const [activities, setActivities] = useState([]);
@@ -447,6 +586,7 @@ function Events() {
   const [isEventCreatePopupOpen, setEventCreatePopupOpen] = useState(false);
   const [isActivitiesInfoPopupOpen, setActivitiesInfoPopupOpen] = useState(false);
   const [selectedEventInfo, setSelectedEventInfo] = useState(null);
+  const [misContactos, setMisContactos] = useState([]);
 
   const tokenActivo = localStorage.getItem('userToken');
   const usuarioActivo = localStorage.getItem('username');
@@ -473,7 +613,6 @@ function Events() {
   const handleCreateEvent = async (newEvent) => {
     try {
       const response = await createEvent(localStorage.getItem('userToken'), newEvent);
-      setModalOpen(false);
       fetchEvents();
       setSaveActivity(createActivity);
       setAvailableEvents(events);
@@ -487,7 +626,7 @@ function Events() {
   const createActivity = async (newActivity, eventId) => {
     try {
       await axios.post(`URL_de_tu_API/events/${eventId}/activities`, newActivity);
-      setActivityModalOpen(false);
+      setCreateActivityPopupOpen(false);
       // Recargar la lista de actividades después de crear una nueva actividad
       fetchActivities(eventId);
     } catch (error) {
@@ -497,15 +636,11 @@ function Events() {
   
 
   useEffect(() => {
+    if(selectedEventInfo){
+      console.log(selectedEventInfo)
+    }
     fetchEvents();
   }, []);
-
-  useEffect(() => {
-    // Cuando se selecciona un evento, cargar las actividades correspondientes
-    if (selectedEvent) {
-      fetchActivities(selectedEvent.id);
-    }
-  }, [selectedEvent]);
 
   return (
     <div style={{ display: 'flex' }}>
@@ -516,10 +651,9 @@ function Events() {
           Nuevo Evento
         </button>
 
-        <Overlay isOpen={isModalOpen || isEventInfoPopupOpen || isActivityModalOpen || isActivitiesInfoPopupOpen} onClick={() => {
-          setModalOpen(false);
+        <Overlay isOpen={ isEventInfoPopupOpen || isCreateActivityPopupOpen || isActivitiesInfoPopupOpen} onClick={() => {
           setEventInfoPopupOpen(false);
-          setActivityModalOpen(false);
+          setCreateActivityPopupOpen(false);
           setEventCreatePopupOpen(false);
           setActivitiesInfoPopupOpen(false);
         }} />
@@ -532,16 +666,28 @@ function Events() {
           />
         )}
 
+        {isCreateActivityPopupOpen && (
+          <CreateActivityPopup
+            isOpen={isCreateActivityPopupOpen}
+            onClose={() => setCreateActivityPopupOpen(false)}
+            onSave={saveActivity}
+            eventInfo={selectedEventInfo}
+            myContacts={misContactos}
+          />
+        )}
+
         {isEventInfoPopupOpen && (
-            <EventInfoPopup
+          <EventInfoPopup
             isOpen={isEventInfoPopupOpen}
             onClose={() => setEventInfoPopupOpen(false)}
-            eventInfo={selectedEventInfo}  // Cambiado a selectedEventInfo con minúscula inicial
+            eventInfo={selectedEventInfo} 
+            myContacts={misContactos}
+            setCreateActivityPopupOpen = {setCreateActivityPopupOpen}
           />
         )}
 
         {isActivitiesInfoPopupOpen && (
-            <EventInfoPopup
+            <CreateActivityPopup
             isOpen={isEventInfoPopupOpen}
             onClose={() => setEventInfoPopupOpen(false)}
             eventInfo={selectedEventInfo}  // Cambiado a selectedEventInfo con minúscula inicial
@@ -557,63 +703,6 @@ function Events() {
             setEventInfoPopupOpen={setEventInfoPopupOpen}
             setSelectedEventInfo={setSelectedEventInfo}
           />
-        <div>
-          <button className="button-act" onClick={() => setActivityModalOpen(true)}>
-            Nueva Actividad
-          </button>
-
-          {isActivityModalOpen && (
-            <ActivityModal
-              onClose={() => setActivityModalOpen(false)}
-              onSave={saveActivity}
-              selectedEvent={selectedEvent}
-              availableEvents={availableEvents}
-            />
-          )}
-        </div>
-
-        {selectedEvent && (
-          <div>
-            <h3>Actividades en las que participo</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Nombre de la actividad</th>
-                  <th>Evento</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {activities.map((activity, index) => (
-                  <tr key={index}>
-                    <td>{activity.name}</td>
-                    <td>{activity.value}</td>
-                    <td>{activity.participants.map((participant) => participant.name).join(', ')}</td>
-                    <td>{activity.description}</td>
-                    <td>
-                      <button
-                        onClick={() => {
-                          // Abrir la ventana modal con la información de la actividad para actualizar
-                          setActivityModalOpen(true);
-                          // Configurar la función para actualizar la actividad
-                        }}
-                      >
-                        Actualizar
-                      </button>
-                      <button
-                        onClick={() => {
-                          // Lógica para eliminar la actividad
-                        }}
-                      >
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
     </div>
   );

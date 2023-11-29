@@ -187,6 +187,7 @@ function UserInformation() {
                                 fullWidth
                                 label="Correo electrónico"
                                 type="email"
+                                variant="outlined"
                                 value={email || ''}
                                 onChange={(e) => setEmail(e.target.value)}
                                 disabled={!isEditable}
@@ -196,6 +197,7 @@ function UserInformation() {
                                 fullWidth
                                 label="Nombre/s"
                                 type="text"
+                                variant="outlined"
                                 value={nombre || ''}
                                 onChange={(e) => setNombre(e.target.value)}
                                 disabled={!isEditable}
@@ -205,6 +207,7 @@ function UserInformation() {
                                 fullWidth
                                 label="Apellido/s"
                                 type="text"
+                                variant="outlined"
                                 value={apellido || ''}
                                 onChange={(e) => setApellido(e.target.value)}
                                 disabled={!isEditable}
@@ -214,6 +217,7 @@ function UserInformation() {
                                 fullWidth
                                 label="Apodo"
                                 type="text"
+                                variant="outlined"
                                 value={nickname || ''}
                                 onChange={(e) => setNickname(e.target.value)}
                                 disabled={true}
@@ -223,6 +227,7 @@ function UserInformation() {
                                 fullWidth
                                 label="Contraseña"
                                 type="password"
+                                variant="outlined"
                                 value={password || ''}
                                 onChange={(e) => setPassword(e.target.value)}
                                 disabled={!isEditable}
@@ -232,6 +237,7 @@ function UserInformation() {
                                 fullWidth
                                 label="Confirmar contraseña"
                                 type="password"
+                                variant="outlined"
                                 value={confirmpassword || ''}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 disabled={!isEditable}
@@ -293,6 +299,7 @@ function UserInformation() {
                                 onChange={(e) => setBio(e.target.value)}
                                 disabled={!isEditable}
                                 fullWidth
+                                variant="outlined"
                                 style={{
                                     marginTop: '10px',
                                     marginBottom: '10px',
