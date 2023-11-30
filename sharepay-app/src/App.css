@@ -1061,11 +1061,11 @@ table {
     transform: scale(1.18); /* Ajusta el factor de escala */
   }
   .TextField {
-    width: 100%;
+    width: 80%;
   }
   .Grid-item {
-    display: block; /* Cambia el diseño a bloque para apilar en lugar de usar flexbox */
-
+    display: flex;
+    flex-direction: column;
   }
 }
 
