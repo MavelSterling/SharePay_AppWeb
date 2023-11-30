@@ -1060,5 +1060,8 @@ table {
     transition: transform 0.2s ease;
     transform: scale(1.18); /* Ajusta el factor de escala */
   }
+  .TextField {
+    width: 100%;
+  }
 }
 
