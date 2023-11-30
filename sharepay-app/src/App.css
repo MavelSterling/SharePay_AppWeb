@@ -1061,7 +1061,8 @@ table {
     transform: scale(1.18); /* Ajusta el factor de escala */
   }
   .TextField {
-    width: 80%;
+    width: 90%;
+    font-size: 16px;
   }
   .Grid-item {
     display: flex;
