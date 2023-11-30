@@ -926,7 +926,7 @@ table {
   /* Ajustes de estilo para el contenedor interno del modal en dispositivos móviles */
   .modal-container {
     text-align: center;
-    width: 90%;
+    width: 100%;
   }
 
   .column-event {
