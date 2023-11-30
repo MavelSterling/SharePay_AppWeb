@@ -1063,5 +1063,9 @@ table {
   .TextField {
     width: 100%;
   }
+  .Grid-item {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
