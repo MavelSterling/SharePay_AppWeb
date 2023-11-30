@@ -931,7 +931,7 @@ table {
 
   .column-event {
     width: 90%;     /* Ajusta el ancho de los elementos */
-    margin-bottom: 8px; /* Elimina el margen entre columnas */
+    margin-bottom: 8px; /* Ajusta el margen entre columnas */
   }
 
   /* CSS para el botón de cerrar (la 'x') */
@@ -1059,6 +1059,9 @@ table {
     margin-bottom: 20px; /* Espacio inferior */
     transition: transform 0.2s ease;
     transform: scale(1.18); /* Ajusta el factor de escala */
+  }
+  .TextField {
+    width: 100%;
   }
 }
 
