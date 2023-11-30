@@ -930,8 +930,8 @@ table {
   }
 
   .column-event {
-    width: 90%;
-    margin-bottom: 15px;
+    width: 90%;     /* Ajusta el ancho de los elementos */
+    margin-bottom: 8px; /* Elimina el margen entre columnas */
   }
 
   /* CSS para el botón de cerrar (la 'x') */
