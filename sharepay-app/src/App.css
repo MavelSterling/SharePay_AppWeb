@@ -810,17 +810,18 @@ table {
 
   /* Ajustes de estilo para la barra de navegación en dispositivos móviles */
   .navbar {
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
-    height: 50px;
+    position: static;  /* la barra de navegación en la parte superior */
+    width: 90%; /* Ocupa todo el ancho disponible */
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     z-index: 1000;
-  }
+    
 
+  }
   /* Ajusta la posición del icono de la campana solo para el NavBar */
   .navbar-container .notification-container {
     display: flex;
@@ -831,6 +832,28 @@ table {
     width: 100%; /* Ocupa todo el ancho disponible */
   }
 
+  /* Estilos para el botón de cerrar sesión en dispositivos móviles */
+  .logoutButton {
+    position: absolute;  /* Posicionamiento absoluto para que pueda moverse libremente dentro del NavBar */
+    top: 20px; /* Ajusta según la altura de tu navbar */
+    right: 10px;
+    background-color: #0056b3;
+    color: #ADD8E6;
+    border: none;
+    padding: 5px 10px; /* Ajusta según sea necesario */
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .toggle-btn {
+    background-color: #ADD8E6;  /* Color de fondo blanco para el botón*/
+    border: none;  /* Sin borde*/
+    font-size: 24px;  /* Tamaño de fuente*/
+    cursor: pointer;  /* Cursor en forma de mano al pasar sobre el botón*/
+    z-index: 1000;  /* Asegurarse de que aparezca en la parte superior*/
+    position: relative;  /* Posicionamiento relativo para ajustarlo si es necesario*/
+    bottom: 0;
+  }
+
   /* Ajustes de estilo para la barra lateral en dispositivos móviles */
   .sidebar {
     width: 90%;
@@ -838,21 +861,91 @@ table {
     border-right: none;
     border-bottom: 1px solid #ADD8E6;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra en el borde derecho */
+    /*position: fixed;  Fijar la barra lateral en la parte izquierda */
+    top: 0; /* Alinear en la parte superior */
+    left: 0;
     display: flex;
+    flex-direction: column;
+    z-index: 1001; /* Asegúrate de que el z-index sea mayor que el del fondo */
   }
+
+  .sidebar.open {
+    width: 18rem;
+  }
+
+  .sidebar.closed {
+    width: 0;
+    overflow: hidden;
+  }
+  .sidebar {
+    top: 50px; /* Ajusta según la altura de tu navbar */
+    height: fit-content;
+    background-color: #f0f0f0; /* Color de fondo de la barra lateral */
+    padding-top: 20px; /* Espaciado superior */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0; /* Elimina el espacio en la lista superior */
+    margin: 0; /* Elimina el margen exterior */
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+  }
+
+  .sidebar ul li {
+    margin-bottom: 1rem;
+    text-align: center; /* Centra el texto horizontalmente */
+  }
+
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #000; /* Color de texto */
+    font-size: 1rem; /* Tamaño de fuente */
+    padding: 0.5rem; /* Espaciado interior para enlaces */
+    border-radius: 5px; /* Bordes redondeados */
+    display: block; /* Hace que todo el enlace sea clickeable */
+    transition: background-color 0.2s, color 0.2s; /* Efecto de transición en hover */
+  }
+
+  .sidebar ul li a:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el ratón por encima */
+    color: #ADD8E6; /* Color de texto al pasar el ratón por encima */
+  }
+  .upload-button {
+    /* Estilos para el botón de subir avatar */
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .button-container {
+    /* Estilos para el contenedor del botón */
+    text-align: center;
+  }
+
+  .overlay.open {
+    display: block;
+  }
+
 
   /* Ajustes de estilo para el modal en dispositivos móviles */
   .event-modal {
     box-shadow: none;
   }
 
+  /* Ajustes de estilo para el contenedor interno del modal en dispositivos móviles */
   .modal-container {
-    width: 90%;
+    text-align: center;
+    width: 100%;
   }
 
   .column-event {
-    width: 90%;
-    margin-bottom: 15px;
+    width: 90%;     /* Ajusta el ancho de los elementos */
+    margin-bottom: 8px; /* Ajusta el margen entre columnas */
   }
 
   /* CSS para el botón de cerrar (la 'x') */
@@ -884,4 +977,110 @@ table {
     width: 100%;
     margin-bottom: 10px;
   }
+
+  /* Estilos para el formulario en dispositivos móviles */
+  .form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Agrega relleno al formulario */
+    border-radius: 8px; /* Bordes redondeados al formulario */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  }
+
+  .input {
+    margin-bottom: 15px;
+  }
+
+  .avatar-upload {
+    display: none;
+  }
+
+  .avatar-label {
+    margin-top: 20px;
+  }
+
+  /* Fondo de página en dispositivos móviles */
+  body {
+    background-color: #e9eff1;
+    margin:   0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    position: relative; /* el body tenga posición relativa */
+    z-index: 1000; /* Z-index del fondo, que sea menor que el del sidebar */
+    /*top: 60px;  Ajusta según la altura de tu navbar */
+  }
+
+  .events-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .events-left-panel {
+    flex: 1;
+  }
+
+  .events-right-panel {
+    flex: 3;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .button-event {
+    padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+    background-color: #21618C ;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    width: 130px; /* Define el ancho deseado para el botón */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    transform: scale(1.18); /* Ajusta el factor de escala */
+  }
+
+  .button-normal {
+    padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+    background-color: #21618C ;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    transform: scale(1.18); /* Ajusta el factor de escala */
+  }
+
+  .button-act {
+    padding: 8px 12px; /* Ajusta el relleno del botón según sea necesario */
+    background-color: #1A5276;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    width: 140px; /* Define el ancho deseado para el botón */
+    cursor: pointer;
+    margin-top: 20px; /* Espacio superior */
+    margin-bottom: 20px; /* Espacio inferior */
+    transition: transform 0.2s ease;
+    transform: scale(1.18); /* Ajusta el factor de escala */
+  }
+  .TextField {
+    width: 90%;
+    font-size: 16px;
+  }
+  .Grid-item {
+    display: flex;
+    flex-direction: column;
+  }
 }
+
