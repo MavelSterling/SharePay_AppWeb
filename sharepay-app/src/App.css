@@ -929,12 +929,9 @@ table {
     width: 90%;
   }
 
-  /* Ajustes de estilo para el contenido del modal en dispositivos móviles */
   .column-event {
-    /* Elimina la distribución en columnas */
-    flex-direction: column;
-    /* Elimina el margen entre columnas */
-    margin-right: 0;
+    width: 90%;
+    margin-bottom: 15px;
   }
 
   /* CSS para el botón de cerrar (la 'x') */
