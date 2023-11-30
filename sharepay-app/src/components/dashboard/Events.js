@@ -161,16 +161,16 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
           Actualizar evento
         </Button>
         <Button variant="contained" color="secondary" onClick={() => {
-          if (localStorage.getItem('username') === eventInfo.Evento.Creador) {
             handleDelete(eventInfo.Evento.EventoID);
-          } else {
-            alert('Solamente el creador puede eliminar el evento')
-            onClose()
-          }
         }} style={{ marginLeft: '5px' }}>Eliminar evento</Button>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-        <Button onClick={handleUpdate}>
+        <Button onClick={() => {
+        setIsEditing(false);
+        setEventName(eventInfo.Evento.Nombre);
+        setEventDescription(eventInfo.Evento.Descripcion);
+        setEventType(eventInfo.Evento.Tipo);
+        }}>
           Volver
         </Button>
       </div>
