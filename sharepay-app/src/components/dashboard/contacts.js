@@ -277,8 +277,7 @@ function Contacts() {
                     <button className="button-search" onClick={handleSearch}>Buscar</button>
                 </div>
                 {searchResults.filter((contact) => contact.user !== Usuario_Activo).length < 1 ? (
-                  <p style={{ textAlign: 'center', marginTop: '10px', marginBottom: '90px' }}>
-                  </p>
+                  <p></p>
                 ) : (<ResultsTable
                       contacts={searchResults.filter((contact) => contact.user !== Usuario_Activo)}
                       handleAddContact={handleAddContact}

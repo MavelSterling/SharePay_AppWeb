@@ -46,7 +46,11 @@ export const deleteEvent = (access_token, eventID) => api.post('/delete_event/',
   },
 });
 
-
+export const createEventParticipant = (access_token, userData) => api.post('/create_event_participant/', userData, {
+  headers: {
+    'Authorization': `Token ${access_token}`,
+  },
+});
 
 export const createCotnact = (access_token, userData) => api.post('/create_contactos/', userData, {
   headers: {
@@ -107,7 +111,7 @@ export const getUserByEmail = (access_token, email) => api.get(`/get_user/?email
   }
 });
 
-export const getParticipantByUser = (access_token, username) => api.get(`/get_participants/?username=${username}`, {
+export const getMyEvents = (access_token, username) => api.get(`/get_my_events/?username=${username}`, {
   headers: {
     'Authorization': `token ${access_token}`
   }
@@ -115,6 +119,13 @@ export const getParticipantByUser = (access_token, username) => api.get(`/get_pa
 
 //devuelve las actividades de un evento
 export const getEventActivities = (access_token, eventID) => api.get(`/get_event_activities/?eventID=${eventID}`, {
+  headers: {
+    'Authorization': `Token ${access_token}`
+  }
+});
+
+//devuelve los participantes de un evento
+export const getEventParticipants = (access_token, eventoID) => api.get(`/get_event_participants/?eventoID=${eventoID}`, {
   headers: {
     'Authorization': `Token ${access_token}`
   }

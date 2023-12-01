@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ActivityModal from './ActivityModal';
 import Sidebar from './Sidebar';
 import { TextField,Input , TextareaAutosize, Table, TableBody, TableCell, TableRow, Button, Dialog, DialogTitle, DialogContent , FormControl, InputLabel, Select, MenuItem} from '@mui/material';
-import {deleteEvent, updateEventInfo, getEventActivities, getAllEvents, getParticipantByUser, createEvent, createActivity } from '../../api/service';
+import {deleteEvent, updateEventInfo, getEventActivities, getAllEvents, getMyEvents, createEvent, createActivity , createEventParticipant, getContacts, getEventParticipants} from '../../api/service';
 import axios from 'axios';
 
 const Overlay = ({ isOpen, onClick }) => (
@@ -11,12 +11,17 @@ const Overlay = ({ isOpen, onClick }) => (
 
 const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDelete , setCreateActivityPopupOpen, setAgregarInvitadosPopupOpen}) => {
   const [showActivities, setShowActivities] = useState(false);
+  const [showParticipants, setShowParticipants] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isInviting, setIsInviting] = useState(false);
   const [eventName, setEventName] = useState(eventInfo.Evento ? eventInfo.Evento.Nombre : '');
   const [eventDescription, setEventDescription] = useState(eventInfo.Evento ? eventInfo.Evento.Descripcion : '');
   const [eventType, setEventType] = useState(eventInfo.Evento ? eventInfo.Evento.Tipo : '');
   const [currentActivities, setCurrentActivities] = useState([]);
+  const [currentParticipants, setCurrentParticipants] = useState([]);
   const [selectedParticipants, setSelectedParticipants] = useState([])
+  const [searchUser, setSearchUser] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   
   const handleUpdate = async () => {
     const updatedEvent = {
@@ -47,6 +52,35 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
     }
   };  
 
+  const handleSearch = async (user) => {
+    try {
+      const responseContactos = await getContacts(localStorage.getItem('userToken'),localStorage.getItem('username'));
+      const userContacts = responseContactos.data.user_contacts;
+      const resultado_Contactos = userContacts.filter(contacto => contacto.estado === 'Aceptada' && (contacto.emisor.username.includes(user) || contacto.remitente.username.includes(user)));
+      setSearchResults(resultado_Contactos)
+    } catch (error) {
+      console.log('Error obteniendo los resultados: ', error)
+      setSearchUser('')
+      setSearchResults([])
+    }
+  }
+
+  const handleAddParticipants = async (eventID, participant) => {
+    try {
+
+      const newParticipant = {
+        Apodo: participant,
+        EventoID: eventID,
+        Estado: 'Pendiente',
+      };
+      
+      const participante = await createEventParticipant(localStorage.getItem('userToken'),newParticipant);
+      console.log('Solicitud del evento enviada al participante.')
+    } catch (error) {
+      alert(error.response.data.message)
+    }
+  };
+
   const handleDelete = async (eventID) => {
     try {
       const activities = await getEventActivities(localStorage.getItem('userToken'), eventID);
@@ -67,12 +101,14 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
       onClose();
     }
   };
+
+
   
 
   if (!eventInfo.Evento) {
     return (
       <Dialog open={isOpen} onClose={onClose}>
-        <DialogTitle>Información del Evento</DialogTitle>
+        <DialogTitle><h3>Información del Evento</h3></DialogTitle>
         <DialogContent>
           <p>La información del evento no está disponible.</p>
         </DialogContent>
@@ -95,6 +131,24 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
     } catch (error) {
       console.log('El evento no tiene actividades:', error);
       alert('El evento no tiene actividades registradas.');
+    }
+  };
+
+  const handleShowParticipants = async (eventID) => {
+    try {
+      const eventParticipants = await getEventParticipants(localStorage.getItem('userToken'), eventID);
+
+      console.log(eventParticipants.data.participantes)
+      
+      if (eventParticipants.data.participantes) {
+        setCurrentParticipants(eventParticipants.data.participantes);
+        setShowParticipants(true);
+      } else {
+        console.log('El evento no tiene Participantes');
+      }
+    } catch (error) {
+      console.log('El evento no tiene Participantes:', error);
+      alert('El evento no tiene Participantes.');
     }
   };
   
@@ -191,25 +245,149 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
             </div>
             <p>Descripción: {eventInfo.Evento.Descripcion}</p>
             <p>Tipo: {eventInfo.Evento.Tipo}</p>
-            <Button onClick={() => {
-              if (localStorage.getItem('username') === eventInfo.Evento.Creador) {
+            <div style={{display:'flex', justifyContent:'center'}}>
+              {(localStorage.getItem('username') === eventInfo.Evento.Creador ? (
+              <>
+              <Button onClick={() => {
                 validateEditing(eventInfo.Evento.EventoID);
-              } else {
-                alert('Solamente el creador del evento puede modificar los parametros')
-              }
-            }}>Editar</Button>
+              }}>Editar</Button>
+              
+              </>
+              
+            ) : (<></>))}
+            </div>
+            <div style={{display:'flex', justifyContent:'center'}}>
+            <Button onClick={() => {
+                setIsInviting(true);
+                handleSearch('');
+                handleShowParticipants(eventInfo.Evento.EventoID);
+              }}>Participantes</Button>
             <Button onClick={() => {
               setShowActivities(true);
               handleShowActivities(eventInfo.Evento.EventoID); // Pasar el ID del evento
               //onClose();
-            }}>Ver Actividades</Button>
-            <Button onClick={onClose}>Cerrar</Button>
+            }}>Actividades</Button>
+            </div>
+            <div style={{display:'flex', justifyContent:'center'}}>
+              <Button onClick={onClose}>Cerrar</Button>
+            </div>
           </>
+  );
+
+  
+
+  const contentInvitar_Evento = (
+    <>
+      <div style={{ marginBottom: '16px' }}>
+        <h2>Participando</h2>
+      </div>
+
+      {/* Mapea la lista de participantes */}
+      {currentParticipants.map((participant, index) => (
+        <div key={index} className="participant-item" style={{ display: 'flex', alignItems: 'center' , justifyContent: 'left' ,marginBottom: '20px'}}>
+          <>
+            <img
+              src={participant.Avatar_participante}
+              alt="Avatar"
+              style={{ width: 35, height: 35, borderRadius: '50%' , marginRight: '20px'}}
+            />
+            {participant.Apodo}
+          </>
+        </div>
+      ))}
+      
+      <div style={{ marginBottom: '16px' }}>
+        <h3>Agregar participantes</h3>
+      </div>
+      <div className="search-container">
+          <input 
+              value={searchUser} 
+              onChange={e => {
+                setSearchUser(e.target.value)
+                handleSearch(e.target.value)
+              }} 
+              placeholder="Filtrar por Apodo (Nickname)" 
+              className="search-input"
+          />
+          <button className="button-search" onClick={()=>{handleSearch(searchUser)}}>Filtrar</button>
+      </div>
+      
+      <div style={{ marginBottom: '16px',  marginTop: '16px' }}>
+      
+      </div>
+      <div style={{ marginBottom: '16px' }}>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel>Mis contactos</InputLabel>
+          <Select
+            multiple
+            value={selectedParticipants}
+            onChange={(e) => {}}
+            label="Seleccionar Participantes"
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 300, // Set the max height of the dropdown list
+                },
+              },
+            }}
+          >
+            {/* Add your participant options dynamically */}
+            {searchResults.map((participant, index) => (
+              <MenuItem key={index} value={participant}>
+                {(localStorage.getItem('username') === participant.remitente.username ? (
+                  <>
+                  <div style={{ display: 'flex', alignItems: 'center' , justifyContent: 'center'}}>
+                  <img
+                    src={participant.emisor.avatar}
+                    alt={`Avatar ${participant.emisor.avatar}`}
+                    style={{ width: '30px', height: '30px', marginRight: '8px', borderRadius: '50%' }}
+                  />
+                    
+                  {participant.emisor.username}
+                  <Button variant="contained" color="primary" onClick={()=>{
+                    //console.log(participant.emisor.username)
+                    handleAddParticipants(eventInfo.Evento.EventoID, participant.emisor.username)
+                  }} style={{justifyContent: 'right' }}>Invitar</Button>
+
+                  </div>
+                  </>
+                ) : (
+                  <>
+                <img
+                  src={participant.remitente.avatar}
+                  alt={`Avatar ${participant.remitente.avatar}`}
+                  style={{ width: '30px', height: '30px', marginRight: '8px', borderRadius: '50%' }}
+                />
+                  
+                {participant.remitente.username}
+                <Button variant="contained" color="primary" onClick={()=>{
+                    //console.log(participant.emisor.username)
+                    handleAddParticipants(eventInfo.Evento.EventoID, participant.emisor.username)
+                  }} style={{justifyContent: 'right' }}>Invitar</Button>
+                </>
+                ))}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+        <Button onClick={() => {
+        setIsInviting(false);
+        setEventName(eventInfo.Evento.Nombre);
+        setEventDescription(eventInfo.Evento.Descripcion);
+        setEventType(eventInfo.Evento.Tipo);
+        }}>
+          Volver
+        </Button>
+      </div>
+    </>
   );
 
   const contentActividades = currentActivities.length > 0 ? (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Actividades del Evento {eventInfo.Evento.Nombre}</DialogTitle>
+      <DialogTitle><h3>Actividades del Evento {eventInfo.Evento.Nombre}</h3></DialogTitle>
       <DialogContent>
         <div>
           {currentActivities.map((activity, index) => (
@@ -230,7 +408,7 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
               )}
               {eventInfo.Evento.Creador !== localStorage.getItem('username') && (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '25px' }}>
-                  <div><Button>Ver Invitados</Button></div>
+                  <div><Button>Quienes van?</Button></div>
                 </div>
               )}
             </div>
@@ -253,7 +431,7 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
     </Dialog>
     ) : (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>No hay actividades en el evento '{eventInfo.Evento.Nombre}'</DialogTitle>
+      <DialogTitle><h3>No hay actividades en el evento '{eventInfo.Evento.Nombre}'</h3></DialogTitle>
       <DialogContent style={{ display: 'flex', justifyContent: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center' , marginBottom:'10px', marginTop:'25px'}}>
           <Button onClick={() => setShowActivities(false)}>Volver</Button>
@@ -271,20 +449,27 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
     </Dialog>
   );
 
+ 
+
+  const contenido = () => {
+    if(isEditing){
+      return contentEditar
+    }
+    if(showActivities){
+      return contentActividades
+    }
+    if(isInviting){
+      return contentInvitar_Evento
+    }
+
+    return contentEvento
+  }
 
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm">
-      <DialogTitle>Evento: {eventInfo.Evento.Nombre}</DialogTitle>
+      <DialogTitle><h3>Evento: {eventInfo.Evento.Nombre}</h3></DialogTitle>
       <DialogContent>
-        {isEditing ? (
-          <>
-          {contentEditar}
-        </>
-        ) : (
-          <>
-            {showActivities ? (contentActividades) : (contentEvento)}
-          </>
-        )}
+        {contenido()}
       </DialogContent>
     </Dialog>
   );
@@ -328,7 +513,7 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
 
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle style={{ display: 'flex', justifyContent: 'center' }}>Crear Nuevo Evento</DialogTitle>
+      <DialogTitle style={{ display: 'flex', justifyContent: 'center' }}><h3>Crear Nuevo Evento</h3></DialogTitle>
       <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
         {/* Contenedor de Filas */}
         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -429,6 +614,146 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
   );
 };
 
+const CreateInvitadosPopup = ({ isOpen, onClose, onCreate, activitytInfo, eventParticipants, setEventInfoPopupOpen}) => {
+  const [activityEventID, setActivityEventID] = useState('');
+  const [activityName, setActivityName] = useState('');
+  const [activityDescription, setActivityDescription] = useState('');
+  const [activityValue, setActivityValue] = useState('');
+  const [avatar, setAvatar] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState('');
+
+  const handleCreate = () => {
+    
+    const newEvent = {
+      creador: localStorage.getItem('username'),
+      evento: activityName,
+      descripcion: activityDescription,
+      tipo: activityValue,
+      avatar: avatar,
+      // Otros campos necesarios para la creación del evento
+    };
+
+    // Llama a la función de creación proporcionada por el padre
+    onCreate(newEvent);
+    // Limpia los campos después de la creación
+    setActivityName('');
+    setActivityDescription('');
+    setActivityValue('');
+    setAvatar('')
+  };
+
+  const OPCIONES_FOTO_AVATAR = [
+    ['https://w7.pngwing.com/pngs/980/935/png-transparent-clapperboard-architecture-sports-activities-text-fashion-logo-thumbnail.png', 'avatar 1'],
+    ['https://png.pngtree.com/png-clipart/20220628/original/pngtree-food-logo-png-image_8239850.png', 'avatar 2'],
+    ['https://logo.com/image-cdn/images/kts928pd/production/cbe600c9fc90afe063527b300816e390f57a8915-349x346.png', 'avatar 3'],
+    ['https://png.pngtree.com/element_our/png/20181119/cinema-vector-illustration-png_242108.jpg', 'avatar 4'],
+    ['https://logowik.com/content/uploads/images/google-shopping.jpg', 'avatar 5'],
+    ['https://png.pngtree.com/png-clipart/20230921/original/pngtree-swimming-logo-logo-pool-white-vector-png-image_12645079.png', 'avatar 6']
+  ];
+
+  return (
+    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle style={{ display: 'flex', justifyContent: 'center' }}><h3>Crear Nuevo Evento</h3></DialogTitle>
+      <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* Contenedor de Filas */}
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {/* Columna Izquierda */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, marginRight: '16px' }}>
+            <div style={{ marginBottom: '16px', marginTop: '16px' }}>
+              <TextField
+                label="Nombre del evento"
+                variant="outlined"
+                fullWidth
+                value={activityName}
+                onChange={(e) => setActivityName(e.target.value)}
+              />
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <TextField
+                label="Descripción"
+                rows={3}
+                variant="outlined"
+                fullWidth
+                value={activityDescription}
+                onChange={(e) => setActivityDescription(e.target.value)}
+              />
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <TextField
+                label="Tipo"
+                variant="outlined"
+                fullWidth
+                value={activityValue}
+                onChange={(e) => setActivityValue(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Columna Derecha */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', marginTop: '20px' }}>
+              {/* Mostrar la vista previa del avatar seleccionado */}
+              <img src={avatarPreview} alt="Avatar Preview" style={{ maxWidth: '80%', maxHeight: '80%', borderRadius: '50%' }} />
+            </div>
+            {/* Lista de opciones de avatares */}
+            <FormControl fullWidth variant="outlined" style={{ marginBottom: '16px', marginTop: '16px' }}>
+              <InputLabel>Seleccionar Avatar</InputLabel>
+              <Select
+                value={avatarPreview}
+                onChange={(e) => setAvatarPreview(e.target.value) & setAvatar(e.target.value)}
+                label="Seleccionar Avatar"
+                renderValue={(selected) => {
+                  const selectedOption = OPCIONES_FOTO_AVATAR.find((option) => option[0] === selected);
+                  return (
+                    <>
+                      {selectedOption && (
+                        <>
+                          <img
+                            src={selectedOption[0]}
+                            alt={`Avatar ${selectedOption[1]}`}
+                            style={{ width: '30px', height: '30px', marginRight: '8px', borderRadius: '50%' }}
+                          />
+                          {`  ${selectedOption[1]}`}
+                        </>
+                      )}
+                    </>
+                  );
+                }}
+              >
+                {OPCIONES_FOTO_AVATAR.map((option) => (
+                  <MenuItem key={option[1]} value={option[0]}>
+                    <>
+                      <img
+                        src={option[0]}
+                        alt={`Avatar ${option[1]}`}
+                        style={{ width: '30px', height: '30px', marginRight: '8px', borderRadius: '50%' }}
+                      />
+                      {`Opción número ${option[1]}`}
+                    </>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+          </div>
+        </div>
+
+        {/* Centro */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
+          <Button variant="contained" color="primary" onClick={() => { handleCreate(); onClose(); }}>
+            Crear evento
+          </Button>
+        </div>
+
+        {/* Botón Cerrar */}
+        <Button style={{ marginTop: '16px' }} onClick={onClose}>
+          Cerrar
+        </Button>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts, volver, setEventInfoPopupOpen}) => {
   const [eventName, setEventName] = useState('');
   const [eventDescription, setEventDescription] = useState('');
@@ -455,8 +780,6 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts,
         Creador: eventInfo.Evento.Creador
         // Otros campos necesarios para la creación del evento
       };
-
-      console.log('nueva actividad a crear: ', newActivity)
   
       // Llama a la función de creación proporcionada por el padre
       onCreate(newActivity);
@@ -472,7 +795,7 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts,
 
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle style={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Actividad</DialogTitle>
+      <DialogTitle style={{ display: 'flex', justifyContent: 'center' }}><h3>Crear Nueva Actividad</h3></DialogTitle>
       <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
         {/* Contenedor de Filas */}
         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -547,7 +870,6 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts,
   );
 };
 
-
 const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) => (
   <Table style={{ marginBottom: 20, borderCollapse: 'collapse', width: '100%', border: 'none' }}>
     <TableBody>
@@ -612,7 +934,7 @@ function Events() {
 
   const fetchEvents = async () => {
     try {
-      const response = await getParticipantByUser(tokenActivo, usuarioActivo);
+      const response = await getMyEvents(tokenActivo, usuarioActivo);
       setEvents(response.data.participants);
     } catch (error) {
       console.error('Error al cargar los eventos:', error);
@@ -653,7 +975,7 @@ function Events() {
 
   useEffect(() => {
     if(selectedEventInfo){
-      console.log(selectedEventInfo)
+      //console.log(selectedEventInfo)
     }
     fetchEvents();
   }, []);
@@ -693,8 +1015,6 @@ function Events() {
             setEventInfoPopupOpen={setEventInfoPopupOpen}
           />
         )}
-
-        
 
         {isEventInfoPopupOpen && (
           <EventInfoPopup
