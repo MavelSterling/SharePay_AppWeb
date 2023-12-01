@@ -812,7 +812,7 @@ table {
   border: none;
   border-radius: 8px;
   font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
-  width: 150px; /* Ajusta el ancho deseado para el botón */
+  width: 170px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
   margin-left: 4px; /* Agrega un espacio entre el input y el botón */
 }
@@ -973,48 +973,48 @@ table {
     font-size: 32px;
     cursor: pointer;
   }
+/* Ajustes específicos para ActivityModal en dispositivos móviles */
+.event-modal.open {
+  /* Agrega estilos específicos cuando el modal está abierto en dispositivos móviles */
+  flex-direction: column;
+  width: 100%; /* O ajusta según tus necesidades */
+  margin: 0; /* Elimina el margen si es necesario */
+}
 
-  /* Ajustes específicos para ActivityModal en dispositivos móviles */
-  .event-modal.open {
-    /* Agrega estilos específicos cuando el modal está abierto en dispositivos móviles */
-    flex-direction: column;
-    width: 100%; /* O ajusta según tus necesidades */
-    margin: 0; /* Elimina el margen si es necesario */
-  }
+/* Estilos específicos para los elementos internos en dispositivos móviles */
+.event-modal.open .modal-content {
+  /* se puede ajustar estos estilos */
+  padding: 10px;
+}
 
-  /* Estilos específicos para los elementos internos en dispositivos móviles */
-  .event-modal.open .modal-content {
-    /* se puede ajustar estos estilos */
-    padding: 10px;
-  }
+/* Ajustes para los elementos internos en dispositivos móviles */
+.event-modal.open .column-event {
+  /* se puede ajustar estos estilos  */
+  width: 100%;
+  margin-bottom: 10px;
+}
 
-  /* Ajustes para los elementos internos en dispositivos móviles */
-  .event-modal.open .column-event {
-    /* se puede ajustar estos estilos  */
-    width: 100%;
-    margin-bottom: 10px;
-  }
+/* Estilos para el formulario en dispositivos móviles */
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px; /* Agrega relleno al formulario */
+  border-radius: 8px; /* Bordes redondeados al formulario */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
 
-  /* Estilos para el formulario en dispositivos móviles */
-  .form {
-    display: flex;
-    flex-direction: column;
-    padding: 20px; /* Agrega relleno al formulario */
-    border-radius: 8px; /* Bordes redondeados al formulario */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  }
+.input {
+  margin-bottom: 15px;
+}
 
-  .input {
-    margin-bottom: 15px;
-  }
+.avatar-upload {
+  display: none;
+}
 
-  .avatar-upload {
-    display: none;
-  }
+.avatar-label {
+  margin-top: 20px;
+}
 
-  .avatar-label {
-    margin-top: 20px;
-  }
 
   /* Fondo de página en dispositivos móviles */
   body {
@@ -1099,5 +1099,6 @@ table {
     display: flex;
     flex-direction: column; /* Cambia a un diseño de una sola columna */
   }
+  
 }
 
