@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import ActivityModal from './ActivityModal';
 import Sidebar from './Sidebar';
 import { TextField,Input , TextareaAutosize, Table, TableBody, TableCell, TableRow, Button, Dialog, DialogTitle, DialogContent , FormControl, InputLabel, Select, MenuItem} from '@mui/material';
-import {deleteEvent, updateEventInfo, getEventActivities, getAllEvents, getParticipantByUser, createEvent } from '../../api/service';
+import {deleteEvent, updateEventInfo, getEventActivities, getAllEvents, getParticipantByUser, createEvent, createActivity } from '../../api/service';
 import axios from 'axios';
 
 const Overlay = ({ isOpen, onClick }) => (
   <div className={`overlay ${isOpen ? 'open' : ''}`} onClick={onClick}></div>
 );
 
-const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDelete , setCreateActivityPopupOpen}) => {
+const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDelete , setCreateActivityPopupOpen, setAgregarInvitadosPopupOpen}) => {
   const [showActivities, setShowActivities] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [eventName, setEventName] = useState(eventInfo.Evento ? eventInfo.Evento.Nombre : '');
@@ -221,7 +221,11 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
               </div>
               {eventInfo.Evento.Creador === localStorage.getItem('username') && (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' , marginLeft: '25px' }}>
-                  <div><Button>Agregar Invitados</Button></div>
+                  <div><Button
+                  onClick={() => {
+                    onClose();
+                    setAgregarInvitadosPopupOpen(true);
+                  }}>Agregar Invitados</Button></div>
                 </div>
               )}
               {eventInfo.Evento.Creador !== localStorage.getItem('username') && (
@@ -425,7 +429,7 @@ const CreateEventPopup = ({ isOpen, onClose, onCreate }) => {
   );
 };
 
-const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts}) => {
+const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts, volver, setEventInfoPopupOpen}) => {
   const [eventName, setEventName] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [valorTotal, setValorTotal] = useState('');
@@ -438,25 +442,32 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts}
   };
 
   const handleCreate = () => {
-    
-    const newActivity = {
-      EventoID: eventInfo.Evento.EventoID,
-      Nombre: eventName,
-      Descripcion: eventDescription,
-      ValorTotal: valorTotal,
-      // Otros campos necesarios para la creación del evento
-    };
+    // Validación de campos requeridos
+    if (!eventName || !eventDescription || !valorTotal) {
+      // Mostrar mensaje de error, por ejemplo, alert o console.error
+      alert('Todos los campos son obligatorios');
+    } else {
+      const newActivity = {
+        EventoID: eventInfo.Evento.EventoID,
+        Nombre: eventName,
+        Descripcion: eventDescription,
+        ValorTotal: valorTotal,
+        Creador: eventInfo.Evento.Creador
+        // Otros campos necesarios para la creación del evento
+      };
 
-    const newActivityParticipants = {
+      console.log('nueva actividad a crear: ', newActivity)
+  
+      // Llama a la función de creación proporcionada por el padre
+      onCreate(newActivity);
+      // Limpia los campos después de la creación
+      setEventName('');
+      setEventDescription('');
+      setValorTotal('');
+      onClose(); 
+      setEventInfoPopupOpen(true);
+    }
 
-    };
-
-    // Llama a la función de creación proporcionada por el padre
-    onCreate(newActivity);
-    // Limpia los campos después de la creación
-    setEventName('');
-    setEventDescription('');
-    setValorTotal('');
   };
 
   return (
@@ -470,6 +481,7 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts}
             <div style={{ marginBottom: '16px', marginTop: '16px' }}>
               <TextField
                 label="Nombre de la actividad"
+                required
                 variant="outlined"
                 fullWidth
                 value={eventName}
@@ -479,6 +491,7 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts}
             <div style={{ marginBottom: '16px' }}>
               <TextField
                 label="Descripción"
+                required
                 rows={3}
                 variant="outlined"
                 fullWidth
@@ -489,6 +502,7 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts}
             <div style={{ marginBottom: '16px' }}>
               <TextField
                 label="Valor"
+                required
                 type="number"
                 variant="outlined"
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -500,28 +514,32 @@ const CreateActivityPopup = ({ isOpen, onClose, onCreate, eventInfo, myContacts}
           </div>
 
           {/* Columna Derecha */}
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 , justifyContent: 'center'}}>
             
-            {/* Lista de participantes de avatares */}
-            <FormControl fullWidth variant="outlined" style={{ marginBottom: '16px', marginTop: '16px' }}>
-              <InputLabel>Invitar Contactos</InputLabel>
-              
-            </FormControl>
+            <div style={{ display: 'flex', flexDirection: 'row', flex: 1 , justifyContent: 'center'}}>
+              Evento {eventInfo.Evento.Nombre}
+            </div>
+            <img src={eventInfo.Evento.Avatar} alt="Avatar Preview" style={{ maxWidth: '80%', maxHeight: '80%', borderRadius: '50%' , display: 'flex', flexDirection: 'row', flex: 1 , justifyContent: 'center'}} />
 
           </div>
         </div>
 
         {/* Centro */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-          <Button variant="contained" color="primary" onClick={() => { handleCreate(); onClose(); }}>
-            Crear Actividad
+          <Button variant="contained" color="primary" onClick={() => { 
+            handleCreate()
+            }}>
+            Crear Nueva Actividad
           </Button>
         </div>
 
         {/* Botón Cerrar */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3px' }}>
-          <Button style={{ marginTop: '6px' }} onClick={onClose}>
-            Cerrar
+          <Button style={{ marginTop: '6px' }} onClick={() => {
+              onClose();
+              setEventInfoPopupOpen(true);
+            }}>
+            Volver
           </Button>
         </div>
       </DialogContent>
@@ -578,6 +596,7 @@ function Events() {
   //const [isModalOpen, setModalOpen] = useState(false);
  //const [isDetailModalOpen, setDetailModalOpen] = useState(false);
   const [isCreateActivityPopupOpen, setCreateActivityPopupOpen] = useState(false);
+  const [isAgregarInvitadosPopupOpen, setAgregarInvitadosPopupOpen] = useState(false);
   const [events, setEvents] = useState([]);
   const [saveActivity, setSaveActivity] = useState(null);
   const [availableEvents, setAvailableEvents] = useState([]);
@@ -614,21 +633,18 @@ function Events() {
     try {
       const response = await createEvent(localStorage.getItem('userToken'), newEvent);
       fetchEvents();
-      setSaveActivity(createActivity);
+      setSaveActivity(handleCreateActivity);
       setAvailableEvents(events);
-      // Limpiar actividades al crear un nuevo evento
-      setActivities([]);
     } catch (error) {
       console.error('Error al crear un evento:', error);
     }
   };
 
-  const createActivity = async (newActivity, eventId) => {
+  const handleCreateActivity = async (newActivity) => {
     try {
-      await axios.post(`URL_de_tu_API/events/${eventId}/activities`, newActivity);
+      const response = await createActivity(localStorage.getItem('userToken'), newActivity);
+      alert('Evento creado con exito.')
       setCreateActivityPopupOpen(false);
-      // Recargar la lista de actividades después de crear una nueva actividad
-      fetchActivities(eventId);
     } catch (error) {
       console.error('Error al crear una actividad:', error);
     }
@@ -651,11 +667,12 @@ function Events() {
           Nuevo Evento
         </button>
 
-        <Overlay isOpen={ isEventInfoPopupOpen || isCreateActivityPopupOpen || isActivitiesInfoPopupOpen} onClick={() => {
+        <Overlay isOpen={ isEventInfoPopupOpen || isCreateActivityPopupOpen || isActivitiesInfoPopupOpen || isAgregarInvitadosPopupOpen} onClick={() => {
           setEventInfoPopupOpen(false);
           setCreateActivityPopupOpen(false);
           setEventCreatePopupOpen(false);
           setActivitiesInfoPopupOpen(false);
+          setAgregarInvitadosPopupOpen(false);
         }} />
 
         {isEventCreatePopupOpen && (
@@ -670,11 +687,14 @@ function Events() {
           <CreateActivityPopup
             isOpen={isCreateActivityPopupOpen}
             onClose={() => setCreateActivityPopupOpen(false)}
-            onSave={saveActivity}
+            onCreate={handleCreateActivity}
             eventInfo={selectedEventInfo}
             myContacts={misContactos}
+            setEventInfoPopupOpen={setEventInfoPopupOpen}
           />
         )}
+
+        
 
         {isEventInfoPopupOpen && (
           <EventInfoPopup
@@ -683,18 +703,9 @@ function Events() {
             eventInfo={selectedEventInfo} 
             myContacts={misContactos}
             setCreateActivityPopupOpen = {setCreateActivityPopupOpen}
+            setAgregarInvitadosPopupOpen = {setAgregarInvitadosPopupOpen}
           />
         )}
-
-        {isActivitiesInfoPopupOpen && (
-            <CreateActivityPopup
-            isOpen={isEventInfoPopupOpen}
-            onClose={() => setEventInfoPopupOpen(false)}
-            eventInfo={selectedEventInfo}  // Cambiado a selectedEventInfo con minúscula inicial
-          />
-        )}
-
-
         
 
         <h3>Eventos en los que participo</h3>
