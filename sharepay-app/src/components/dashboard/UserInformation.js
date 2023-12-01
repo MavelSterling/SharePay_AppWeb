@@ -171,11 +171,11 @@ function UserInformation() {
 
     if(localStorage.getItem('userToken') == null){
         respuesta = (
-            <div style={{ display: 'flex' }}>usted no tiene permisos para ver esta pagina, por favor inicie sesion</div>
+            <div style={{ display: 'flex'}}>usted no tiene permisos para ver esta pagina, por favor inicie sesion</div>
         )
     }else{
         respuesta = (
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex'}}>
                 <Sidebar />
                 <div style={{ flex: 1, padding: '20px' }}>
                     <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>

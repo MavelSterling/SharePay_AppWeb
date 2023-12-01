@@ -973,7 +973,7 @@ function Events() {
     <div style={{ display: 'flex' }}>
       <Sidebar />
       <div style={{ flex: 1, padding: '20px' }}>
-        <h2>Eventos y Actividades</h2>
+        <h2 style={{ textAlign: 'center' }} >Eventos y Actividades</h2>
         <button className="button-event" onClick={() => setEventCreatePopupOpen(true)}>
           Nuevo Evento
         </button>
@@ -1017,6 +1017,7 @@ function Events() {
         )}
         
 
+        <h3 style={{ textAlign: 'center' }}>Mis eventos</h3>
         <h3>Eventos en los que participo</h3>
           <EventsTable
             events={events}

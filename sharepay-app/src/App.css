@@ -230,6 +230,7 @@
   padding: 5px 16px;  /* Espaciado interno para el botón */
   cursor: pointer;  /* Cambiar el cursor al pasar por encima del botón */
   border-radius: 4px;  /* Bordes redondeados para el botón */
+  margin-right: 8px;
 
 }
 
@@ -678,7 +679,7 @@ table {
   border: none;
   border-radius: 7px;
   font-size: 15px;
-  width: 100%; /* Centra el botón verticalmente */
+  width: 150%; /* Centra el botón verticalmente */
   cursor: pointer;
   transition: transform 0.2s ease;
   transform: scale(1.2); /* Ajusta el factor de escala */
@@ -784,6 +785,7 @@ table {
   border-radius: 7px;
   font-size: 15px;
   cursor: pointer;
+  width: 150px; /* Ajusta el ancho deseado para el botón */
   transition: background-color 0.2s ease;
 }
 
@@ -797,6 +799,102 @@ table {
   background-color: #2e4053;
 }
 
+/*------------------------------------------------------------*/
+/*------------------------------------------------------------*/
+/*----- PAGOS -----*/
+.button-pay {
+  padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
+  width: 150px; /* Ajusta el ancho deseado para el botón */
+  cursor: pointer;
+  margin-left: 5px; /* Agrega un espacio a la izquierda */
+  margin-top: 8px;/* Agrega un espacio arriba  */
+  margin-right: 5px; /* Agrega un espacio a la derecha */
+  margin-bottom: 8px;/* Agrega un espacio abajo  */
+
+}
+.button-partial {
+  padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
+  background-color:  #F1C40F;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
+  width: 150px; /* Ajusta el ancho deseado para el botón */
+  cursor: pointer;
+  margin-left: 5px; /* Agrega un espacio a la izquierda */
+  margin-top: 8px;/* Agrega un espacio arriba  */
+  margin-right: 5px; /* Agrega un espacio a la derecha */
+  margin-bottom: 8px;/* Agrega un espacio abajo  */
+
+}
+.button-balance {
+  padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
+  background-color: #555555;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
+  width: 170px; /* Ajusta el ancho deseado para el botón */
+  cursor: pointer;
+  margin-left: 5px; /* Agrega un espacio a la izquierda */
+  margin-top: 8px;/* Agrega un espacio arriba  */
+  margin-right: 5px; /* Agrega un espacio a la derecha */
+  margin-bottom: 8px;/* Agrega un espacio abajo  */
+
+}
+
+/* Estilos mejorados para el dropdown de contacto */
+.contact-dropdown {
+  position: relative;
+  width: 85%; /* Ajusta el ancho según tus necesidades */
+}
+
+.contact-dropdown select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  appearance: none; /* Elimina la apariencia predeterminada del navegador */
+}
+
+.contact-dropdown select:focus {
+  outline: none;
+  border-color: #0056b3; /* Cambia el color del borde al enfocar */
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.5); /* Agrega una sombra al enfocar */
+}
+
+
+.payment-container {
+  display: flex;
+  gap: 10px; /* Espacio entre los elementos */
+}
+
+/* Estilos para el campo de entrada numérica */
+.payment-input {
+  width: 120px; /* Ajusta el ancho según tus necesidades */
+}
+
+.payment-input input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.payment-input input:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+}
 
 /*------------------------------------------------------------*/
 /*------------------------------------------------------------*/
@@ -815,7 +913,7 @@ table {
     justify-content: space-between;
     align-items: center;
     position: static;  /* la barra de navegación en la parte superior */
-    width: 90%; /* Ocupa todo el ancho disponible */
+    width: 95%; /* Ocupa todo el ancho disponible */
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     z-index: 1000;
@@ -843,6 +941,8 @@ table {
     padding: 5px 10px; /* Ajusta según sea necesario */
     cursor: pointer;
     border-radius: 4px;
+    margin-right: 9px;
+
   }
   .toggle-btn {
     background-color: #ADD8E6;  /* Color de fondo blanco para el botón*/
@@ -882,8 +982,6 @@ table {
     height: fit-content;
     background-color: #f0f0f0; /* Color de fondo de la barra lateral */
     padding-top: 20px; /* Espaciado superior */
-    display: flex;
-    flex-direction: column;
   }
 
   .sidebar ul {
@@ -956,48 +1054,48 @@ table {
     font-size: 32px;
     cursor: pointer;
   }
+/* Ajustes específicos para ActivityModal en dispositivos móviles */
+.event-modal.open {
+  /* Agrega estilos específicos cuando el modal está abierto en dispositivos móviles */
+  flex-direction: column;
+  width: 100%; /* O ajusta según tus necesidades */
+  margin: 0; /* Elimina el margen si es necesario */
+}
 
-  /* Ajustes específicos para ActivityModal en dispositivos móviles */
-  .event-modal.open {
-    /* Agrega estilos específicos cuando el modal está abierto en dispositivos móviles */
-    flex-direction: column;
-    width: 100%; /* O ajusta según tus necesidades */
-    margin: 0; /* Elimina el margen si es necesario */
-  }
+/* Estilos específicos para los elementos internos en dispositivos móviles */
+.event-modal.open .modal-content {
+  /* se puede ajustar estos estilos */
+  padding: 10px;
+}
 
-  /* Estilos específicos para los elementos internos en dispositivos móviles */
-  .event-modal.open .modal-content {
-    /* se puede ajustar estos estilos */
-    padding: 10px;
-  }
+/* Ajustes para los elementos internos en dispositivos móviles */
+.event-modal.open .column-event {
+  /* se puede ajustar estos estilos  */
+  width: 100%;
+  margin-bottom: 10px;
+}
 
-  /* Ajustes para los elementos internos en dispositivos móviles */
-  .event-modal.open .column-event {
-    /* se puede ajustar estos estilos  */
-    width: 100%;
-    margin-bottom: 10px;
-  }
+/* Estilos para el formulario en dispositivos móviles */
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px; /* Agrega relleno al formulario */
+  border-radius: 8px; /* Bordes redondeados al formulario */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
 
-  /* Estilos para el formulario en dispositivos móviles */
-  .form {
-    display: flex;
-    flex-direction: column;
-    padding: 20px; /* Agrega relleno al formulario */
-    border-radius: 8px; /* Bordes redondeados al formulario */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  }
+.input {
+  margin-bottom: 15px;
+}
 
-  .input {
-    margin-bottom: 15px;
-  }
+.avatar-upload {
+  display: none;
+}
 
-  .avatar-upload {
-    display: none;
-  }
+.avatar-label {
+  margin-top: 20px;
+}
 
-  .avatar-label {
-    margin-top: 20px;
-  }
 
   /* Fondo de página en dispositivos móviles */
   body {
@@ -1075,12 +1173,13 @@ table {
     transform: scale(1.18); /* Ajusta el factor de escala */
   }
   .TextField {
-    width: 90%;
-    font-size: 16px;
+    width: 100%; /* Ajusta el ancho para una mejor responsividad */
+    /*font-size: 16px;*/
   }
   .Grid-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Cambia a un diseño de una sola columna */
   }
+  
 }
 

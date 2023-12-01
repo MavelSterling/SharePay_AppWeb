@@ -1,18 +1,27 @@
+// Importa los módulos necesarios de React y otras librerías
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Sidebar from './Sidebar';
+import axios from 'axios'; // Importa el cliente HTTP Axios
+import Sidebar from './Sidebar'; // Importa el componente Sidebar
 
+// Define el componente funcional Payments
 const Payments = () => {
-  const [contacts, setContacts] = useState([]);
-  const [balanceSummary, setBalanceSummary] = useState({});
+  // Utiliza hooks de estado para manejar variables de estado
+  const [contacts, setContacts] = useState([]); // Almacena los contactos
+  const [balanceSummary, setBalanceSummary] = useState({}); // Almacena el resumen de saldos
+  const [selectedContact, setSelectedContact] = useState(''); // Almacena el contacto seleccionado
+  const [paymentAmount, setPaymentAmount] = useState(0); // Almacena la cantidad de pago
 
+  // useEffect se utiliza para realizar acciones después de que el componente ha sido renderizado
   useEffect(() => {
-    loadContactsAndBalances();
-  }, []);
+    loadContactsAndBalances(); // Llama a la función para cargar contactos y saldos
+  }, []); // El segundo parámetro [] asegura que useEffect se ejecute solo una vez al montar el componente
 
+  // Función para cargar contactos y saldos desde la API
   const loadContactsAndBalances = async () => {
     try {
+      // Realiza una solicitud GET a la URL de la API para obtener contactos y saldos
       const response = await axios.get('URL_de_tu_API/payments');
+      // Actualiza los estados con la respuesta de la API
       setContacts(response.data.contacts);
       setBalanceSummary(response.data.balanceSummary);
     } catch (error) {
@@ -20,76 +29,176 @@ const Payments = () => {
     }
   };
 
+  // Función para ver los saldos de un contacto por evento
   const viewContactBalances = (contactId) => {
-    // Filtrar los saldos del contacto por evento
-    const contactBalances = contacts
-      .filter((contact) => contact.id === contactId)
-      .map((contact) => contact.balances);
+    const contactBalances = contacts && Array.isArray(contacts)
+      ? contacts
+        .filter((contact) => contact.id === contactId)
+        .map((contact) => contact.balances)
+      : [];
 
-    // Mostrar los saldos por evento
     console.log('Saldos del contacto por evento:', contactBalances);
   };
 
+  // Función para ver los saldos pendientes a los contactos del usuario
   const viewMyPendingBalances = () => {
-    // Filtrar los saldos pendientes a mis contactos
-    const myBalances = contacts
-      .filter((contact) => contact.id === 'mi_id_de_usuario')
-      .map((contact) => contact.pendingBalance);
+    const myBalances = contacts && Array.isArray(contacts)
+      ? contacts
+        .filter((contact) => contact.id === 'mi_id_de_usuario')
+        .map((contact) => contact.pendingBalance)
+      : [];
 
-    // Mostrar los saldos pendientes
     console.log('Mis saldos pendientes a mis contactos:', myBalances);
   };
 
-  const getPendingPayments = () => {
-    // Filtrar los contactos con saldos pendientes
-    const contactsWithPendingBalances = contacts.filter((contact) => contact.pendingBalance > 0);
+  // Función para realizar un pago de saldo a un contacto
+  const payBalance = async (eventId, contactId, amount) => {
+    try {
+      // Realiza una solicitud POST a la URL de la API para realizar el pago
+      await axios.post('URL_de_tu_API/payments/pay', {
+        eventId,
+        contactId,
+        amount,
+      });
 
-    // Crear una lista con los pagos pendientes
-    const pendingPayments = contactsWithPendingBalances.map((contact) => {
-      return {
-        contactId: contact.id,
-        eventId: contact.pendingBalance.eventId,
-        amount: contact.pendingBalance.amount,
-      };
-    });
-
-    return pendingPayments;
+      // Recarga contactos y saldos después de realizar el pago
+      loadContactsAndBalances();
+    } catch (error) {
+      console.error('Error al pagar el saldo:', error);
+    }
   };
 
-  const renderPendingPayments = () => {
-    // Obtener los pagos pendientes
-    const pendingPayments = getPendingPayments();
-
-    // Renderizar la lista de pagos pendientes
-    return (
-      <ul>
-        {pendingPayments.map((payment) => (
-          <li key={payment.contactId}>
-            <strong>{payment.contactId}</strong>
-            <span> - {payment.eventId}</span>
-            <span> - ${payment.amount}</span>
-            <button onClick={() => payPendingPayment(payment.eventId, payment.contactId, payment.amount)}>Pagar</button>
-          </li>
-        ))}
-      </ul>
-    );
+  // Función para ver el resumen de saldos
+  const viewSummary = () => {
+    console.log('Resumen de saldos:', balanceSummary);
   };
 
-  const payPendingPayment = async (eventId, contactId, amount) => {
-    // Redondear el monto del pago
-    const roundedAmount = Math.round(amount * 100) / 100;
+  // Función para realizar un pago parcial
+  const makePartialPayment = async (eventId, contactId, amount) => {
+    try {
+      // Realiza una solicitud POST a la URL de la API para realizar el pago parcial
+      await axios.post('URL_de_tu_API/payments/partial-payment', {
+        eventId,
+        contactId,
+        amount,
+      });
 
-    // Realizar el pago
-   // await payBalance(eventId, contactId, roundedAmount);
+      // Recarga contactos y saldos después de realizar el pago parcial
+      loadContactsAndBalances();
+    } catch (error) {
+      console.error('Error al realizar el pago parcial:', error);
+    }
   };
 
+  // Función para manejar la selección de un contacto desde el dropdown
+  const handleContactSelect = (contactId) => {
+    setSelectedContact(contactId);
+  };
+
+  // Renderiza la estructura del componente
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <h2>Saldos y Pagos</h2>
-      {renderPendingPayments()}
+    <Sidebar /> {/* Renderiza el componente Sidebar */}
+    <div>
+      <h2 style={{ textAlign: 'center' }} > Saldos y Pagos</h2>
+      <div>
+      {/* Dropdown mejorado para seleccionar un contacto */}
+<div className="contact-dropdown">
+  <select onChange={(e) => handleContactSelect(e.target.value)}>
+    <option value="" disabled selected>
+      Selecciona un contacto
+    </option>
+    {/* Mapea los contactos para mostrar opciones en el dropdown */}
+    {contacts && Array.isArray(contacts) &&
+      contacts.map((contact) => (
+        <option key={contact.id} value={contact.id}>
+          {contact.name}
+        </option>
+      ))}
+  </select>
+</div>
+
+      </div>
+      <div>
+        {/* Botones para realizar diversas acciones */}
+        <button className="button-balance" onClick={() => viewContactBalances(selectedContact)}>
+          Ver saldos del contacto
+        </button>
+        <button className="button-balance" onClick={viewMyPendingBalances}>
+          Ver saldos pendientes a mis contactos
+        </button>
+        <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
+
+      </div>
+
+      <div className="payment-container">
+        <button className="button-partial" onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
+           Pago parcial
+        </button>
+
+        <div className="payment-input">
+          <input
+            type="number"
+            value={paymentAmount}
+            onChange={(e) => setPaymentAmount(e.target.value)}
+            placeholder="Ingrese el monto"
+          />
+        </div>
+      </div>
+      <div className="payment-container">
+
+      <button className="button-pay" onClick={() => payBalance(1, selectedContact, paymentAmount)}>
+          Pagar saldo
+        </button>
+
+        <div className="payment-input">
+          <input
+            type="number"
+            value={paymentAmount}
+            onChange={(e) => setPaymentAmount(e.target.value)}
+            placeholder="Ingrese el monto"
+          />
+        </div>
+      </div>
+      <div>
+          {/* Renderiza la tabla de pagos */}
+          <h3 style={{ textAlign: 'center' }} >Tabla de Pagos</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Contacto</th>
+                <th>Saldo Pendiente</th>
+                <th>Realizar Pago</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Mapea los contactos para renderizar filas en la tabla */}
+              {contacts && Array.isArray(contacts) &&
+                contacts.map((contact) => (
+                  <tr key={contact.id}>
+                    <td>{contact.name}</td>
+                    <td>{contact.pendingBalance}</td>
+                    <td>
+                      {/* Botón para realizar el pago desde la tabla */}
+                      <button className="button-pay" onClick={() => payBalance(1, contact.id, paymentAmount)}>
+                        Pagar
+                      </button>
+                      {/* Campo de entrada para la cantidad del pago */}
+                      <input
+                        type="number"
+                        value={paymentAmount}
+                        onChange={(e) => setPaymentAmount(e.target.value)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
 
+// Exporta el componente Payments para su uso en otros lugares
 export default Payments;
