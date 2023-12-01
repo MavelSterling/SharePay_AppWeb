@@ -127,15 +127,18 @@ const Payments = () => {
         <button className="button-balance" onClick={viewMyPendingBalances}>
           Ver saldos pendientes a mis contactos
         </button>
-        <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
+       
       </div>
 
-      <div className="payment-container">
+      <div >
+      <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
         <button className="button-partial" onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
            Pago parcial
         </button>
+      </div>
+      <div className="payment-container">
 
-        <button className="button-pay" onClick={() => payBalance(1, selectedContact, paymentAmount)}>
+      <button className="button-pay" onClick={() => payBalance(1, selectedContact, paymentAmount)}>
           Pagar saldo
         </button>
 
@@ -148,7 +151,6 @@ const Payments = () => {
           />
         </div>
       </div>
-
       <div>
           {/* Renderiza la tabla de pagos */}
           <h3>Tabla de Pagos</h3>
