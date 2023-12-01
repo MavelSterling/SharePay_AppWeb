@@ -130,20 +130,25 @@ const Payments = () => {
         <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
       </div>
 
-      <div>
+      <div className="payment-container">
         <button className="button-partial" onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
-          Pago parcial
+           Pago parcial
         </button>
-        {/* Botón "Pagar saldo" y campo de entrada debajo de los otros botones */}
+
         <button className="button-pay" onClick={() => payBalance(1, selectedContact, paymentAmount)}>
           Pagar saldo
         </button>
-        <input
-          type="number"
-          value={paymentAmount}
-          onChange={(e) => setPaymentAmount(e.target.value)}
-        />
+
+        <div className="payment-input">
+          <input
+            type="number"
+            value={paymentAmount}
+            onChange={(e) => setPaymentAmount(e.target.value)}
+            placeholder="Ingrese el monto"
+          />
+        </div>
       </div>
+
       <div>
           {/* Renderiza la tabla de pagos */}
           <h3>Tabla de Pagos</h3>
