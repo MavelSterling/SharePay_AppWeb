@@ -1,5 +1,3 @@
-// Payments.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from './Sidebar';
@@ -42,48 +40,54 @@ const Payments = () => {
     console.log('Mis saldos pendientes a mis contactos:', myBalances);
   };
 
-  const payBalance = async (eventId, contactId, amount) => {
-    try {
-      // Lógica para realizar el pago del saldo a un contacto
-      await axios.post('URL_de_tu_API/payments/pay', {
-        eventId,
-        contactId,
-        amount,
-      });
+  const getPendingPayments = () => {
+    // Filtrar los contactos con saldos pendientes
+    const contactsWithPendingBalances = contacts.filter((contact) => contact.pendingBalance > 0);
 
-      // Recargar los contactos y saldos después de realizar el pago
-      loadContactsAndBalances();
-    } catch (error) {
-      console.error('Error al pagar el saldo:', error);
-    }
+    // Crear una lista con los pagos pendientes
+    const pendingPayments = contactsWithPendingBalances.map((contact) => {
+      return {
+        contactId: contact.id,
+        eventId: contact.pendingBalance.eventId,
+        amount: contact.pendingBalance.amount,
+      };
+    });
+
+    return pendingPayments;
   };
 
-  const viewSummary = () => {
-    // Mostrar el resumen de saldos
-    console.log('Resumen de saldos:', balanceSummary);
+  const renderPendingPayments = () => {
+    // Obtener los pagos pendientes
+    const pendingPayments = getPendingPayments();
+
+    // Renderizar la lista de pagos pendientes
+    return (
+      <ul>
+        {pendingPayments.map((payment) => (
+          <li key={payment.contactId}>
+            <strong>{payment.contactId}</strong>
+            <span> - {payment.eventId}</span>
+            <span> - ${payment.amount}</span>
+            <button onClick={() => payPendingPayment(payment.eventId, payment.contactId, payment.amount)}>Pagar</button>
+          </li>
+        ))}
+      </ul>
+    );
   };
 
-  const makePartialPayment = async (eventId, contactId, amount) => {
-    try {
-      // Lógica para realizar un pago parcial
-      await axios.post('URL_de_tu_API/payments/partial-payment', {
-        eventId,
-        contactId,
-        amount,
-      });
+  const payPendingPayment = async (eventId, contactId, amount) => {
+    // Redondear el monto del pago
+    const roundedAmount = Math.round(amount * 100) / 100;
 
-      // Recargar los contactos y saldos después de realizar el pago parcial
-      loadContactsAndBalances();
-    } catch (error) {
-      console.error('Error al realizar el pago parcial:', error);
-    }
+    // Realizar el pago
+   // await payBalance(eventId, contactId, roundedAmount);
   };
 
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar />
       <h2>Saldos y Pagos</h2>
-      {/* Componentes y UI para interactuar con las funciones definidas */}
+      {renderPendingPayments()}
     </div>
   );
 };
