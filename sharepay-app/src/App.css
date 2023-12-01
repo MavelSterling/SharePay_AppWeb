@@ -837,7 +837,7 @@ table {
 /* Estilos mejorados para el dropdown de contacto */
 .contact-dropdown {
   position: relative;
-  width: 100%; /* Ajusta el ancho según tus necesidades */
+  width: 85%; /* Ajusta el ancho según tus necesidades */
 }
 
 .contact-dropdown select {
