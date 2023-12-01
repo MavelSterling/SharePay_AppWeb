@@ -127,14 +127,23 @@ const Payments = () => {
         <button className="button-balance" onClick={viewMyPendingBalances}>
           Ver saldos pendientes a mis contactos
         </button>
-       
+        <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
+
       </div>
 
       <div >
-      <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
         <button className="button-partial" onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
            Pago parcial
         </button>
+
+        <div className="payment-input">
+          <input
+            type="number"
+            value={paymentAmount}
+            onChange={(e) => setPaymentAmount(e.target.value)}
+            placeholder="Ingrese el monto"
+          />
+        </div>
       </div>
       <div className="payment-container">
 
