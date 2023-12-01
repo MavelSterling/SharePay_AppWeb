@@ -80,7 +80,7 @@ const Payments = () => {
     const roundedAmount = Math.round(amount * 100) / 100;
 
     // Realizar el pago
-    await payBalance(eventId, contactId, roundedAmount);
+   // await payBalance(eventId, contactId, roundedAmount);
   };
 
   return (

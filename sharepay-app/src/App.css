@@ -664,7 +664,7 @@ table {
   border: none;
   border-radius: 7px;
   font-size: 15px;
-  width: 150px; /* Define el ancho deseado para el botón */
+  width: 100%; /* Centra el botón verticalmente */
   cursor: pointer;
   transition: transform 0.2s ease;
   transform: scale(1.2); /* Ajusta el factor de escala */
