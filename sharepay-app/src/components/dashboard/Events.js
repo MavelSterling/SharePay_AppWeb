@@ -176,7 +176,7 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
           onChange={(e) => setEventDescription(e.target.value)}
         />
       </div>
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: '46px' }}>
         <TextField
           label="Tipo"
           variant="outlined"
@@ -185,31 +185,7 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
           onChange={(e) => setEventType(e.target.value)}
         />
       </div>
-      <div style={{ marginBottom: '16px' }}>
-        <FormControl fullWidth variant="outlined">
-          <InputLabel>Seleccionar Participantes</InputLabel>
-          <Select
-            multiple
-            value={selectedParticipants}
-            onChange={(e) => setSelectedParticipants(e.target.value)}
-            label="Seleccionar Participantes"
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 300, // Set the max height of the dropdown list
-                },
-              },
-            }}
-          >
-            {/* Add your participant options dynamically */}
-            {myContacts.map((participant, index) => (
-              <MenuItem key={index} value={participant}>
-                Contacto {participant.Nombre}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
+      
       <div style={{ marginBottom: '10px' }}>
         <Button variant="contained" color="primary" onClick={handleUpdate} style={{ marginRight: '5px' }}>
           Actualizar evento
@@ -296,7 +272,9 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
         </div>
       ))}
       
-      <div style={{ marginBottom: '16px' }}>
+      {eventInfo.Evento.Creador === localStorage.getItem('username') ? (
+        <>
+        <div style={{ marginBottom: '16px' }}>
         <h3>Agregar participantes</h3>
       </div>
       <div className="search-container">
@@ -371,6 +349,8 @@ const EventInfoPopup = ({ isOpen, onClose, eventInfo, myContacts, onUpdate, onDe
           </Select>
         </FormControl>
       </div>
+        </>
+      ) : ('')}
       
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
         <Button onClick={() => {
@@ -893,6 +873,7 @@ const EventsTable = ({ events, setEventInfoPopupOpen, setSelectedEventInfo }) =>
                 className='button-normal'
                 style={{ background: 'green', color: 'white' ,marginLeft: '25px'}}
                 onClick={() => {
+            
                   setEventInfoPopupOpen(true);
                   
                   setSelectedEventInfo(event);
@@ -966,6 +947,14 @@ function Events() {
     try {
       const response = await createActivity(localStorage.getItem('userToken'), newActivity);
       alert('Evento creado con exito.')
+
+      const newParticipant = {
+        Apodo: localStorage.getItem('username'),
+        EventoID: selectedEventInfo.Evento.EventoID,
+        Estado: 'Activo',
+      };
+
+      const responseparticipante = await createEventParticipant(localStorage.getItem('userToken'), newParticipant);
       setCreateActivityPopupOpen(false);
     } catch (error) {
       console.error('Error al crear una actividad:', error);
