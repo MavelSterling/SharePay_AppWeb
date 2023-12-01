@@ -216,6 +216,7 @@
   padding: 5px 16px;  /* Espaciado interno para el botón */
   cursor: pointer;  /* Cambiar el cursor al pasar por encima del botón */
   border-radius: 4px;  /* Bordes redondeados para el botón */
+  margin-right: 8px;
 
 }
 
@@ -875,6 +876,8 @@ table {
     padding: 5px 10px; /* Ajusta según sea necesario */
     cursor: pointer;
     border-radius: 4px;
+    margin-right: 8px;
+
   }
   .toggle-btn {
     background-color: #ADD8E6;  /* Color de fondo blanco para el botón*/
