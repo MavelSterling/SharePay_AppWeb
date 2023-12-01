@@ -792,7 +792,9 @@ table {
   font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
   width: 150px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
-  margin-left: 4px; /* Agrega un espacio entre el input y el botón */
+  margin-left: 5px; /* Agrega un espacio a la izquierda */
+  margin-top: 8px;/* Agrega un espacio arriba  */
+  margin-right: 5px; /* Agrega un espacio a la derecha */
 }
 .button-partial {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
@@ -803,7 +805,9 @@ table {
   font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
   width: 150px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
-  margin-left: 4px; /* Agrega un espacio entre el input y el botón */
+  margin-left: 5px; /* Agrega un espacio a la izquierda */
+  margin-top: 8px;/* Agrega un espacio arriba  */
+  margin-right: 5px; /* Agrega un espacio a la derecha */
 }
 .button-balance {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
@@ -814,7 +818,9 @@ table {
   font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
   width: 170px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
-  margin-left: 4px; /* Agrega un espacio entre el input y el botón */
+  margin-left: 5px; /* Agrega un espacio a la izquierda */
+  margin-top: 8px;/* Agrega un espacio arriba  */
+  margin-right: 5px; /* Agrega un espacio a la derecha */
 }
 
 /*------------------------------------------------------------*/
