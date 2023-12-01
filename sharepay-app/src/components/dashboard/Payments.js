@@ -118,18 +118,22 @@ const Payments = () => {
       </div>
       <div>
         {/* Botones para realizar diversas acciones */}
-        <button onClick={() => viewContactBalances(selectedContact)}>
+        <button className="button-pay" onClick={() => viewContactBalances(selectedContact)}>
           Ver saldos del contacto
         </button>
-        <button onClick={viewMyPendingBalances}>
+        <button className="button-pay" onClick={viewMyPendingBalances}>
           Ver saldos pendientes a mis contactos
         </button>
-        <button onClick={viewSummary}>Ver resumen de saldos</button>
-        <button onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
+        <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
+      </div>
+
+      <div>
+
+        <button className="button-partial" onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
           Pago parcial
         </button>
         {/* Botón "Pagar saldo" y campo de entrada debajo de los otros botones */}
-        <button onClick={() => payBalance(1, selectedContact, paymentAmount)}>
+        <button className="button-pay" onClick={() => payBalance(1, selectedContact, paymentAmount)}>
           Pagar saldo
         </button>
         <input
@@ -158,7 +162,7 @@ const Payments = () => {
                     <td>{contact.pendingBalance}</td>
                     <td>
                       {/* Botón para realizar el pago desde la tabla */}
-                      <button onClick={() => payBalance(1, contact.id, paymentAmount)}>
+                      <button className="button-pay" onClick={() => payBalance(1, contact.id, paymentAmount)}>
                         Pagar
                       </button>
                       {/* Campo de entrada para la cantidad del pago */}
