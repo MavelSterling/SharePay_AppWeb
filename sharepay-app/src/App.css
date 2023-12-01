@@ -857,6 +857,31 @@ table {
 }
 
 
+.payment-container {
+  display: flex;
+  gap: 10px; /* Espacio entre los elementos */
+}
+
+/* Estilos para el campo de entrada numérica */
+.payment-input {
+  width: 120px; /* Ajusta el ancho según tus necesidades */
+}
+
+.payment-input input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.payment-input input:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+}
+
 /*------------------------------------------------------------*/
 /*------------------------------------------------------------*/
 
