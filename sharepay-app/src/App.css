@@ -848,7 +848,7 @@ table {
     justify-content: space-between;
     align-items: center;
     position: static;  /* la barra de navegación en la parte superior */
-    width: 90%; /* Ocupa todo el ancho disponible */
+    width: 95%; /* Ocupa todo el ancho disponible */
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     z-index: 1000;
@@ -876,7 +876,7 @@ table {
     padding: 5px 10px; /* Ajusta según sea necesario */
     cursor: pointer;
     border-radius: 4px;
-    margin-right: 8px;
+    margin-right: 10px;
 
   }
   .toggle-btn {
