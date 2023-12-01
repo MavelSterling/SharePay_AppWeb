@@ -98,46 +98,47 @@ const Payments = () => {
   // Renderiza la estructura del componente
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar /> {/* Renderiza el componente Sidebar */}
+    <Sidebar /> {/* Renderiza el componente Sidebar */}
+    <div>
+      <h2>Saldos y Pagos</h2>
       <div>
-        <h2>Saldos y Pagos</h2>
-        <div>
-          {/* Dropdown para seleccionar un contacto */}
-          <select onChange={(e) => handleContactSelect(e.target.value)}>
-            <option value="" disabled selected>
-              Selecciona un contacto
-            </option>
-            {/* Mapea los contactos para mostrar opciones en el dropdown */}
-            {contacts && Array.isArray(contacts) &&
-              contacts.map((contact) => (
-                <option key={contact.id} value={contact.id}>
-                  {contact.name}
-                </option>
-              ))}
-          </select>
-        </div>
-        <div>
-          {/* Botones para realizar diversas acciones */}
-          <button onClick={() => viewContactBalances(selectedContact)}>
-            Ver saldos del contacto
-          </button>
-          <button onClick={viewMyPendingBalances}>
-            Ver saldos pendientes a mis contactos
-          </button>
-          <button onClick={() => payBalance(1, selectedContact, paymentAmount)}>
-            Pagar saldo
-          </button>
-          <input
-            type="number"
-            value={paymentAmount}
-            onChange={(e) => setPaymentAmount(e.target.value)}
-          />
-          <button onClick={viewSummary}>Ver resumen de saldos</button>
-          <button onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
-            Pago parcial
-          </button>
-        </div>
-        <div>
+        {/* Dropdown para seleccionar un contacto */}
+        <select onChange={(e) => handleContactSelect(e.target.value)}>
+          <option value="" disabled selected>
+            Selecciona un contacto
+          </option>
+          {/* Mapea los contactos para mostrar opciones en el dropdown */}
+          {contacts && Array.isArray(contacts) &&
+            contacts.map((contact) => (
+              <option key={contact.id} value={contact.id}>
+                {contact.name}
+              </option>
+            ))}
+        </select>
+      </div>
+      <div>
+        {/* Botones para realizar diversas acciones */}
+        <button onClick={() => viewContactBalances(selectedContact)}>
+          Ver saldos del contacto
+        </button>
+        <button onClick={viewMyPendingBalances}>
+          Ver saldos pendientes a mis contactos
+        </button>
+        <button onClick={viewSummary}>Ver resumen de saldos</button>
+        <button onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
+          Pago parcial
+        </button>
+        {/* Botón "Pagar saldo" y campo de entrada debajo de los otros botones */}
+        <button onClick={() => payBalance(1, selectedContact, paymentAmount)}>
+          Pagar saldo
+        </button>
+        <input
+          type="number"
+          value={paymentAmount}
+          onChange={(e) => setPaymentAmount(e.target.value)}
+        />
+      </div>
+      <div>
           {/* Renderiza la tabla de pagos */}
           <h3>Tabla de Pagos</h3>
           <table>
