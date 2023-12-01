@@ -812,7 +812,7 @@ table {
   border: none;
   border-radius: 8px;
   font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
-  width: 150px; /* Ajusta el ancho deseado para el botón */
+  width: 170px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
   margin-left: 4px; /* Agrega un espacio entre el input y el botón */
 }
