@@ -121,7 +121,7 @@ const Payments = () => {
         <button className="button-pay" onClick={() => viewContactBalances(selectedContact)}>
           Ver saldos del contacto
         </button>
-        <button className="button-pay" onClick={viewMyPendingBalances}>
+        <button className="button-balance" onClick={viewMyPendingBalances}>
           Ver saldos pendientes a mis contactos
         </button>
         <button className="button-balance" onClick={viewSummary}>Ver resumen de saldos</button>
