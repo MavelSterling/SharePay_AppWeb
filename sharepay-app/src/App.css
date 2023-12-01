@@ -1024,7 +1024,7 @@ table {
   /* Ajustes de estilo para el contenedor interno del modal en dispositivos móviles */
   .modal-container {
     text-align: center;
-    width: 100%;
+    width: 90%; /* Ajusta el ancho según sea necesario */
   }
 
   .column-event {
@@ -1051,7 +1051,10 @@ table {
 /* Estilos específicos para los elementos internos en dispositivos móviles */
 .event-modal.open .modal-content {
   /* se puede ajustar estos estilos */
+  display: flex;
   padding: 10px;
+ /* flex-direction: column;*/
+
 }
 
 /* Ajustes para los elementos internos en dispositivos móviles */
