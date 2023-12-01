@@ -802,7 +802,7 @@ table {
 }
 .button-partial {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
-  background-color: #555555;
+  background-color:  #926614;
   color: white;
   border: none;
   border-radius: 8px;
@@ -817,7 +817,7 @@ table {
 }
 .button-balance {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
-  background-color: #926614;
+  background-color: #555555;
   color: white;
   border: none;
   border-radius: 8px;
