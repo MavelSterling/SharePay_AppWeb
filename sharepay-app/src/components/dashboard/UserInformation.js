@@ -168,7 +168,7 @@ function UserInformation() {
 
     if(localStorage.getItem('userToken') == null){
         respuesta = (
-            <div style={{ display: 'flex', flexDirection: 'column'}}>usted no tiene permisos para ver esta pagina, por favor inicie sesion</div>
+            <div style={{ display: 'flex'}}>usted no tiene permisos para ver esta pagina, por favor inicie sesion</div>
         )
     }else{
         respuesta = (
