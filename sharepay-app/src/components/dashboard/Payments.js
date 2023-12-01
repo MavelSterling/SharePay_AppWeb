@@ -100,7 +100,7 @@ const Payments = () => {
     <div style={{ display: 'flex' }}>
     <Sidebar /> {/* Renderiza el componente Sidebar */}
     <div>
-      <h2>Saldos y Pagos</h2>
+      <h2 style={{ textAlign: 'center' }} > Saldos y Pagos</h2>
       <div>
       {/* Dropdown mejorado para seleccionar un contacto */}
 <div className="contact-dropdown">
@@ -153,7 +153,7 @@ const Payments = () => {
       </div>
       <div>
           {/* Renderiza la tabla de pagos */}
-          <h3>Tabla de Pagos</h3>
+          <h3 style={{ textAlign: 'center' }} >Tabla de Pagos</h3>
           <table>
             <thead>
               <tr>
