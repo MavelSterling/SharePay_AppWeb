@@ -796,6 +796,8 @@ table {
   margin-left: 5px; /* Agrega un espacio a la izquierda */
   margin-top: 8px;/* Agrega un espacio arriba  */
   margin-right: 5px; /* Agrega un espacio a la derecha */
+  margin-bottom: 8px;/* Agrega un espacio abajo  */
+
 }
 .button-partial {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
@@ -809,6 +811,8 @@ table {
   margin-left: 5px; /* Agrega un espacio a la izquierda */
   margin-top: 8px;/* Agrega un espacio arriba  */
   margin-right: 5px; /* Agrega un espacio a la derecha */
+  margin-bottom: 8px;/* Agrega un espacio abajo  */
+
 }
 .button-balance {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
@@ -822,6 +826,8 @@ table {
   margin-left: 5px; /* Agrega un espacio a la izquierda */
   margin-top: 8px;/* Agrega un espacio arriba  */
   margin-right: 5px; /* Agrega un espacio a la derecha */
+  margin-bottom: 8px;/* Agrega un espacio abajo  */
+
 }
 
 /*------------------------------------------------------------*/
