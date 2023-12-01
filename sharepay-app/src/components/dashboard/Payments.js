@@ -31,18 +31,22 @@ const Payments = () => {
 
   // Función para ver los saldos de un contacto por evento
   const viewContactBalances = (contactId) => {
-    const contactBalances = contacts
-      .filter((contact) => contact.id === contactId)
-      .map((contact) => contact.balances);
+    const contactBalances = contacts && Array.isArray(contacts)
+      ? contacts
+        .filter((contact) => contact.id === contactId)
+        .map((contact) => contact.balances)
+      : [];
 
     console.log('Saldos del contacto por evento:', contactBalances);
   };
 
   // Función para ver los saldos pendientes a los contactos del usuario
   const viewMyPendingBalances = () => {
-    const myBalances = contacts
-      .filter((contact) => contact.id === 'mi_id_de_usuario')
-      .map((contact) => contact.pendingBalance);
+    const myBalances = contacts && Array.isArray(contacts)
+      ? contacts
+        .filter((contact) => contact.id === 'mi_id_de_usuario')
+        .map((contact) => contact.pendingBalance)
+      : [];
 
     console.log('Mis saldos pendientes a mis contactos:', myBalances);
   };
@@ -104,11 +108,12 @@ const Payments = () => {
               Selecciona un contacto
             </option>
             {/* Mapea los contactos para mostrar opciones en el dropdown */}
-            {contacts.map((contact) => (
-              <option key={contact.id} value={contact.id}>
-                {contact.name}
-              </option>
-            ))}
+            {contacts && Array.isArray(contacts) &&
+              contacts.map((contact) => (
+                <option key={contact.id} value={contact.id}>
+                  {contact.name}
+                </option>
+              ))}
           </select>
         </div>
         <div>
@@ -145,24 +150,25 @@ const Payments = () => {
             </thead>
             <tbody>
               {/* Mapea los contactos para renderizar filas en la tabla */}
-              {contacts.map((contact) => (
-                <tr key={contact.id}>
-                  <td>{contact.name}</td>
-                  <td>{contact.pendingBalance}</td>
-                  <td>
-                    {/* Botón para realizar el pago desde la tabla */}
-                    <button onClick={() => payBalance(1, contact.id, paymentAmount)}>
-                      Pagar
-                    </button>
-                    {/* Campo de entrada para la cantidad del pago */}
-                    <input
-                      type="number"
-                      value={paymentAmount}
-                      onChange={(e) => setPaymentAmount(e.target.value)}
-                    />
-                  </td>
-                </tr>
-              ))}
+              {contacts && Array.isArray(contacts) &&
+                contacts.map((contact) => (
+                  <tr key={contact.id}>
+                    <td>{contact.name}</td>
+                    <td>{contact.pendingBalance}</td>
+                    <td>
+                      {/* Botón para realizar el pago desde la tabla */}
+                      <button onClick={() => payBalance(1, contact.id, paymentAmount)}>
+                        Pagar
+                      </button>
+                      {/* Campo de entrada para la cantidad del pago */}
+                      <input
+                        type="number"
+                        value={paymentAmount}
+                        onChange={(e) => setPaymentAmount(e.target.value)}
+                      />
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -173,4 +179,3 @@ const Payments = () => {
 
 // Exporta el componente Payments para su uso en otros lugares
 export default Payments;
-
