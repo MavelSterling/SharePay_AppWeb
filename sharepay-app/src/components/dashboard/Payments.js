@@ -102,19 +102,22 @@ const Payments = () => {
     <div>
       <h2>Saldos y Pagos</h2>
       <div>
-        {/* Dropdown para seleccionar un contacto */}
-        <select onChange={(e) => handleContactSelect(e.target.value)}>
-          <option value="" disabled selected>
-            Selecciona un contacto
-          </option>
-          {/* Mapea los contactos para mostrar opciones en el dropdown */}
-          {contacts && Array.isArray(contacts) &&
-            contacts.map((contact) => (
-              <option key={contact.id} value={contact.id}>
-                {contact.name}
-              </option>
-            ))}
-        </select>
+      {/* Dropdown mejorado para seleccionar un contacto */}
+<div className="contact-dropdown">
+  <select onChange={(e) => handleContactSelect(e.target.value)}>
+    <option value="" disabled selected>
+      Selecciona un contacto
+    </option>
+    {/* Mapea los contactos para mostrar opciones en el dropdown */}
+    {contacts && Array.isArray(contacts) &&
+      contacts.map((contact) => (
+        <option key={contact.id} value={contact.id}>
+          {contact.name}
+        </option>
+      ))}
+  </select>
+</div>
+
       </div>
       <div>
         {/* Botones para realizar diversas acciones */}

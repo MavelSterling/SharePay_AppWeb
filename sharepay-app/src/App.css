@@ -785,6 +785,9 @@ table {
   background-color: #2e4053;
 }
 
+/*------------------------------------------------------------*/
+/*------------------------------------------------------------*/
+/*----- PAGOS -----*/
 .button-pay {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
   background-color: #4caf50;
@@ -831,6 +834,29 @@ table {
 
 }
 
+/* Estilos mejorados para el dropdown de contacto */
+.contact-dropdown {
+  position: relative;
+  width: 100%; /* Ajusta el ancho según tus necesidades */
+}
+
+.contact-dropdown select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  appearance: none; /* Elimina la apariencia predeterminada del navegador */
+}
+
+.contact-dropdown select:focus {
+  outline: none;
+  border-color: #0056b3; /* Cambia el color del borde al enfocar */
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.5); /* Agrega una sombra al enfocar */
+}
+
+
 /*------------------------------------------------------------*/
 /*------------------------------------------------------------*/
 
@@ -848,7 +874,7 @@ table {
     justify-content: space-between;
     align-items: center;
     position: static;  /* la barra de navegación en la parte superior */
-    width: 90%; /* Ocupa todo el ancho disponible */
+    width: 95%; /* Ocupa todo el ancho disponible */
     background-color: #ADD8E6;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     z-index: 1000;
@@ -876,7 +902,7 @@ table {
     padding: 5px 10px; /* Ajusta según sea necesario */
     cursor: pointer;
     border-radius: 4px;
-    margin-right: 8px;
+    margin-right: 10px;
 
   }
   .toggle-btn {
