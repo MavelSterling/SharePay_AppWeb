@@ -175,7 +175,7 @@ function UserInformation() {
         )
     }else{
         respuesta = (
-            <div style={{ display: 'flex',  flexDirection: 'column' }}>
+            <div style={{ display: 'flex'}}>
                 <Sidebar />
                 <div style={{ flex: 1, padding: '20px' }}>
                     <h2 style={{ textAlign: 'center' }}>Información del usuario</h2>
