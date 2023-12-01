@@ -770,6 +770,7 @@ table {
   border-radius: 7px;
   font-size: 15px;
   cursor: pointer;
+  width: 150px; /* Ajusta el ancho deseado para el botón */
   transition: background-color 0.2s ease;
 }
 
