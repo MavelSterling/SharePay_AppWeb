@@ -128,7 +128,6 @@ const Payments = () => {
       </div>
 
       <div>
-
         <button className="button-partial" onClick={() => makePartialPayment(1, selectedContact, paymentAmount)}>
           Pago parcial
         </button>

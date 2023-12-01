@@ -789,8 +789,8 @@ table {
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 18px;
-  width: 100px; /* Define el ancho deseado para el botón */
+  font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
+  width: 150px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
   margin-left: 4px; /* Agrega un espacio entre el input y el botón */
 }
@@ -800,8 +800,8 @@ table {
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 18px;
-  width: 100px; /* Define el ancho deseado para el botón */
+  font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
+  width: 150px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
   margin-left: 4px; /* Agrega un espacio entre el input y el botón */
 }
@@ -811,8 +811,8 @@ table {
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 18px;
-  width: 100px; /* Define el ancho deseado para el botón */
+  font-size: 14px; /* Ajusta el tamaño de letra deseado para el botón */
+  width: 150px; /* Ajusta el ancho deseado para el botón */
   cursor: pointer;
   margin-left: 4px; /* Agrega un espacio entre el input y el botón */
 }
@@ -901,8 +901,6 @@ table {
     height: fit-content;
     background-color: #f0f0f0; /* Color de fondo de la barra lateral */
     padding-top: 20px; /* Espaciado superior */
-    display: flex;
-    flex-direction: column;
   }
 
   .sidebar ul {
@@ -1094,12 +1092,12 @@ table {
     transform: scale(1.18); /* Ajusta el factor de escala */
   }
   .TextField {
-    width: 90%;
-    font-size: 16px;
+    width: 100%; /* Ajusta el ancho para una mejor responsividad */
+    /*font-size: 16px;*/
   }
   .Grid-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Cambia a un diseño de una sola columna */
   }
 }
 
