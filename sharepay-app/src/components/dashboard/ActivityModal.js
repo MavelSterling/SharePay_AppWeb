@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function ActivityModal({ isOpen, onClose, onSave, availableEvents }) {
+function ActivityModal({ isOpen, onClose, onSave, availableEvents , selectedEvent}) {
   const [activityDescription, setActivityDescription] = useState('');
   const [activityValue, setActivityValue] = useState(0);
   const [participants, setParticipants] = useState([]);
@@ -39,12 +39,7 @@ function ActivityModal({ isOpen, onClose, onSave, availableEvents }) {
   return (
     <div className={`event-modal ${isOpen ? 'open' : ''}`}>
       <div className="modal-container">
-        <span className="close" onClick={onClose}>
-          &times;
-        </span>
-
         <h3>Añadir actividad</h3>
-
         <div className="modal-content">
           <div className="column-event">
             <label>Descripción:</label>
@@ -64,24 +59,10 @@ function ActivityModal({ isOpen, onClose, onSave, availableEvents }) {
           </div>
 
           <div className="column-event">
-            <label>Seleccionar evento:</label>
-            <select
-              onChange={() => {
-                setParticipants([]); // Limpiar participantes al cambiar de evento
-                setDefaultShares(true); // Restaurar configuración predeterminada al cambiar de evento
-              }}
-            >
-               <option value="" disabled>
-                Seleccionar evento
-              </option>
-             {availableEvents.map((event) => (
-               <option key={event.id} value={event.id}>
-             {event.name}
-               </option>
-                ))}
-           </select>
+            <label>Evento seleccionado:</label>
+            <p>{selectedEvent.Evento.Nombre}</p>
 
-            <label>Seleccionar participantes:</label>
+            <label>Seleccionar contactos:</label>
             <select
               multiple
               value={participants}

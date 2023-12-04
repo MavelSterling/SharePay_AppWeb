@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Paper, Typography, TextField, Button, Grid,useTheme, useMediaQuery } from '@mui/material';
+import { Container, Paper, Typography, TextField, Button, Grid,useTheme, useMediaQuery, Link } from '@mui/material';
 import logo from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 //import { createUser, getUsers } from '../api/service'
@@ -151,6 +151,11 @@ function Register() {
                             >
                                 Registrarse
                             </Button>
+                            <Grid container justify="center" style={{ marginTop: '20px' }}>
+                                <Link href="/login" variant="body2">
+                                ¿Ya tienes una cuenta? Inicia sesion.
+                                </Link>
+                            </Grid>
                         </form>
                     </Grid>
                 </Grid>

@@ -2,6 +2,20 @@
   text-align: center;
 }
 
+/* Add the styles for the fixed navbar */
+.navbar {
+  /* Your existing styles */
+  transition: top 0.3s; /* Add a smooth transition effect */
+}
+
+/* Add the fixed class when isNavBarFixed is true */
+.navbar.fixed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -805,7 +819,7 @@ table {
 }
 .button-partial {
   padding: 8px 10px; /* Ajusta el relleno del botón según sea necesario */
-  background-color:  #926614;
+  background-color:  #F1C40F;
   color: white;
   border: none;
   border-radius: 8px;

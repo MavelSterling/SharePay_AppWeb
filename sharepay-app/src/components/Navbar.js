@@ -1,6 +1,4 @@
-//  NavBar.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
 import { FaBell } from 'react-icons/fa';
@@ -15,6 +13,8 @@ const NavBar = () => {
   const [showSesionActiva, setShowSesionActiva] = useState('');
 
   const usuario_Activo = localStorage.getItem('username');
+
+  const [isNavBarFixed, setIsNavBarFixed] = useState(false);
 
   const handleAcceptInvitation = async (invitation) => {
     // Lógica para aceptar la invitación
@@ -59,8 +59,23 @@ const NavBar = () => {
     setShowNotificationModal(false);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      // You can adjust the offset value based on your layout and styling
+      setIsNavBarFixed(offset > 100); // Set to true when the user scrolls down 100 pixels
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div  className="navbar">
+    <div className={`navbar ${isNavBarFixed ? 'fixed' : ''}`}>
       <div className="notification-container">
         <FaBell size={20} onClick={handleBellClick} />
         {invitations.length > 0 && <span className="notification-badge">{invitations.length}</span>}
